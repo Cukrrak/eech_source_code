@@ -58,8 +58,6 @@
 // 	as expressly permitted by  this Agreement.
 //
 
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,121 +91,116 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static padlock_modes
-	padlock_mode;
-padlock_modes
-	inset_mode;
+static padlock_modes padlock_mode;
+padlock_modes inset_mode;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static float get_rotate_left_limit (void)
-{
-	float
-		limit;
+static float get_rotate_left_limit(void) {
+	float limit;
 
-	switch (get_global_gunship_type ())
+	switch (get_global_gunship_type ()) {
+	////////////////////////////////////////
+	case GUNSHIP_TYPE_APACHE:
+		////////////////////////////////////////
 	{
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_APACHE:
-		////////////////////////////////////////
-		{
-			if (command_line_3d_cockpit)
-				limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
-			else
-				limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT2);
+		if (command_line_3d_cockpit)
+			limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
+		else
+			limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HAVOC:
+	case GUNSHIP_TYPE_HAVOC:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_COMANCHE:
+	case GUNSHIP_TYPE_COMANCHE:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HOKUM:
+	case GUNSHIP_TYPE_HOKUM:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_BLACKHAWK:
+	case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 End
 		////Moje 030612 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HIND:
+	case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030612 End
 		////Moje 030816 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_AH64A:
+	case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KA50:
+	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030816 End
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_VIPER:
+	case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KIOWA:
+	case GUNSHIP_TYPE_KIOWA:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		default:
+	default:
 		////////////////////////////////////////
-		{
-			// JB 030313 Fly any aircraft
-			//limit = rad (135.0);
-			limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		// JB 030313 Fly any aircraft
+		//limit = rad (135.0);
+		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 	}
 
 	return (limit);
@@ -217,112 +210,109 @@ static float get_rotate_left_limit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static float get_rotate_right_limit (void)
-{
-	float
-		limit;
+static float get_rotate_right_limit(void) {
+	float limit;
 
-	switch (get_global_gunship_type ())
+	switch (get_global_gunship_type ()) {
+	////////////////////////////////////////
+	case GUNSHIP_TYPE_APACHE:
+		////////////////////////////////////////
 	{
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_APACHE:
-		////////////////////////////////////////
-		{
-			if (command_line_3d_cockpit)
-				limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
-			else
-				limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+		if (command_line_3d_cockpit)
+			limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
+		else
+			limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HAVOC:
+	case GUNSHIP_TYPE_HAVOC:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_COMANCHE:
+	case GUNSHIP_TYPE_COMANCHE:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HOKUM:
+	case GUNSHIP_TYPE_HOKUM:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_BLACKHAWK:
+	case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 End
 		////Moje 03061 2Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HIND:
+	case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030612 End
 		////Moje 030816 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_AH64A:
+	case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KA50:
+	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030816 End
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_VIPER:
+	case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KIOWA:
+	case GUNSHIP_TYPE_KIOWA:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		default:
+	default:
 		////////////////////////////////////////
-		{
-			// JB 030313 Fly any aircraft
-			//limit = rad (-135.0);
-			limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+	{
+		// JB 030313 Fly any aircraft
+		//limit = rad (-135.0);
+		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT2);
 
-			break;
-		}
+		break;
+	}
 	}
 
 	return (limit);
@@ -332,112 +322,109 @@ static float get_rotate_right_limit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static float get_rotate_up_limit (void)
-{
-	float
-		limit;
+static float get_rotate_up_limit(void) {
+	float limit;
 
-	switch (get_global_gunship_type ())
+	switch (get_global_gunship_type ()) {
+	////////////////////////////////////////
+	case GUNSHIP_TYPE_APACHE:
+		////////////////////////////////////////
 	{
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_APACHE:
-		////////////////////////////////////////
-		{
-			if (command_line_3d_cockpit)
-				limit = rad (MAX_LOOK_ANGLE_UP1);
-			else
-				limit = rad (MAX_LOOK_ANGLE_UP2);
+		if (command_line_3d_cockpit)
+			limit = rad(MAX_LOOK_ANGLE_UP1);
+		else
+			limit = rad(MAX_LOOK_ANGLE_UP2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HAVOC:
+	case GUNSHIP_TYPE_HAVOC:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_COMANCHE:
+	case GUNSHIP_TYPE_COMANCHE:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HOKUM:
+	case GUNSHIP_TYPE_HOKUM:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_BLACKHAWK:
+	case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 End
 		////Moje 030612 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HIND:
+	case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP2);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030612 End
 		////Moje 030816 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_AH64A:
+	case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KA50:
+	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP2);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP2);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030816 End
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_VIPER:
+	case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KIOWA:
+	case GUNSHIP_TYPE_KIOWA:
 		////////////////////////////////////////
-		{
-			limit = rad (MAX_LOOK_ANGLE_UP1);
+	{
+		limit = rad(MAX_LOOK_ANGLE_UP1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		default:
+	default:
 		////////////////////////////////////////
-		{
-			// JB 030313 Fly any aircraft
-			limit = rad (MAX_LOOK_ANGLE_UP1);
-			//limit = rad (0.0);
+	{
+		// JB 030313 Fly any aircraft
+		limit = rad(MAX_LOOK_ANGLE_UP1);
+		//limit = rad (0.0);
 
-			break;
-		}
+		break;
+	}
 	}
 
 	return (limit);
@@ -447,110 +434,107 @@ static float get_rotate_up_limit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static float get_rotate_down_limit (void)
-{
-	float
-		limit;
+static float get_rotate_down_limit(void) {
+	float limit;
 
-	switch (get_global_gunship_type ())
+	switch (get_global_gunship_type ()) {
+	////////////////////////////////////////
+	case GUNSHIP_TYPE_APACHE:
+		////////////////////////////////////////
 	{
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_APACHE:
-		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN3);
+		limit = rad(-MAX_LOOK_ANGLE_DOWN3);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HAVOC:
+	case GUNSHIP_TYPE_HAVOC:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_COMANCHE:
+	case GUNSHIP_TYPE_COMANCHE:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HOKUM:
+	case GUNSHIP_TYPE_HOKUM:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_BLACKHAWK:
+	case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN1);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030518 End
 		////Moje 030612 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HIND:
+	case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN1);
-			limit = rad(-90);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN1);
+		limit = rad(-90);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030612 End
 		////Moje 030816 Start
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_AH64A:
+	case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN2);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KA50:
+	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN2);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN2);
 
-			break;
-		}
+		break;
+	}
 		////Moje 030816 End
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_VIPER:
+	case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KIOWA:
+	case GUNSHIP_TYPE_KIOWA:
 		////////////////////////////////////////
-		{
-			limit = rad (-MAX_LOOK_ANGLE_DOWN1);
+	{
+		limit = rad(-MAX_LOOK_ANGLE_DOWN1);
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		default:
+	default:
 		////////////////////////////////////////
-		{
-			// JB 030313 Fly any aircraft
-			limit = rad (-MAX_LOOK_ANGLE_DOWN2);
-			//limit = rad (0.0);
+	{
+		// JB 030313 Fly any aircraft
+		limit = rad(-MAX_LOOK_ANGLE_DOWN2);
+		//limit = rad (0.0);
 
-			break;
-		}
+		break;
+	}
 	}
 
 	return (limit);
@@ -560,8 +544,7 @@ static float get_rotate_down_limit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void initialise_virtual_cockpit_view (void)
-{
+void initialise_virtual_cockpit_view(void) {
 	pilot_head_vp.position.x = MID_MAP_X;
 	pilot_head_vp.position.y = MID_MAP_Y;
 	pilot_head_vp.position.z = MID_MAP_Z;
@@ -570,18 +553,17 @@ void initialise_virtual_cockpit_view (void)
 	current_custom_cockpit_viewpoint.y = 0.0;
 	current_custom_cockpit_viewpoint.z = 0.0;
 
-
-	get_identity_matrix3x3 (pilot_head_vp.attitude);
+	get_identity_matrix3x3(pilot_head_vp.attitude);
 
 	//
 	// stored values
 	//
 
-	stored_pilot_head_heading = rad (0.0);
-	stored_pilot_head_pitch = rad (0.0);
+	stored_pilot_head_heading = rad(0.0);
+	stored_pilot_head_pitch = rad(0.0);
 
-	stored_co_pilot_head_heading = rad (0.0);
-	stored_co_pilot_head_pitch = rad (0.0);
+	stored_co_pilot_head_heading = rad(0.0);
+	stored_co_pilot_head_pitch = rad(0.0);
 
 	stored_pilot_view_mode = VIEW_MODE_VIRTUAL_COCKPIT;
 	stored_co_pilot_view_mode = VIEW_MODE_VIRTUAL_COCKPIT;
@@ -600,23 +582,22 @@ void initialise_virtual_cockpit_view (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void reinitialise_virtual_cockpit_view (void)
-{
+void reinitialise_virtual_cockpit_view(void) {
 	pilot_head_vp.position.x = MID_MAP_X;
 	pilot_head_vp.position.y = MID_MAP_Y;
 	pilot_head_vp.position.z = MID_MAP_Z;
 
-	get_identity_matrix3x3 (pilot_head_vp.attitude);
+	get_identity_matrix3x3(pilot_head_vp.attitude);
 
 	//
 	// stored values
 	//
 
-	stored_pilot_head_heading = rad (0.0);
-	stored_pilot_head_pitch = rad (0.0);
+	stored_pilot_head_heading = rad(0.0);
+	stored_pilot_head_pitch = rad(0.0);
 
-	stored_co_pilot_head_heading = rad (0.0);
-	stored_co_pilot_head_pitch = rad (0.0);
+	stored_co_pilot_head_heading = rad(0.0);
+	stored_co_pilot_head_pitch = rad(0.0);
 
 	stored_pilot_view_mode = VIEW_MODE_VIRTUAL_COCKPIT;
 	stored_co_pilot_view_mode = VIEW_MODE_VIRTUAL_COCKPIT;
@@ -628,15 +609,15 @@ void reinitialise_virtual_cockpit_view (void)
 	// padlock
 	//
 
-	if (get_gunship_entity ())
-	{
-		unlink_local_entity_children (get_gunship_entity (), LIST_TYPE_PADLOCK);
+	if (get_gunship_entity ()) {
+		unlink_local_entity_children(get_gunship_entity (), LIST_TYPE_PADLOCK);
 
-		switch (get_global_gunship_type())
-		{
+		switch (get_global_gunship_type()) {
 		case GUNSHIP_TYPE_APACHE:
-			stored_pilot_head_pitch = rad(wide_cockpit_position[WIDEVIEW_APACHE_PILOT].c.p);
-			stored_co_pilot_head_pitch = rad(wide_cockpit_position[WIDEVIEW_APACHE_COPILOT].c.p);
+			stored_pilot_head_pitch = rad(
+					wide_cockpit_position[WIDEVIEW_APACHE_PILOT].c.p);
+			stored_co_pilot_head_pitch = rad(
+					wide_cockpit_position[WIDEVIEW_APACHE_COPILOT].c.p);
 			break;
 		}
 	}
@@ -648,15 +629,13 @@ void reinitialise_virtual_cockpit_view (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void deinitialise_virtual_cockpit_view (void)
-{
+void deinitialise_virtual_cockpit_view(void) {
 	//
 	// padlock
 	//
 
-	if (get_gunship_entity ())
-	{
-		unlink_local_entity_children (get_gunship_entity (), LIST_TYPE_PADLOCK);
+	if (get_gunship_entity ()) {
+		unlink_local_entity_children(get_gunship_entity (), LIST_TYPE_PADLOCK);
 	}
 }
 
@@ -664,10 +643,8 @@ void deinitialise_virtual_cockpit_view (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_view (void)
-{
-	float
-		ROTATE_RATE;
+void update_virtual_cockpit_view(void) {
+	float ROTATE_RATE;
 
 	ROTATE_RATE = (float) command_line_mouse_look_speed / 6.0; // Jabberwock 031016 - variable POV speed
 
@@ -677,173 +654,154 @@ void update_virtual_cockpit_view (void)
 	// loaded BEFORE EECH is started !
 	// changes for fov control thealx 130212
 
-		if (command_line_joylook_joystick_index != -1) // Jabberwock 030311 Joystick look
-		{
-			float
-				stp,
-				pos;
-
-			stp = (float) command_line_joylook_step / 1000.0;
-
-			pos = (float) get_joystick_axis (command_line_joylook_joystick_index, command_line_joylookh_joystick_axis);
-
-			pos = ((get_rotate_right_limit ()) * pos) / 10000.0;
-
-			if (((pilot_head_heading - (pos)) > stp) || ((pilot_head_heading - (pos) < -stp)))
+	if (command_line_joylook_joystick_index != -1) // Jabberwock 030311 Joystick look
 			{
-				pilot_head_heading = (pos);
-			}
+		float stp, pos;
 
-			pos = (float) get_joystick_axis (command_line_joylook_joystick_index, command_line_joylookv_joystick_axis);
+		stp = (float) command_line_joylook_step / 1000.0;
 
-			pos = (get_rotate_up_limit ()) * pos / 10000.0;
+		pos = (float) get_joystick_axis(command_line_joylook_joystick_index,
+				command_line_joylookh_joystick_axis);
 
-			if (((pilot_head_pitch - (pos)) > stp) || ((pilot_head_pitch - (pos)) < -stp))
-			{
-				pilot_head_pitch = (pos);
-			}
-		} // Jabberwock 030311 ends
+		pos = ((get_rotate_right_limit()) * pos) / 10000.0;
 
-		else if ( (query_TIR_active () == TRUE) && (command_line_mouse_look != MOUSELOOK_EXTERNAL) )	// Use mouse/TIR, all by Retro 030317, 030318
-		{
-
-		float
-			temp_p,
-			temp_h;
-
-			temp_p = TIR_GetPitch();
-			temp_h = TIR_GetYaw();
-
-			temp_p = -45. * temp_p / 16383.;	// Those are the max-possible values as they are restriced above in this file
-			temp_h = MAX_LOOK_ANGLE_LEFT_RIGHT1 * temp_h / 16383.;
-
-			pilot_head_pitch = rad(temp_p);
-			pilot_head_heading = rad(temp_h);
-
-
-			pilot_head_heading = min (get_rotate_left_limit (), pilot_head_heading);
-			pilot_head_heading = max (get_rotate_right_limit (), pilot_head_heading);
-
-			pilot_head_pitch = min (get_rotate_up_limit (), pilot_head_pitch);
-			pilot_head_pitch = max (get_rotate_down_limit (), pilot_head_pitch);
-		} // end Retro 030317
-
-		else if ( command_line_mouse_look  == MOUSELOOK_ON )
-		{
-
-			static int previous_mouse_update_flag = 1;
-			float dh, dp;
-
-			if (previous_mouse_update_flag != get_mouse_update_flag() && get_in_flight_game_mode () != IN_FLIGHT_GAME_MODE_PLANNER)
-			{
-				dh = get_mouse_move_delta_x() * -MAX_LOOK_ANGLE_LEFT_RIGHT1 / 8000.0;
-				dp = get_mouse_move_delta_y() * -45 / 8000.0;
-
-				previous_mouse_update_flag = get_mouse_update_flag();
-
-				pilot_head_heading += rad(dh);
-				pilot_head_pitch += rad(dp);
-			}
-
-			pilot_head_heading = min (get_rotate_left_limit (), pilot_head_heading);
-			pilot_head_heading = max (get_rotate_right_limit (), pilot_head_heading);
-
-			pilot_head_pitch = min (get_rotate_up_limit (), pilot_head_pitch);
-			pilot_head_pitch = max (get_rotate_down_limit (), pilot_head_pitch);
+		if (((pilot_head_heading - (pos)) > stp)
+				|| ((pilot_head_heading - (pos) < -stp))) {
+			pilot_head_heading = (pos);
 		}
 
-		else if ( command_line_mouse_look  != MOUSELOOK_ON )
-		{
-		if (adjust_view_left_key || joystick_pov_left)
-		{
+		pos = (float) get_joystick_axis(command_line_joylook_joystick_index,
+				command_line_joylookv_joystick_axis);
+
+		pos = (get_rotate_up_limit()) * pos / 10000.0;
+
+		if (((pilot_head_pitch - (pos)) > stp)
+				|| ((pilot_head_pitch - (pos)) < -stp)) {
+			pilot_head_pitch = (pos);
+		}
+	} // Jabberwock 030311 ends
+
+	else if ((query_TIR_active() == TRUE)
+			&& (command_line_mouse_look != MOUSELOOK_EXTERNAL))	// Use mouse/TIR, all by Retro 030317, 030318
+			{
+
+		float temp_p, temp_h;
+
+		temp_p = TIR_GetPitch();
+		temp_h = TIR_GetYaw();
+
+		temp_p = -45. * temp_p / 16383.;// Those are the max-possible values as they are restriced above in this file
+		temp_h = MAX_LOOK_ANGLE_LEFT_RIGHT1 * temp_h / 16383.;
+
+		pilot_head_pitch = rad(temp_p);
+		pilot_head_heading = rad(temp_h);
+
+		pilot_head_heading = min(get_rotate_left_limit(), pilot_head_heading);
+		pilot_head_heading = max(get_rotate_right_limit(), pilot_head_heading);
+
+		pilot_head_pitch = min(get_rotate_up_limit(), pilot_head_pitch);
+		pilot_head_pitch = max(get_rotate_down_limit(), pilot_head_pitch);
+	} // end Retro 030317
+
+	else if (command_line_mouse_look == MOUSELOOK_ON) {
+
+		static int previous_mouse_update_flag = 1;
+		float dh, dp;
+
+		if (previous_mouse_update_flag != get_mouse_update_flag()
+				&& get_in_flight_game_mode () != IN_FLIGHT_GAME_MODE_PLANNER) {
+			dh = get_mouse_move_delta_x() * -MAX_LOOK_ANGLE_LEFT_RIGHT1
+					/ 8000.0;
+			dp = get_mouse_move_delta_y() * -45 / 8000.0;
+
+			previous_mouse_update_flag = get_mouse_update_flag();
+
+			pilot_head_heading += rad(dh);
+			pilot_head_pitch += rad(dp);
+		}
+
+		pilot_head_heading = min(get_rotate_left_limit(), pilot_head_heading);
+		pilot_head_heading = max(get_rotate_right_limit(), pilot_head_heading);
+
+		pilot_head_pitch = min(get_rotate_up_limit(), pilot_head_pitch);
+		pilot_head_pitch = max(get_rotate_down_limit(), pilot_head_pitch);
+	}
+
+	else if (command_line_mouse_look != MOUSELOOK_ON) {
+		if (adjust_view_left_key || joystick_pov_left) {
 			pilot_head_heading += ROTATE_RATE * get_delta_time ();
 
-			pilot_head_heading = min (get_rotate_left_limit (), pilot_head_heading);
-		}
-		else if (adjust_view_right_key || joystick_pov_right)
-		{
+			pilot_head_heading = min(get_rotate_left_limit(),
+					pilot_head_heading);
+		} else if (adjust_view_right_key || joystick_pov_right) {
 			pilot_head_heading -= ROTATE_RATE * get_delta_time ();
 
-			pilot_head_heading = max (get_rotate_right_limit (), pilot_head_heading);
+			pilot_head_heading = max(get_rotate_right_limit(),
+					pilot_head_heading);
 		}
 
-		if (adjust_view_up_key || joystick_pov_up)
-		{
+		if (adjust_view_up_key || joystick_pov_up) {
 			pilot_head_pitch += ROTATE_RATE * get_delta_time ();
 
-			pilot_head_pitch = min (get_rotate_up_limit (), pilot_head_pitch);
-		}
-		else if (adjust_view_down_key || joystick_pov_down)
-		{
+			pilot_head_pitch = min(get_rotate_up_limit(), pilot_head_pitch);
+		} else if (adjust_view_down_key || joystick_pov_down) {
 			pilot_head_pitch -= (ROTATE_RATE * get_delta_time ());
 
-			pilot_head_pitch = max (get_rotate_down_limit (), pilot_head_pitch);
+			pilot_head_pitch = max(get_rotate_down_limit(), pilot_head_pitch);
 		}
-		}
-
+	}
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_track_target_view (void)
-{
-	float
-		old_heading,
-		old_pitch,
-		delta_heading,
-		delta_pitch,
-		frame_rotate_rate;
+void update_virtual_cockpit_track_target_view(void) {
+	float old_heading, old_pitch, delta_heading, delta_pitch, frame_rotate_rate;
 
-	entity
-		*target;
+	entity *target;
 
-	target = get_local_entity_parent (get_gunship_entity (), LIST_TYPE_TARGET);
+	target = get_local_entity_parent(get_gunship_entity (), LIST_TYPE_TARGET);
 
-	if (target)
-	{
+	if (target) {
 		old_heading = pilot_head_heading;
 
 		old_pitch = pilot_head_pitch;
 
-		get_pilot_head_heading_and_pitch_to_target (target);
+		get_pilot_head_heading_and_pitch_to_target(target);
 
 		frame_rotate_rate = rad (45.0) * get_delta_time ();
 
 		delta_heading = pilot_head_heading - old_heading;
 
-		delta_heading = bound (delta_heading, -frame_rotate_rate, frame_rotate_rate);
+		delta_heading = bound(delta_heading, -frame_rotate_rate,
+				frame_rotate_rate);
 
 		pilot_head_heading = old_heading + delta_heading;
 
 		delta_pitch = pilot_head_pitch - old_pitch;
 
-		delta_pitch = bound (delta_pitch, -frame_rotate_rate, frame_rotate_rate);
+		delta_pitch = bound(delta_pitch, -frame_rotate_rate, frame_rotate_rate);
 
 		pilot_head_pitch = old_pitch + delta_pitch;
-	}
-	else
-	{
+	} else {
 		frame_rotate_rate = rad (45.0) * get_delta_time ();
 
-		delta_heading = bound (-pilot_head_heading, -frame_rotate_rate, frame_rotate_rate);
+		delta_heading = bound(-pilot_head_heading, -frame_rotate_rate,
+				frame_rotate_rate);
 
 		pilot_head_heading += delta_heading;
 
-		delta_pitch = bound (-pilot_head_pitch, -frame_rotate_rate, frame_rotate_rate);
+		delta_pitch = bound(-pilot_head_pitch, -frame_rotate_rate,
+				frame_rotate_rate);
 
 		pilot_head_pitch += delta_pitch;
 
-		if
-		(
-			(pilot_head_heading >= rad (-1.0)) &&
-			(pilot_head_heading <= rad (1.0)) &&
-			(pilot_head_pitch >= rad (-1.0)) &&
-			(pilot_head_pitch <= rad (1.0))
-		)
-		{
-			set_view_mode (VIEW_MODE_COCKPIT_PANEL_LEVEL_AHEAD);
+		if ((pilot_head_heading >= rad(-1.0))
+				&& (pilot_head_heading <= rad(1.0))
+				&& (pilot_head_pitch >= rad(-1.0))
+				&& (pilot_head_pitch <= rad(1.0))) {
+			set_view_mode(VIEW_MODE_COCKPIT_PANEL_LEVEL_AHEAD);
 		}
 	}
 }
@@ -852,337 +810,298 @@ void update_virtual_cockpit_track_target_view (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_crew_view (void)
-{
+void update_virtual_cockpit_crew_view(void) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_hud_view (void)
-{
+void update_virtual_cockpit_hud_view(void) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_periscope_view (void)
-{
+void update_virtual_cockpit_periscope_view(void) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_display_view (void)
-{
+void update_virtual_cockpit_display_view(void) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void get_pilot_head_viewpoint (void)
-{
-	if (get_gunship_entity ())
-	{
-		switch (get_global_gunship_type ())
+void get_pilot_head_viewpoint(void) {
+	if (get_gunship_entity ()) {
+		switch (get_global_gunship_type ()) {
+		////////////////////////////////////////
+		// JB 030313 Fly any aircraft
+		default:
+		case GUNSHIP_TYPE_APACHE:
+			////////////////////////////////////////
 		{
-			////////////////////////////////////////
-			// JB 030313 Fly any aircraft
-			default:
-			case GUNSHIP_TYPE_APACHE:
-			////////////////////////////////////////
-			{
-				matrix3x3
-					m;
+			matrix3x3 m;
 
-				vec3d
-					relative_position,
-					world_relative_position;
+			vec3d relative_position, world_relative_position;
 
-				//
-				// get aircraft position and attitude
-				//
+			//
+			// get aircraft position and attitude
+			//
 
-				get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &pilot_head_vp.position);
+			get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+					&pilot_head_vp.position);
 
-				get_local_entity_attitude_matrix (get_gunship_entity (), pilot_head_vp.attitude);
+			get_local_entity_attitude_matrix(get_gunship_entity (),
+					pilot_head_vp.attitude);
 //VJ#
-				relative_position.x = 0.0;
-				relative_position.y = -1.2705;
-				relative_position.z = 1.2325;
+			relative_position.x = 0.0;
+			relative_position.y = -1.2705;
+			relative_position.z = 1.2325;
 
-				multiply_matrix3x3_vec3d (&world_relative_position, pilot_head_vp.attitude, &relative_position);
+			multiply_matrix3x3_vec3d(&world_relative_position,
+					pilot_head_vp.attitude, &relative_position);
 
-				pilot_head_vp.position.x += world_relative_position.x;
-				pilot_head_vp.position.y += world_relative_position.y;
-				pilot_head_vp.position.z += world_relative_position.z;
+			pilot_head_vp.position.x += world_relative_position.x;
+			pilot_head_vp.position.y += world_relative_position.y;
+			pilot_head_vp.position.z += world_relative_position.z;
 
-				//
-				// rotate view wrt pilot's head heading and pitch
-				//
+			//
+			// rotate view wrt pilot's head heading and pitch
+			//
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.yv, pilot_head_heading);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.yv,
+					pilot_head_heading);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.xv, m, &pilot_head_vp.xv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.xv, m, &pilot_head_vp.xv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.xv, pilot_head_pitch);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.xv,
+					pilot_head_pitch);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.yv, m, &pilot_head_vp.yv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.yv, m, &pilot_head_vp.yv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				break;
-			}
+			break;
+		}
 			////////////////////////////////////////
-			case GUNSHIP_TYPE_HAVOC:
+		case GUNSHIP_TYPE_HAVOC:
 			////////////////////////////////////////
-			{
-				matrix3x3
-					m;
+		{
+			matrix3x3 m;
 
-				vec3d
-					relative_position,
-					world_relative_position;
+			vec3d relative_position, world_relative_position;
 
-				//
-				// get aircraft position and attitude
-				//
+			//
+			// get aircraft position and attitude
+			//
 
-				get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &pilot_head_vp.position);
+			get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+					&pilot_head_vp.position);
 
-				get_local_entity_attitude_matrix (get_gunship_entity (), pilot_head_vp.attitude);
+			get_local_entity_attitude_matrix(get_gunship_entity (),
+					pilot_head_vp.attitude);
 
-				relative_position.x = 0.0;
-				relative_position.y = -0.86575;
-				relative_position.z = 1.252;
+			relative_position.x = 0.0;
+			relative_position.y = -0.86575;
+			relative_position.z = 1.252;
 
-				multiply_matrix3x3_vec3d (&world_relative_position, pilot_head_vp.attitude, &relative_position);
+			multiply_matrix3x3_vec3d(&world_relative_position,
+					pilot_head_vp.attitude, &relative_position);
 
-				pilot_head_vp.position.x += world_relative_position.x;
-				pilot_head_vp.position.y += world_relative_position.y;
-				pilot_head_vp.position.z += world_relative_position.z;
+			pilot_head_vp.position.x += world_relative_position.x;
+			pilot_head_vp.position.y += world_relative_position.y;
+			pilot_head_vp.position.z += world_relative_position.z;
 
-				//
-				// rotate view wrt pilot's head heading and pitch
-				//
+			//
+			// rotate view wrt pilot's head heading and pitch
+			//
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.yv, pilot_head_heading);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.yv,
+					pilot_head_heading);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.xv, m, &pilot_head_vp.xv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.xv, m, &pilot_head_vp.xv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.xv, pilot_head_pitch);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.xv,
+					pilot_head_pitch);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.yv, m, &pilot_head_vp.yv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.yv, m, &pilot_head_vp.yv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				break;
-			}
+			break;
+		}
 			////////////////////////////////////////
-			case GUNSHIP_TYPE_COMANCHE:
+		case GUNSHIP_TYPE_COMANCHE:
 			////////////////////////////////////////
-			{
+		{
 //VJ#	this does the proper viepoint?
-				get_comanche_crew_viewpoint ();
+			get_comanche_crew_viewpoint();
 
-				break;
-			}
+			break;
+		}
 			////////////////////////////////////////
-			case GUNSHIP_TYPE_HOKUM:
+		case GUNSHIP_TYPE_HOKUM:
 			////////////////////////////////////////
-			{
-				get_hokum_crew_viewpoint ();
+		{
+			get_hokum_crew_viewpoint();
 
-				break;
-			}
+			break;
+		}
 			////Moje 030518 Start
-			case GUNSHIP_TYPE_BLACKHAWK:
+		case GUNSHIP_TYPE_BLACKHAWK:
 			////////////////////////////////////////
-			{
-				matrix3x3
-					m;
+		{
+//VJ#	this does the proper viepoint?
+			get_blackhawk_crew_viewpoint();
 
-				vec3d
-					relative_position,
-					world_relative_position;
-
-				//
-				// get aircraft position and attitude
-				//
-
-				get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &pilot_head_vp.position);
-
-				get_local_entity_attitude_matrix (get_gunship_entity (), pilot_head_vp.attitude);
-
-				relative_position.x = 0.0;
-				relative_position.y = -1.2705;
-				relative_position.z = 1.2325;
-
-				multiply_matrix3x3_vec3d (&world_relative_position, pilot_head_vp.attitude, &relative_position);
-
-				pilot_head_vp.position.x += world_relative_position.x;
-				pilot_head_vp.position.y += world_relative_position.y;
-				pilot_head_vp.position.z += world_relative_position.z;
-
-				//
-				// rotate view wrt pilot's head heading and pitch
-				//
-
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.yv, pilot_head_heading);
-
-				multiply_matrix3x3_vec3d (&pilot_head_vp.xv, m, &pilot_head_vp.xv);
-
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
-
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.xv, pilot_head_pitch);
-
-				multiply_matrix3x3_vec3d (&pilot_head_vp.yv, m, &pilot_head_vp.yv);
-
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
-
-				break;
-			}
+			break;
+		}
 
 			////Moje 030518 End
 			////Moje 030612 Start
 			////////////////////////////////////////
-			case GUNSHIP_TYPE_HIND:
+		case GUNSHIP_TYPE_HIND:
 			////////////////////////////////////////
-			{
-				matrix3x3
-					m;
+		{
+			matrix3x3 m;
 
-				vec3d
-					relative_position,
-					world_relative_position;
+			vec3d relative_position, world_relative_position;
 
-				//
-				// get aircraft position and attitude
-				//
+			//
+			// get aircraft position and attitude
+			//
 
-				get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &pilot_head_vp.position);
+			get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+					&pilot_head_vp.position);
 
-				get_local_entity_attitude_matrix (get_gunship_entity (), pilot_head_vp.attitude);
+			get_local_entity_attitude_matrix(get_gunship_entity (),
+					pilot_head_vp.attitude);
 
-				relative_position.x = 0.0;
-				relative_position.y = -0.86575;
-				relative_position.z = 1.252;
+			relative_position.x = 0.0;
+			relative_position.y = -0.86575;
+			relative_position.z = 1.252;
 
-				multiply_matrix3x3_vec3d (&world_relative_position, pilot_head_vp.attitude, &relative_position);
+			multiply_matrix3x3_vec3d(&world_relative_position,
+					pilot_head_vp.attitude, &relative_position);
 
-				pilot_head_vp.position.x += world_relative_position.x;
-				pilot_head_vp.position.y += world_relative_position.y;
-				pilot_head_vp.position.z += world_relative_position.z;
+			pilot_head_vp.position.x += world_relative_position.x;
+			pilot_head_vp.position.y += world_relative_position.y;
+			pilot_head_vp.position.z += world_relative_position.z;
 
-				//
-				// rotate view wrt pilot's head heading and pitch
-				//
+			//
+			// rotate view wrt pilot's head heading and pitch
+			//
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.yv, pilot_head_heading);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.yv,
+					pilot_head_heading);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.xv, m, &pilot_head_vp.xv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.xv, m, &pilot_head_vp.xv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.xv, pilot_head_pitch);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.xv,
+					pilot_head_pitch);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.yv, m, &pilot_head_vp.yv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.yv, m, &pilot_head_vp.yv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				break;
-			}
+			break;
+		}
 			////Moje 030612 End
 			////Moje 030816 Start
-			case GUNSHIP_TYPE_AH64A:
+		case GUNSHIP_TYPE_AH64A:
 			////////////////////////////////////////
-			{
-				matrix3x3
-					m;
+		{
+			matrix3x3 m;
 
-				vec3d
-					relative_position,
-					world_relative_position;
+			vec3d relative_position, world_relative_position;
 
-				//
-				// get aircraft position and attitude
-				//
+			//
+			// get aircraft position and attitude
+			//
 
-				get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &pilot_head_vp.position);
+			get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+					&pilot_head_vp.position);
 
-				get_local_entity_attitude_matrix (get_gunship_entity (), pilot_head_vp.attitude);
+			get_local_entity_attitude_matrix(get_gunship_entity (),
+					pilot_head_vp.attitude);
 
-				relative_position.x = 0.0;
-				relative_position.y = -1.2705;
-				relative_position.z = 1.2325;
+			relative_position.x = 0.0;
+			relative_position.y = -1.2705;
+			relative_position.z = 1.2325;
 
-				multiply_matrix3x3_vec3d (&world_relative_position, pilot_head_vp.attitude, &relative_position);
+			multiply_matrix3x3_vec3d(&world_relative_position,
+					pilot_head_vp.attitude, &relative_position);
 
-				pilot_head_vp.position.x += world_relative_position.x;
-				pilot_head_vp.position.y += world_relative_position.y;
-				pilot_head_vp.position.z += world_relative_position.z;
+			pilot_head_vp.position.x += world_relative_position.x;
+			pilot_head_vp.position.y += world_relative_position.y;
+			pilot_head_vp.position.z += world_relative_position.z;
 
-				//
-				// rotate view wrt pilot's head heading and pitch
-				//
+			//
+			// rotate view wrt pilot's head heading and pitch
+			//
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.yv, pilot_head_heading);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.yv,
+					pilot_head_heading);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.xv, m, &pilot_head_vp.xv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.xv, m, &pilot_head_vp.xv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				get_arbitrary_rotation_matrix (m, &pilot_head_vp.xv, pilot_head_pitch);
+			get_arbitrary_rotation_matrix(m, &pilot_head_vp.xv,
+					pilot_head_pitch);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.yv, m, &pilot_head_vp.yv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.yv, m, &pilot_head_vp.yv);
 
-				multiply_matrix3x3_vec3d (&pilot_head_vp.zv, m, &pilot_head_vp.zv);
+			multiply_matrix3x3_vec3d(&pilot_head_vp.zv, m, &pilot_head_vp.zv);
 
-				break;
-			}
+			break;
+		}
 			////////////////////////////////////////
-			case GUNSHIP_TYPE_KA50:
+		case GUNSHIP_TYPE_KA50:
 			////////////////////////////////////////
-			{
-				get_ka50_crew_viewpoint ();
+		{
+			get_ka50_crew_viewpoint();
 
-				break;
-			}
+			break;
+		}
 			////Moje 030816 End
-			case GUNSHIP_TYPE_VIPER:
+		case GUNSHIP_TYPE_VIPER:
 			////////////////////////////////////////
-			{
+		{
 //VJ#	this does the proper viepoint?
-				get_viper_crew_viewpoint ();
+			get_viper_crew_viewpoint();
 
-				break;
-			}
-			case GUNSHIP_TYPE_KIOWA:
+			break;
+		}
+		case GUNSHIP_TYPE_KIOWA:
 			////////////////////////////////////////
-			{
+		{
 //VJ#	this does the proper viepoint?
-				get_kiowa_crew_viewpoint ();
+			get_kiowa_crew_viewpoint();
 
-				break;
-			}
+			break;
+		}
 			////////////////////////////////////////
 		}
-	}
-	else
-	{
+	} else {
 		pilot_head_vp.position.x = MID_MAP_X;
 		pilot_head_vp.position.y = MID_MAP_Y;
 		pilot_head_vp.position.z = MID_MAP_Z;
 
-		get_identity_matrix3x3 (pilot_head_vp.attitude);
+		get_identity_matrix3x3(pilot_head_vp.attitude);
 	}
 }
 
@@ -1190,98 +1109,90 @@ void get_pilot_head_viewpoint (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void get_pilot_head_heading_and_pitch_to_target (entity *target)
-{
-	float
-		flat_range,
-		heading,
-		pitch;
+void get_pilot_head_heading_and_pitch_to_target(entity *target) {
+	float flat_range, heading, pitch;
 
-	vec3d
-		target_position,
-		target_vector,
-		offset_vector;
+	vec3d target_position, target_vector, offset_vector;
 
-	ASSERT (target);
+	ASSERT(target);
 
 	pilot_head_heading = 0.0;
 
 	pilot_head_pitch = 0.0;
 
-	get_pilot_head_viewpoint ();
+	get_pilot_head_viewpoint();
 
-	if (!get_local_entity_int_value (target, INT_TYPE_IDENTIFY_WAYPOINT))
-	{
-		get_local_entity_target_point (target, &target_position);
-	}
-	else
-	{
+	if (!get_local_entity_int_value(target, INT_TYPE_IDENTIFY_WAYPOINT)) {
+		get_local_entity_target_point(target, &target_position);
+	} else {
 		//
 		// assume that the target will only be a waypoint for padlock views
 		//
 
-		ASSERT (get_gunship_entity ());
+		ASSERT(get_gunship_entity ());
 
-		get_waypoint_display_position (get_gunship_entity (), target, &target_position);
+		get_waypoint_display_position(get_gunship_entity (), target,
+				&target_position);
 	}
 
 	target_vector.x = target_position.x - pilot_head_vp.position.x;
 	target_vector.y = target_position.y - pilot_head_vp.position.y;
 	target_vector.z = target_position.z - pilot_head_vp.position.z;
 
-	multiply_transpose_matrix3x3_vec3d (&offset_vector, pilot_head_vp.attitude, &target_vector);
+	multiply_transpose_matrix3x3_vec3d(&offset_vector, pilot_head_vp.attitude,
+			&target_vector);
 
-	heading = -atan2 (offset_vector.x, offset_vector.z);
+	heading = -atan2(offset_vector.x, offset_vector.z);
 
-	pilot_head_heading = bound (heading, get_rotate_right_limit (), get_rotate_left_limit ());
+	pilot_head_heading = bound(heading, get_rotate_right_limit(),
+			get_rotate_left_limit());
 
-	flat_range = sqrt ((offset_vector.x * offset_vector.x) + (offset_vector.z * offset_vector.z));
+	flat_range = sqrt(
+			(offset_vector.x * offset_vector.x)
+					+ (offset_vector.z * offset_vector.z));
 
-	pitch = atan2 (offset_vector.y, flat_range);
+	pitch = atan2(offset_vector.y, flat_range);
 
-	pilot_head_pitch = bound (pitch, get_rotate_down_limit (), get_rotate_up_limit ());
+	pilot_head_pitch = bound(pitch, get_rotate_down_limit(),
+			get_rotate_up_limit());
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_night_vision_mask (void)
-{
+void draw_night_vision_mask(void) {
 #ifndef OGRE_EE
-	vertex
-		quad[4];
+	vertex quad[4];
 
-	real_colour
-		colour,
-		specular;
+	real_colour colour, specular;
 
-	set_3d_active_environment (main_3d_env);
+	set_3d_active_environment(main_3d_env);
 
-	if (begin_3d_scene ())
-	{
-		colour.red		= 255;
-		colour.green	= 255;
-		colour.blue		= 255;
-		colour.alpha	= 192;
+	if (begin_3d_scene()) {
+		colour.red = 255;
+		colour.green = 255;
+		colour.blue = 255;
+		colour.alpha = 192;
 
-		specular.red	= 0;
-		specular.green	= 0;
-		specular.blue	= 0;
-		specular.alpha	= 255;
+		specular.red = 0;
+		specular.green = 0;
+		specular.blue = 0;
+		specular.alpha = 255;
 
-		set_d3d_transparency_on ();
+		set_d3d_transparency_on();
 
-		set_d3d_zbuffer_comparison (FALSE);
+		set_d3d_zbuffer_comparison(FALSE);
 
-		set_d3d_culling (FALSE);
+		set_d3d_culling(FALSE);
 
-		set_d3d_texture_wrapping (0, FALSE);
+		set_d3d_texture_wrapping(0, FALSE);
 
-		set_d3d_texture_filtering (FALSE);
+		set_d3d_texture_filtering(FALSE);
 
-		set_d3d_flat_shaded_textured_renderstate (get_system_texture_ptr (TEXTURE_INDEX_HOKUM_COCKPIT_WSO_SCOPE_VIEW));
+		set_d3d_flat_shaded_textured_renderstate(
+				get_system_texture_ptr(
+						TEXTURE_INDEX_HOKUM_COCKPIT_WSO_SCOPE_VIEW));
 
 		////////////////////////////////////////
 		//
@@ -1289,40 +1200,40 @@ void draw_night_vision_mask (void)
 		//
 		////////////////////////////////////////
 
-		quad[0].i 				= full_screen_x_min;
-		quad[0].j  				= full_screen_y_min;
-		quad[0].z  				= 0.5;
-		quad[0].q  				= 0.5;
-		quad[0].u  				= 0.0;
-		quad[0].v				= 0.0;
+		quad[0].i = full_screen_x_min;
+		quad[0].j = full_screen_y_min;
+		quad[0].z = 0.5;
+		quad[0].q = 0.5;
+		quad[0].u = 0.0;
+		quad[0].v = 0.0;
 
-		quad[1].i  				= full_screen_x_mid;
-		quad[1].j  				= full_screen_y_min;
-		quad[1].z  				= 0.5;
-		quad[1].q  				= 0.5;
-		quad[1].u  				= 0.75; //1.0;
-		quad[1].v  				= 0.0;
+		quad[1].i = full_screen_x_mid;
+		quad[1].j = full_screen_y_min;
+		quad[1].z = 0.5;
+		quad[1].q = 0.5;
+		quad[1].u = 0.75; //1.0;
+		quad[1].v = 0.0;
 
-		quad[2].i				= full_screen_x_mid;
-		quad[2].j  				= full_screen_y_mid;
-		quad[2].z  				= 0.5;
-		quad[2].q  				= 0.5;
-		quad[2].u  				= 0.75; //1.0;
-		quad[2].v  				= 1.0;
+		quad[2].i = full_screen_x_mid;
+		quad[2].j = full_screen_y_mid;
+		quad[2].z = 0.5;
+		quad[2].q = 0.5;
+		quad[2].u = 0.75; //1.0;
+		quad[2].v = 1.0;
 
-		quad[3].i  				= full_screen_x_min;
-		quad[3].j  				= full_screen_y_mid;
-		quad[3].z  				= 0.5;
-		quad[3].q  				= 0.5;
-		quad[3].u				= 0.0;
-		quad[3].v				= 1.0;
+		quad[3].i = full_screen_x_min;
+		quad[3].j = full_screen_y_mid;
+		quad[3].z = 0.5;
+		quad[3].q = 0.5;
+		quad[3].u = 0.0;
+		quad[3].v = 1.0;
 
-		quad[0].next_vertex	= &quad[1];
-		quad[1].next_vertex	= &quad[2];
-		quad[2].next_vertex	= &quad[3];
-		quad[3].next_vertex	= NULL;
+		quad[0].next_vertex = &quad[1];
+		quad[1].next_vertex = &quad[2];
+		quad[2].next_vertex = &quad[3];
+		quad[3].next_vertex = NULL;
 
-		draw_wbuffered_flat_shaded_textured_polygon (quad, colour, specular);
+		draw_wbuffered_flat_shaded_textured_polygon(quad, colour, specular);
 
 		////////////////////////////////////////
 		//
@@ -1330,40 +1241,40 @@ void draw_night_vision_mask (void)
 		//
 		////////////////////////////////////////
 
-		quad[0].i 				= full_screen_x_min;
-		quad[0].j  				= full_screen_y_mid;
-		quad[0].z  				= 0.5;
-		quad[0].q  				= 0.5;
-		quad[0].u  				= 0.0;
-		quad[0].v				= 1.0;
+		quad[0].i = full_screen_x_min;
+		quad[0].j = full_screen_y_mid;
+		quad[0].z = 0.5;
+		quad[0].q = 0.5;
+		quad[0].u = 0.0;
+		quad[0].v = 1.0;
 
-		quad[1].i  				= full_screen_x_mid;
-		quad[1].j  				= full_screen_y_mid;
-		quad[1].z  				= 0.5;
-		quad[1].q  				= 0.5;
-		quad[1].u  				= 0.75;
-		quad[1].v  				= 1.0;
+		quad[1].i = full_screen_x_mid;
+		quad[1].j = full_screen_y_mid;
+		quad[1].z = 0.5;
+		quad[1].q = 0.5;
+		quad[1].u = 0.75;
+		quad[1].v = 1.0;
 
-		quad[2].i				= full_screen_x_mid;
-		quad[2].j  				= full_screen_y_max;
-		quad[2].z  				= 0.5;
-		quad[2].q  				= 0.5;
-		quad[2].u  				= 0.75;
-		quad[2].v  				= 0.0;
+		quad[2].i = full_screen_x_mid;
+		quad[2].j = full_screen_y_max;
+		quad[2].z = 0.5;
+		quad[2].q = 0.5;
+		quad[2].u = 0.75;
+		quad[2].v = 0.0;
 
-		quad[3].i  				= full_screen_x_min;
-		quad[3].j  				= full_screen_y_max;
-		quad[3].z  				= 0.5;
-		quad[3].q  				= 0.5;
-		quad[3].u				= 0.0;
-		quad[3].v				= 0.0;
+		quad[3].i = full_screen_x_min;
+		quad[3].j = full_screen_y_max;
+		quad[3].z = 0.5;
+		quad[3].q = 0.5;
+		quad[3].u = 0.0;
+		quad[3].v = 0.0;
 
-		quad[0].next_vertex	= &quad[1];
-		quad[1].next_vertex	= &quad[2];
-		quad[2].next_vertex	= &quad[3];
-		quad[3].next_vertex	= NULL;
+		quad[0].next_vertex = &quad[1];
+		quad[1].next_vertex = &quad[2];
+		quad[2].next_vertex = &quad[3];
+		quad[3].next_vertex = NULL;
 
-		draw_wbuffered_flat_shaded_textured_polygon (quad, colour, specular);
+		draw_wbuffered_flat_shaded_textured_polygon(quad, colour, specular);
 
 		////////////////////////////////////////
 		//
@@ -1371,40 +1282,40 @@ void draw_night_vision_mask (void)
 		//
 		////////////////////////////////////////
 
-		quad[0].i 				= full_screen_x_mid;
-		quad[0].j  				= full_screen_y_min;
-		quad[0].z  				= 0.5;
-		quad[0].q  				= 0.5;
-		quad[0].u  				= 0.75;
-		quad[0].v				= 0.0;
+		quad[0].i = full_screen_x_mid;
+		quad[0].j = full_screen_y_min;
+		quad[0].z = 0.5;
+		quad[0].q = 0.5;
+		quad[0].u = 0.75;
+		quad[0].v = 0.0;
 
-		quad[1].i  				= full_screen_x_max;
-		quad[1].j  				= full_screen_y_min;
-		quad[1].z  				= 0.5;
-		quad[1].q  				= 0.5;
-		quad[1].u  				= 0.0;
-		quad[1].v  				= 0.0;
+		quad[1].i = full_screen_x_max;
+		quad[1].j = full_screen_y_min;
+		quad[1].z = 0.5;
+		quad[1].q = 0.5;
+		quad[1].u = 0.0;
+		quad[1].v = 0.0;
 
-		quad[2].i				= full_screen_x_max;
-		quad[2].j  				= full_screen_y_mid;
-		quad[2].z  				= 0.5;
-		quad[2].q  				= 0.5;
-		quad[2].u  				= 0.0;
-		quad[2].v  				= 1.0;
+		quad[2].i = full_screen_x_max;
+		quad[2].j = full_screen_y_mid;
+		quad[2].z = 0.5;
+		quad[2].q = 0.5;
+		quad[2].u = 0.0;
+		quad[2].v = 1.0;
 
-		quad[3].i  				= full_screen_x_mid;
-		quad[3].j  				= full_screen_y_mid;
-		quad[3].z  				= 0.5;
-		quad[3].q  				= 0.5;
-		quad[3].u				= 0.75;
-		quad[3].v				= 1.0;
+		quad[3].i = full_screen_x_mid;
+		quad[3].j = full_screen_y_mid;
+		quad[3].z = 0.5;
+		quad[3].q = 0.5;
+		quad[3].u = 0.75;
+		quad[3].v = 1.0;
 
-		quad[0].next_vertex	= &quad[1];
-		quad[1].next_vertex	= &quad[2];
-		quad[2].next_vertex	= &quad[3];
-		quad[3].next_vertex	= NULL;
+		quad[0].next_vertex = &quad[1];
+		quad[1].next_vertex = &quad[2];
+		quad[2].next_vertex = &quad[3];
+		quad[3].next_vertex = NULL;
 
-		draw_wbuffered_flat_shaded_textured_polygon (quad, colour, specular);
+		draw_wbuffered_flat_shaded_textured_polygon(quad, colour, specular);
 
 		////////////////////////////////////////
 		//
@@ -1412,50 +1323,50 @@ void draw_night_vision_mask (void)
 		//
 		////////////////////////////////////////
 
-		quad[0].i 				= full_screen_x_mid;
-		quad[0].j  				= full_screen_y_mid;
-		quad[0].z  				= 0.5;
-		quad[0].q  				= 0.5;
-		quad[0].u  				= 0.75;
-		quad[0].v				= 1.0;
+		quad[0].i = full_screen_x_mid;
+		quad[0].j = full_screen_y_mid;
+		quad[0].z = 0.5;
+		quad[0].q = 0.5;
+		quad[0].u = 0.75;
+		quad[0].v = 1.0;
 
-		quad[1].i  				= full_screen_x_max;
-		quad[1].j  				= full_screen_y_mid;
-		quad[1].z  				= 0.5;
-		quad[1].q  				= 0.5;
-		quad[1].u  				= 0.0;
-		quad[1].v  				= 1.0;
+		quad[1].i = full_screen_x_max;
+		quad[1].j = full_screen_y_mid;
+		quad[1].z = 0.5;
+		quad[1].q = 0.5;
+		quad[1].u = 0.0;
+		quad[1].v = 1.0;
 
-		quad[2].i				= full_screen_x_max;
-		quad[2].j  				= full_screen_y_max;
-		quad[2].z  				= 0.5;
-		quad[2].q  				= 0.5;
-		quad[2].u  				= 0.0;
-		quad[2].v  				= 0.0;
+		quad[2].i = full_screen_x_max;
+		quad[2].j = full_screen_y_max;
+		quad[2].z = 0.5;
+		quad[2].q = 0.5;
+		quad[2].u = 0.0;
+		quad[2].v = 0.0;
 
-		quad[3].i  				= full_screen_x_mid;
-		quad[3].j  				= full_screen_y_max;
-		quad[3].z  				= 0.5;
-		quad[3].q  				= 0.5;
-		quad[3].u				= 0.75;
-		quad[3].v				= 0.0;
+		quad[3].i = full_screen_x_mid;
+		quad[3].j = full_screen_y_max;
+		quad[3].z = 0.5;
+		quad[3].q = 0.5;
+		quad[3].u = 0.75;
+		quad[3].v = 0.0;
 
-		quad[0].next_vertex	= &quad[1];
-		quad[1].next_vertex	= &quad[2];
-		quad[2].next_vertex	= &quad[3];
-		quad[3].next_vertex	= NULL;
+		quad[0].next_vertex = &quad[1];
+		quad[1].next_vertex = &quad[2];
+		quad[2].next_vertex = &quad[3];
+		quad[3].next_vertex = NULL;
 
-		draw_wbuffered_flat_shaded_textured_polygon (quad, colour, specular);
+		draw_wbuffered_flat_shaded_textured_polygon(quad, colour, specular);
 
 		////////////////////////////////////////
 
-		set_d3d_transparency_off ();
+		set_d3d_transparency_off();
 
-		set_d3d_zbuffer_comparison (TRUE);
+		set_d3d_zbuffer_comparison(TRUE);
 
-		set_d3d_culling (TRUE);
+		set_d3d_culling(TRUE);
 
-		end_3d_scene ();
+		end_3d_scene();
 	}
 #endif
 }
@@ -1464,348 +1375,278 @@ void draw_night_vision_mask (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_virtual_cockpit_3d_view (void)
-{
+void draw_virtual_cockpit_3d_view(void) {
 #ifndef OGRE_EE
-	int specular = 	specular_rendering_enabled;
+	int specular = specular_rendering_enabled;
 #endif
 
-	ASSERT (get_gunship_entity ());
+	ASSERT(get_gunship_entity ());
 
-	set_main_3d_full_screen_params (DISPLAY_3D_TINT_CLEAR, DISPLAY_3D_LIGHT_LEVEL_HIGH, DISPLAY_3D_NOISE_LEVEL_NONE);
+	set_main_3d_full_screen_params(DISPLAY_3D_TINT_CLEAR,
+			DISPLAY_3D_LIGHT_LEVEL_HIGH, DISPLAY_3D_NOISE_LEVEL_NONE);
 
 #ifndef OGRE_EE
 	specular_rendering_enabled = FALSE;
 #endif
 
-	switch (get_global_gunship_type ())
+	switch (get_global_gunship_type ()) {
+	////////////////////////////////////////
+	case GUNSHIP_TYPE_COMANCHE:
+		////////////////////////////////////////
 	{
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_COMANCHE:
-		////////////////////////////////////////
-		{
-			pre_render_comanche_virtual_cockpit_displays ();
+		pre_render_comanche_virtual_cockpit_displays();
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_HOKUM:
+	case GUNSHIP_TYPE_HOKUM:
 		////////////////////////////////////////
-		{
-			pre_render_hokum_virtual_cockpit_displays ();
+	{
+		pre_render_hokum_virtual_cockpit_displays();
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_VIPER:
+	case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
-		{
-			pre_render_viper_virtual_cockpit_displays ();
+	{
+		pre_render_blackhawk_virtual_cockpit_displays();
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KIOWA:
+	case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
-		{
-			pre_render_kiowa_virtual_cockpit_displays ();
+	{
+		pre_render_viper_virtual_cockpit_displays();
 
-			break;
-		}
+		break;
+	}
 		////////////////////////////////////////
-		case GUNSHIP_TYPE_KA50:
+	case GUNSHIP_TYPE_KIOWA:
 		////////////////////////////////////////
-		{
-			pre_render_ka50_virtual_cockpit_displays ();
+	{
+		pre_render_kiowa_virtual_cockpit_displays();
 
-			break;
-		}
+		break;
+	}
+		////////////////////////////////////////
+	case GUNSHIP_TYPE_KA50:
+		////////////////////////////////////////
+	{
+		pre_render_ka50_virtual_cockpit_displays();
+
+		break;
+	}
 		////////////////////////////////////////
 	}
 
-	set_pilots_full_screen_params (night_vision_active());
+	set_pilots_full_screen_params(night_vision_active());
 
-	draw_main_3d_scene (&main_vp);
+//	draw_main_3d_scene (&main_vp);
 
 //	if (command_line_restricted_nvg_fov && night_vision_active() && !get_global_draw_cockpit_graphics ())
 //		draw_night_vision_mask();
 
-	switch (get_global_gunship_type ())
-	{
-		////////////////////////////////////////
-		// JB 030313 Fly any aircraft
+	switch (get_global_gunship_type ()) {
+	////////////////////////////////////////
+	// JB 030313 Fly any aircraft
 //		default:
-		case GUNSHIP_TYPE_APACHE:
+	case GUNSHIP_TYPE_APACHE:
 		////////////////////////////////////////
-		{
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
+	{
+		draw_main_3d_scene(&main_vp);
+
+		if (get_global_draw_cockpit_graphics ()) {
+			set_pilots_full_screen_params(FALSE);
 
 #if 0  // the old experimental 3D cockpit by gotcha - not used anymore
-				if (command_line_3d_cockpit)
-				{
+			if (command_line_3d_cockpit)
+			{
 
-					draw_apache_external_virtual_cockpit_3d
-					(
+				draw_apache_external_virtual_cockpit_3d
+				(
 						VIRTUAL_COCKPIT_STOWED_WIPER |
 						VIRTUAL_COCKPIT_MOVING_WIPER |
 						VIRTUAL_COCKPIT_ADI |
 						VIRTUAL_COCKPIT_COMPASS |
 						VIRTUAL_COCKPIT_RAIN_EFFECT |
-						VIRTUAL_COCKPIT_MAIN_ROTOR//,NULL
-					);
+						VIRTUAL_COCKPIT_MAIN_ROTOR		//,NULL
+				);
 
-					draw_apache_internal_virtual_cockpit_3d
-					(
+				draw_apache_internal_virtual_cockpit_3d
+				(
 						VIRTUAL_COCKPIT_COCKPIT |
 						VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
 						VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
 						VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
 						VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-					);
-				}
-				else
-#endif
-				{
-					draw_apache_external_virtual_cockpit
-					(
-						VIRTUAL_COCKPIT_STOWED_WIPER |
-						VIRTUAL_COCKPIT_MOVING_WIPER |
-						VIRTUAL_COCKPIT_ADI |
-						VIRTUAL_COCKPIT_COMPASS |
-						VIRTUAL_COCKPIT_RAIN_EFFECT |
-						VIRTUAL_COCKPIT_MAIN_ROTOR,
-						NULL
-					);
-
-					if (get_local_entity_int_value (get_pilot_entity (), INT_TYPE_CREW_ROLE) == CREW_ROLE_PILOT)
-						draw_apache_internal_virtual_cockpit
-						(
-							VIRTUAL_COCKPIT_COCKPIT |
-							VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-							VIRTUAL_COCKPIT_PILOT_LHS_MFD_DISPLAY |
-							VIRTUAL_COCKPIT_PILOT_RHS_MFD_DISPLAY |
-							VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-						);
-					else
-						draw_apache_internal_virtual_cockpit
-						(
-							VIRTUAL_COCKPIT_COCKPIT |
-							VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-							VIRTUAL_COCKPIT_CPG_LHS_MFD_DISPLAY |
-							VIRTUAL_COCKPIT_CPG_RHS_MFD_DISPLAY |
-							VIRTUAL_COCKPIT_ORT_DISPLAY
-						);
-				}
+				);
 			}
 			else
+#endif
 			{
-				if(command_line_export_mfd)
-				{
-					draw_apache_mfd_on_texture(MFD_LOCATION_LHS);
-					draw_apache_mfd_on_texture(MFD_LOCATION_RHS);
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_apache_mfd (100.0, 380.0, 192.0, MFD_LOCATION_LHS);
-						draw_overlaid_apache_mfd (540.0, 380.0, 192.0, MFD_LOCATION_RHS);
-					}
-				}
-			}
+				draw_apache_external_virtual_cockpit(
+				VIRTUAL_COCKPIT_STOWED_WIPER |
+				VIRTUAL_COCKPIT_MOVING_WIPER |
+				VIRTUAL_COCKPIT_ADI |
+				VIRTUAL_COCKPIT_COMPASS |
+				VIRTUAL_COCKPIT_RAIN_EFFECT |
+				VIRTUAL_COCKPIT_MAIN_ROTOR, NULL);
 
-			draw_apache_hud ();
-
-			break;
-		}
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_HAVOC:
-		////////////////////////////////////////
-		{
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
-				draw_havoc_external_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_STOWED_WIPER |
-					VIRTUAL_COCKPIT_MOVING_WIPER |
-					VIRTUAL_COCKPIT_ADI |
-					VIRTUAL_COCKPIT_HSI |
-					VIRTUAL_COCKPIT_COMPASS |
-					VIRTUAL_COCKPIT_RAIN_EFFECT |
-					VIRTUAL_COCKPIT_MAIN_ROTOR,
-					NULL
-				);
-
-				draw_havoc_internal_virtual_cockpit
-				(
+				if (get_local_entity_int_value(get_pilot_entity (),
+						INT_TYPE_CREW_ROLE)
+						== CREW_ROLE_PILOT)
+					draw_apache_internal_virtual_cockpit(
 					VIRTUAL_COCKPIT_COCKPIT |
-					VIRTUAL_COCKPIT_HUD_GLASS |
-					VIRTUAL_COCKPIT_HUD_DISPLAY |
-					VIRTUAL_COCKPIT_CRT_DISPLAY |
-					VIRTUAL_COCKPIT_EKRAN_DISPLAY |
-					VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-				);
+					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+					VIRTUAL_COCKPIT_PILOT_LHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_PILOT_RHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
+				else
+					draw_apache_internal_virtual_cockpit(
+					VIRTUAL_COCKPIT_COCKPIT |
+					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+					VIRTUAL_COCKPIT_CPG_LHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_CPG_RHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_ORT_DISPLAY);
 			}
-			else
-			{
-				draw_external_havoc_hud ();
+		} else {
+			if (command_line_export_mfd) {
+				draw_apache_mfd_on_texture(MFD_LOCATION_LHS);
+				draw_apache_mfd_on_texture(MFD_LOCATION_RHS);
+			} else {
+				if (get_global_draw_overlaid_instruments ()) {
+					draw_overlaid_apache_mfd(100.0, 380.0, 192.0,
+							MFD_LOCATION_LHS);
+					draw_overlaid_apache_mfd(540.0, 380.0, 192.0,
+							MFD_LOCATION_RHS);
+				}
+			}
+		}
 
-				if(command_line_export_mfd)
-				{
-					draw_havoc_mfd_on_texture();
+		draw_apache_hud();
+
+		break;
+	}
+		////////////////////////////////////////
+	case GUNSHIP_TYPE_HAVOC:
+		////////////////////////////////////////
+	{
+		draw_main_3d_scene(&main_vp);
+
+		if (get_global_draw_cockpit_graphics ()) {
+			set_pilots_full_screen_params(FALSE);
+			draw_havoc_external_virtual_cockpit(
+			VIRTUAL_COCKPIT_STOWED_WIPER |
+			VIRTUAL_COCKPIT_MOVING_WIPER |
+			VIRTUAL_COCKPIT_ADI |
+			VIRTUAL_COCKPIT_HSI |
+			VIRTUAL_COCKPIT_COMPASS |
+			VIRTUAL_COCKPIT_RAIN_EFFECT |
+			VIRTUAL_COCKPIT_MAIN_ROTOR, NULL);
+
+			draw_havoc_internal_virtual_cockpit(
+			VIRTUAL_COCKPIT_COCKPIT |
+			VIRTUAL_COCKPIT_HUD_GLASS |
+			VIRTUAL_COCKPIT_HUD_DISPLAY |
+			VIRTUAL_COCKPIT_CRT_DISPLAY |
+			VIRTUAL_COCKPIT_EKRAN_DISPLAY |
+			VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
+		} else {
+			draw_external_havoc_hud();
+
+			if (command_line_export_mfd) {
+				draw_havoc_mfd_on_texture();
 #if 0
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
-					}
+				if (get_global_draw_overlaid_instruments ())
+				{
+					draw_overlaid_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
+				}
+#endif
+			} else {
+				if (get_global_draw_overlaid_instruments ()) {
+					draw_overlaid_havoc_mfd(100.0, 380.0, 192.0);
+#if 0
+					draw_overlaid_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
 #endif
 				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_havoc_mfd (100.0, 380.0, 192.0);
-#if 0
-						draw_overlaid_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
-#endif
-					}
+			}
+		}
+
+		draw_havoc_hms();
+
+		break;
+	}
+		////////////////////////////////////////
+	case GUNSHIP_TYPE_COMANCHE:
+		////////////////////////////////////////
+	{
+		draw_main_3d_scene(&main_vp);
+
+		set_pilots_full_screen_params(FALSE);
+
+		draw_comanche_virtual_cockpit();
+
+		if (!get_global_draw_cockpit_graphics ()) {
+			if (command_line_export_mfd) {
+				draw_comanche_mfd();
+			} else {
+				if (get_global_draw_overlaid_instruments ()) {
+					draw_overlaid_comanche_mfd();
 				}
 			}
-
-			draw_havoc_hms ();
-
-			break;
 		}
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_COMANCHE:
-		////////////////////////////////////////
-		{
-			set_pilots_full_screen_params (FALSE);
 
-			draw_comanche_virtual_cockpit ();
+		draw_comanche_hud();
 
-			if (!get_global_draw_cockpit_graphics ())
-			{
-				if(command_line_export_mfd)
-				{
-					draw_comanche_mfd();
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_comanche_mfd ();
-					}
+		break;
+	}
+		////////////////////////////////////////
+	case GUNSHIP_TYPE_HOKUM:
+		////////////////////////////////////////
+	{
+		draw_main_3d_scene(&main_vp);
+
+		set_pilots_full_screen_params(FALSE);
+
+		draw_hokum_virtual_cockpit();
+
+		if (!get_global_draw_cockpit_graphics ()) {
+			if (command_line_export_mfd) {
+				draw_hokum_mfd();
+			} else {
+				if (get_global_draw_overlaid_instruments ()) {
+					draw_overlaid_hokum_mfd();
 				}
 			}
-
-			draw_comanche_hud ();
-
-			break;
 		}
-		////////////////////////////////////////
-		case GUNSHIP_TYPE_HOKUM:
-		////////////////////////////////////////
-		{
-			set_pilots_full_screen_params (FALSE);
 
-			draw_hokum_virtual_cockpit ();
+		draw_hokum_hms();
 
-			if (!get_global_draw_cockpit_graphics ())
-			{
-				if(command_line_export_mfd)
-				{
-					draw_hokum_mfd();
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_hokum_mfd ();
-					}
-				}
-			}
-
-			draw_hokum_hms ();
-
-			break;
-		}
+		break;
+	}
 		////Moje 030518 Start
-		case GUNSHIP_TYPE_BLACKHAWK:
+	case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
-		{
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
-/* VJ 050114 doesn't work yet
-				if (command_line_3d_cockpit)
-				{
-					draw_blackhawk_external_virtual_cockpit_3d
-					(
-						VIRTUAL_COCKPIT_STOWED_WIPER |
-						VIRTUAL_COCKPIT_MOVING_WIPER |
-						VIRTUAL_COCKPIT_ADI |
-						VIRTUAL_COCKPIT_COMPASS |
-						VIRTUAL_COCKPIT_RAIN_EFFECT |
-						VIRTUAL_COCKPIT_MAIN_ROTOR
-					);
+	{
+		draw_main_3d_scene(&main_vp);
 
-					draw_blackhawk_internal_virtual_cockpit_3d
-					(
-						VIRTUAL_COCKPIT_COCKPIT |
-						VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-						VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-					);
+			set_pilots_full_screen_params(FALSE);
 
-				}
-				else
-				{
-*/
-					draw_blackhawk_external_virtual_cockpit
-					(
-						VIRTUAL_COCKPIT_STOWED_WIPER |
-						VIRTUAL_COCKPIT_MOVING_WIPER |
-						VIRTUAL_COCKPIT_ADI |
-						VIRTUAL_COCKPIT_COMPASS |
-						VIRTUAL_COCKPIT_RAIN_EFFECT |
-						VIRTUAL_COCKPIT_MAIN_ROTOR,
-						NULL
-					);
+			draw_blackhawk_virtual_cockpit();
 
-					draw_blackhawk_internal_virtual_cockpit
-					(
-						VIRTUAL_COCKPIT_COCKPIT |
-						VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-						VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-					);
-//				}
-
-			}
-			else
-			{
-				if(command_line_export_mfd)
-				{
-					draw_blackhawk_mfd_on_texture(MFD_LOCATION_LHS);
-					draw_blackhawk_mfd_on_texture(MFD_LOCATION_RHS);
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_blackhawk_mfd (68.0, 412.0, 128.0, MFD_LOCATION_LHS);
-						draw_overlaid_blackhawk_mfd (572.0, 412.0, 128.0, MFD_LOCATION_RHS);
+			if (!get_global_draw_cockpit_graphics ()) {
+				if (command_line_export_mfd) {
+					draw_blackhawk_mfd();
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_blackhawk_mfd();
 					}
 				}
 			}
 
-			draw_blackhawk_hud ();
+			draw_blackhawk_hud();
 
 			break;
 		}
@@ -1816,19 +1657,17 @@ void draw_virtual_cockpit_3d_view (void)
 		case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
 		{
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
+			if (get_global_draw_cockpit_graphics ()) {
+				set_pilots_full_screen_params(FALSE);
 
 				draw_hind_external_3d_cockpit(0, NULL);
 				draw_hind_internal_3d_cockpit(0);
-			}
-			else
-			{
-				draw_external_hind_hud ();
+			} else {
+			draw_main_3d_scene(&main_vp);
 
-				if(command_line_export_mfd)
-				{
+				draw_external_hind_hud();
+
+				if (command_line_export_mfd) {
 					draw_hind_mfd_on_texture();
 #if 0
 					if (get_global_draw_overlaid_instruments ())
@@ -1836,12 +1675,9 @@ void draw_virtual_cockpit_3d_view (void)
 						draw_overlaid_hind_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
 					}
 #endif
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_hind_mfd (68.0, 412.0, 128.0);
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_hind_mfd(68.0, 412.0, 128.0);
 #if 0
 						draw_overlaid_hind_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
 #endif
@@ -1849,7 +1685,7 @@ void draw_virtual_cockpit_3d_view (void)
 				}
 			}
 
-			draw_hind_hms ();
+			draw_hind_hms();
 
 			break;
 		}
@@ -1858,48 +1694,40 @@ void draw_virtual_cockpit_3d_view (void)
 		case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
 		{
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-				draw_ah64a_external_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_STOWED_WIPER |
-					VIRTUAL_COCKPIT_MOVING_WIPER |
-					VIRTUAL_COCKPIT_ADI |
-					VIRTUAL_COCKPIT_COMPASS |
-					VIRTUAL_COCKPIT_RAIN_EFFECT |
-					VIRTUAL_COCKPIT_MAIN_ROTOR,
-					NULL
-				);
+			if (get_global_draw_cockpit_graphics ()) {
+				set_pilots_full_screen_params(FALSE);
 
-				draw_ah64a_internal_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_COCKPIT |
-					VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-					VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
-					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-					VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-				);
-			}
-			else
-			{
-				if(command_line_export_mfd)
-				{
+				draw_ah64a_external_virtual_cockpit(
+				VIRTUAL_COCKPIT_STOWED_WIPER |
+				VIRTUAL_COCKPIT_MOVING_WIPER |
+				VIRTUAL_COCKPIT_ADI |
+				VIRTUAL_COCKPIT_COMPASS |
+				VIRTUAL_COCKPIT_RAIN_EFFECT |
+				VIRTUAL_COCKPIT_MAIN_ROTOR, NULL);
+
+				draw_ah64a_internal_virtual_cockpit(
+				VIRTUAL_COCKPIT_COCKPIT |
+				VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
+				VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
+				VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+				VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
+			} else {
+				if (command_line_export_mfd) {
 					draw_ah64a_mfd_on_texture(MFD_LOCATION_LHS);
 					draw_ah64a_mfd_on_texture(MFD_LOCATION_RHS);
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_ah64a_mfd (68.0, 412.0, 128.0, MFD_LOCATION_LHS);
-						draw_overlaid_ah64a_mfd (572.0, 412.0, 128.0, MFD_LOCATION_RHS);
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_ah64a_mfd(68.0, 412.0, 128.0,
+								MFD_LOCATION_LHS);
+						draw_overlaid_ah64a_mfd(572.0, 412.0, 128.0,
+								MFD_LOCATION_RHS);
 					}
 				}
 			}
 
-			draw_ah64a_hud ();
+			draw_ah64a_hud();
 
 			break;
 		}
@@ -1907,26 +1735,23 @@ void draw_virtual_cockpit_3d_view (void)
 		case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_ka50_virtual_cockpit ();
+			set_pilots_full_screen_params(FALSE);
 
-			if (!get_global_draw_cockpit_graphics ())
-			{
-				if (command_line_export_mfd)
-				{
-					draw_ka50_mfd ();
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_ka50_mfd ();
+			draw_ka50_virtual_cockpit();
+
+			if (!get_global_draw_cockpit_graphics ()) {
+				if (command_line_export_mfd) {
+					draw_ka50_mfd();
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_ka50_mfd();
 					}
 				}
 			}
 
-			draw_ka50_hms ();
+			draw_ka50_hms();
 
 			break;
 		}
@@ -1935,26 +1760,23 @@ void draw_virtual_cockpit_3d_view (void)
 		case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_viper_virtual_cockpit ();
+			set_pilots_full_screen_params(FALSE);
 
-			if (!get_global_draw_cockpit_graphics ())
-			{
-				if (command_line_export_mfd)
-				{
-					draw_viper_mfd ();
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_viper_mfd ();
+			draw_viper_virtual_cockpit();
+
+			if (!get_global_draw_cockpit_graphics ()) {
+				if (command_line_export_mfd) {
+					draw_viper_mfd();
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_viper_mfd();
 					}
 				}
 			}
 
-			draw_viper_hud ();
+			draw_viper_hud();
 
 			break;
 		}
@@ -1962,26 +1784,23 @@ void draw_virtual_cockpit_3d_view (void)
 		case GUNSHIP_TYPE_KIOWA:
 		////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_kiowa_virtual_cockpit ();
+			set_pilots_full_screen_params(FALSE);
 
-			if (!get_global_draw_cockpit_graphics ())
-			{
-				if (command_line_export_mfd)
-				{
-					draw_kiowa_mfd ();
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_kiowa_mfd ();
+			draw_kiowa_virtual_cockpit();
+
+			if (!get_global_draw_cockpit_graphics ()) {
+				if (command_line_export_mfd) {
+					draw_kiowa_mfd();
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_kiowa_mfd();
 					}
 				}
 			}
 
-			draw_kiowa_hud ();
+			draw_kiowa_hud();
 
 			break;
 		}
@@ -1992,121 +1811,103 @@ void draw_virtual_cockpit_3d_view (void)
 		default:
 		////////////////////////////////////////
 		{
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-				if (command_line_3d_cockpit)
-				{
+			if (get_global_draw_cockpit_graphics ()) {
+				set_pilots_full_screen_params(FALSE);
 
-					draw_default_external_virtual_cockpit_3d
-					(
-						VIRTUAL_COCKPIT_STOWED_WIPER |
-						VIRTUAL_COCKPIT_MOVING_WIPER |
-						VIRTUAL_COCKPIT_ADI |
-						VIRTUAL_COCKPIT_COMPASS |
-						VIRTUAL_COCKPIT_RAIN_EFFECT |
-						VIRTUAL_COCKPIT_MAIN_ROTOR//,NULL
+				if (command_line_3d_cockpit) {
+
+					draw_default_external_virtual_cockpit_3d(
+					VIRTUAL_COCKPIT_STOWED_WIPER |
+					VIRTUAL_COCKPIT_MOVING_WIPER |
+					VIRTUAL_COCKPIT_ADI |
+					VIRTUAL_COCKPIT_COMPASS |
+					VIRTUAL_COCKPIT_RAIN_EFFECT |
+					VIRTUAL_COCKPIT_MAIN_ROTOR		//,NULL
 					);
 
-					draw_default_internal_virtual_cockpit_3d
-					(
-						VIRTUAL_COCKPIT_COCKPIT |
-						VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-						VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-					);
+					draw_default_internal_virtual_cockpit_3d(
+					VIRTUAL_COCKPIT_COCKPIT |
+					VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+					VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
+				} else {
+					draw_default_external_virtual_cockpit(
+					VIRTUAL_COCKPIT_STOWED_WIPER |
+					VIRTUAL_COCKPIT_MOVING_WIPER |
+					VIRTUAL_COCKPIT_ADI |
+					VIRTUAL_COCKPIT_COMPASS |
+					VIRTUAL_COCKPIT_RAIN_EFFECT |
+					VIRTUAL_COCKPIT_MAIN_ROTOR, NULL);
+
+					draw_default_internal_virtual_cockpit(
+					VIRTUAL_COCKPIT_COCKPIT |
+					VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+					VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
 				}
-				else
-				{
-					draw_default_external_virtual_cockpit
-					(
-						VIRTUAL_COCKPIT_STOWED_WIPER |
-						VIRTUAL_COCKPIT_MOVING_WIPER |
-						VIRTUAL_COCKPIT_ADI |
-						VIRTUAL_COCKPIT_COMPASS |
-						VIRTUAL_COCKPIT_RAIN_EFFECT |
-						VIRTUAL_COCKPIT_MAIN_ROTOR,
-						NULL
-					);
-
-					draw_default_internal_virtual_cockpit
-					(
-						VIRTUAL_COCKPIT_COCKPIT |
-						VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_RHS_MFD_DISPLAY |
-						VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-						VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-					);
-				}
-			}
-			else
-			{
-				if(command_line_export_mfd)
-				{
+			} else {
+				if (command_line_export_mfd) {
 					draw_default_mfd_on_texture(MFD_LOCATION_LHS);
 					draw_default_mfd_on_texture(MFD_LOCATION_RHS);
-				}
-				else
-				{
-					if (get_global_draw_overlaid_instruments ())
-					{
-						draw_overlaid_default_mfd (100.0, 380.0, 192.0, MFD_LOCATION_LHS);
-						draw_overlaid_default_mfd (540.0, 380.0, 192.0, MFD_LOCATION_RHS);
+				} else {
+					if (get_global_draw_overlaid_instruments ()) {
+						draw_overlaid_default_mfd(100.0, 380.0, 192.0,
+								MFD_LOCATION_LHS);
+						draw_overlaid_default_mfd(540.0, 380.0, 192.0,
+								MFD_LOCATION_RHS);
 					}
 				}
 			}
 
-			draw_default_hud ();
+			draw_default_hud();
 
 			break;
 		}
 
-
 	}
 
-	if (command_line_restricted_nvg_fov && night_vision_system_active && get_global_draw_cockpit_graphics ())
+	if (command_line_restricted_nvg_fov && night_vision_system_active
+			&& get_global_draw_cockpit_graphics ())
 		draw_night_vision_mask();
 
 	// Jabberwock 031016 Inset view - cockpit
-	if (external_view_inset_target)
-	{
-		entity
-			*source,
-			*target;
+	if (external_view_inset_target) {
+		entity *source, *target;
 
-		viewpoint
-			vp;
+		viewpoint vp;
 
-		source = get_external_view_entity ();
+		source = get_external_view_entity();
 
-		target = get_inset ();
+		target = get_inset();
 
-		ASSERT (source);
+		ASSERT(source);
 
-		if (target)
-		{
-			store_reverse_tactical_camera_values ();
+		if (target) {
+			store_reverse_tactical_camera_values();
 
-			set_reverse_tactical_camera_values (source, target);
+			set_reverse_tactical_camera_values(source, target);
 
-		   	get_local_entity_vec3d (get_camera_entity (), VEC3D_TYPE_POSITION, &vp.position);
+			get_local_entity_vec3d(get_camera_entity (), VEC3D_TYPE_POSITION,
+					&vp.position);
 
-   			get_local_entity_attitude_matrix (get_camera_entity (), vp.attitude);
+			get_local_entity_attitude_matrix(get_camera_entity (), vp.attitude);
 
-			set_main_3d_inset_target_screen_params ();
+			set_main_3d_inset_target_screen_params();
 
-			draw_main_3d_scene (&vp);
+			draw_main_3d_scene(&vp);
 
-			restore_reverse_tactical_camera_values ();
+			restore_reverse_tactical_camera_values();
 
-			set_main_3d_full_screen_params (DISPLAY_3D_TINT_CLEAR, DISPLAY_3D_LIGHT_LEVEL_HIGH, DISPLAY_3D_NOISE_LEVEL_NONE);
+			set_main_3d_full_screen_params(DISPLAY_3D_TINT_CLEAR,
+					DISPLAY_3D_LIGHT_LEVEL_HIGH, DISPLAY_3D_NOISE_LEVEL_NONE);
 		}
 	}
 	// Jabberwock 031016 ends
 
-
 	//
 	// restore virtual cockpit 3D instance
 	//
@@ -2115,239 +1916,248 @@ void draw_virtual_cockpit_3d_view (void)
 	specular_rendering_enabled = specular;
 #endif
 
-	get_pilot_head_viewpoint ();
+	get_pilot_head_viewpoint();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_virtual_cockpit_3d_crew_view (void)
-{
-	vec3d
-		position;
+	void draw_virtual_cockpit_3d_crew_view(void) {
+		vec3d position;
 
 #ifndef OGRE_EE
-	int specular = 	specular_rendering_enabled;
+		int specular = specular_rendering_enabled;
 #endif
 
-	ASSERT (get_gunship_entity ());
+		ASSERT(get_gunship_entity ());
 
-	ASSERT (get_comanche_hokum_gunship ());
+		ASSERT(get_comanche_hokum_gunship ());
 
-	ASSERT (virtual_cockpit_inst3d);
+		ASSERT(virtual_cockpit_inst3d);
 
-	ASSERT (get_crew_camera_index (get_crew_role ()) != OBJECT_3D_INVALID_CAMERA_INDEX);
+		ASSERT(
+				get_crew_camera_index(get_crew_role())
+						!= OBJECT_3D_INVALID_CAMERA_INDEX);
 
-	ASSERT (get_num_virtual_cockpit_cameras (get_crew_role ()) > 0);
+		ASSERT(get_num_virtual_cockpit_cameras(get_crew_role()) > 0);
 
-	ASSERT (get_current_virtual_cockpit_camera (get_crew_role ()) != INVALID_VIRTUAL_COCKPIT_CAMERA);
+		ASSERT(
+				get_current_virtual_cockpit_camera (get_crew_role ()) != INVALID_VIRTUAL_COCKPIT_CAMERA);
 
 #ifndef OGRE_EE
-	specular_rendering_enabled = FALSE;
+		specular_rendering_enabled = FALSE;
 #endif
 
-	////////////////////////////////////////
-	//
-	// check if the gunship has been destroyed before the pilot's ejected
-	//
+		////////////////////////////////////////
+		//
+		// check if the gunship has been destroyed before the pilot's ejected
+		//
 
-	if (get_local_entity_int_value (get_gunship_entity (), INT_TYPE_EJECTED))
-	{
-		if (!get_local_entity_int_value (get_gunship_entity (), INT_TYPE_ALIVE))
-		{
-			set_external_view_entity (get_gunship_entity ());
+	if (get_local_entity_int_value(get_gunship_entity (), INT_TYPE_EJECTED)) {
+			if (!get_local_entity_int_value(get_gunship_entity (),
+					INT_TYPE_ALIVE)) {
+				set_external_view_entity(get_gunship_entity ());
 
-			notify_local_entity (ENTITY_MESSAGE_SET_CAMERA_ACTION, get_camera_entity (), NULL, CAMERA_ACTION_EJECT);
+				notify_local_entity(ENTITY_MESSAGE_SET_CAMERA_ACTION,
+						get_camera_entity (), NULL, CAMERA_ACTION_EJECT);
+			}
 		}
-	}
 
-	//
-	////////////////////////////////////////
+		//
+		////////////////////////////////////////
 
-	switch (get_global_gunship_type ())
-	{
+		switch (get_global_gunship_type ()) {
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_COMANCHE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_comanche_virtual_cockpit_displays ();
+			pre_render_comanche_virtual_cockpit_displays();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HOKUM:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_hokum_virtual_cockpit_displays ();
+			pre_render_hokum_virtual_cockpit_displays();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
+		case GUNSHIP_TYPE_BLACKHAWK:
+			////////////////////////////////////////
+		{
+			pre_render_blackhawk_virtual_cockpit_displays();
+
+			break;
+		}
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_VIPER:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_viper_virtual_cockpit_displays ();
+			pre_render_viper_virtual_cockpit_displays();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KIOWA:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_kiowa_virtual_cockpit_displays ();
+			pre_render_kiowa_virtual_cockpit_displays();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KA50:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_ka50_virtual_cockpit_displays ();
+			pre_render_ka50_virtual_cockpit_displays();
 
 			break;
 		}
-		////////////////////////////////////////
-	}
+			////////////////////////////////////////
+		}
 
-	//
-	// get camera viewpoint
-	//
+		//
+		// get camera viewpoint
+		//
 
-	virtual_cockpit_inst3d->vp.position.x = 0.0;
-	virtual_cockpit_inst3d->vp.position.y = 0.0;
-	virtual_cockpit_inst3d->vp.position.z = 0.0;
+		virtual_cockpit_inst3d->vp.position.x = 0.0;
+		virtual_cockpit_inst3d->vp.position.y = 0.0;
+		virtual_cockpit_inst3d->vp.position.z = 0.0;
 
-	get_local_entity_attitude_matrix (get_gunship_entity (), virtual_cockpit_inst3d->vp.attitude);
+		get_local_entity_attitude_matrix(get_gunship_entity (),
+				virtual_cockpit_inst3d->vp.attitude);
 
-	get_object_3d_camera_position (virtual_cockpit_inst3d, get_crew_camera_index (get_crew_role ()), get_current_virtual_cockpit_camera (get_crew_role ()), 0.0, &main_vp);
+		get_object_3d_camera_position(virtual_cockpit_inst3d,
+				get_crew_camera_index(get_crew_role()),
+			get_current_virtual_cockpit_camera(get_crew_role()), 0.0, &main_vp);
 
-	position.x = -main_vp.x;
-	position.y = -main_vp.y;
-	position.z = -main_vp.z;
+		position.x = -main_vp.x;
+		position.y = -main_vp.y;
+		position.z = -main_vp.z;
 
-	multiply_transpose_matrix3x3_vec3d (&virtual_cockpit_inst3d->vp.position, main_vp.attitude, &position);
+		multiply_transpose_matrix3x3_vec3d(&virtual_cockpit_inst3d->vp.position,
+				main_vp.attitude, &position);
 
-	get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &position);
+		get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+				&position);
 
-	main_vp.x += position.x;
-	main_vp.y += position.y;
-	main_vp.z += position.z;
+		main_vp.x += position.x;
+		main_vp.y += position.y;
+		main_vp.z += position.z;
 
-	//
-	// draw view
-	//
+		//
+		// draw view
+		//
 
-	set_crew_view_full_screen_params ();
+		set_crew_view_full_screen_params();
 
-	draw_main_3d_scene (&main_vp);
+		draw_main_3d_scene(&main_vp);
 
-	switch (get_global_gunship_type ())
-	{
+		switch (get_global_gunship_type ()) {
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_COMANCHE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			draw_comanche_virtual_cockpit ();
+			draw_comanche_virtual_cockpit();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HOKUM:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			draw_hokum_virtual_cockpit ();
+			draw_hokum_virtual_cockpit();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
+		case GUNSHIP_TYPE_BLACKHAWK:
+			////////////////////////////////////////
+		{
+			draw_blackhawk_virtual_cockpit();
+
+			break;
+		}
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_VIPER:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			draw_viper_virtual_cockpit ();
+			draw_viper_virtual_cockpit();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KIOWA:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			draw_kiowa_virtual_cockpit ();
+			draw_kiowa_virtual_cockpit();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KA50:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			draw_ka50_virtual_cockpit ();
+			draw_ka50_virtual_cockpit();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
+		}
+
+		//
+		// restore virtual cockpit 3D instance
+		//
+
+#ifndef OGRE_EE
+		specular_rendering_enabled = specular;
+#endif
+
+		get_pilot_head_viewpoint();
 	}
 
-	//
-	// restore virtual cockpit 3D instance
-	//
-
-#ifndef OGRE_EE
-	specular_rendering_enabled = specular;
-#endif
-
-	get_pilot_head_viewpoint ();
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_virtual_cockpit_3d_hud_view (void)
-{
+	void draw_virtual_cockpit_3d_hud_view(void) {
 #ifndef OGRE_EE
-	int specular = 	specular_rendering_enabled;
+		int specular = specular_rendering_enabled;
 #endif
 
-	ASSERT (get_gunship_entity ());
+		ASSERT(get_gunship_entity ());
 
 #ifndef OGRE_EE
-	specular_rendering_enabled = FALSE;
+		specular_rendering_enabled = FALSE;
 #endif
 
-	switch (get_global_gunship_type ())
-	{
+		switch (get_global_gunship_type ()) {
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_HAVOC:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (night_vision_system_active);
+			set_pilots_full_screen_params(night_vision_system_active);
 
-			draw_main_3d_scene (&main_vp);
+			draw_main_3d_scene(&main_vp);
 
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
+			if (get_global_draw_cockpit_graphics ()) {
+				set_pilots_full_screen_params(FALSE);
 
-				draw_havoc_external_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_STOWED_WIPER |
-					VIRTUAL_COCKPIT_MOVING_WIPER |
-					VIRTUAL_COCKPIT_RAIN_EFFECT |
-					VIRTUAL_COCKPIT_MAIN_ROTOR,
-					NULL
-				);
+				draw_havoc_external_virtual_cockpit(
+				VIRTUAL_COCKPIT_STOWED_WIPER |
+				VIRTUAL_COCKPIT_MOVING_WIPER |
+				VIRTUAL_COCKPIT_RAIN_EFFECT |
+				VIRTUAL_COCKPIT_MAIN_ROTOR, NULL);
 
-				draw_havoc_internal_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_COCKPIT |
-					VIRTUAL_COCKPIT_HUD_GLASS
-				);
-			}
-			else
-			{
-				if (get_global_draw_overlaid_instruments ())
-				{
-					draw_overlaid_havoc_mfd (68.0, 412.0, 128.0);
+				draw_havoc_internal_virtual_cockpit(
+				VIRTUAL_COCKPIT_COCKPIT |
+				VIRTUAL_COCKPIT_HUD_GLASS);
+			} else {
+				if (get_global_draw_overlaid_instruments ()) {
+					draw_overlaid_havoc_mfd(68.0, 412.0, 128.0);
 
 #if 0
 					draw_overlaid_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
@@ -2355,22 +2165,21 @@ void draw_virtual_cockpit_3d_hud_view (void)
 				}
 			}
 
-			draw_external_havoc_hud ();
+			draw_external_havoc_hud();
 
-			draw_havoc_hms ();
+			draw_havoc_hms();
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HOKUM:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			vec3d
-				position;
+			vec3d position;
 
-			ASSERT (virtual_cockpit_inst3d);
+			ASSERT(virtual_cockpit_inst3d);
 
-			pre_render_hokum_virtual_cockpit_displays ();
+			pre_render_hokum_virtual_cockpit_displays();
 
 			//
 			// get camera viewpoint
@@ -2380,17 +2189,21 @@ void draw_virtual_cockpit_3d_hud_view (void)
 			virtual_cockpit_inst3d->vp.position.y = 0.0;
 			virtual_cockpit_inst3d->vp.position.z = 0.0;
 
-			get_local_entity_attitude_matrix (get_gunship_entity (), virtual_cockpit_inst3d->vp.attitude);
+			get_local_entity_attitude_matrix(get_gunship_entity (),
+					virtual_cockpit_inst3d->vp.attitude);
 
-			get_object_3d_camera_position (virtual_cockpit_inst3d, OBJECT_3D_CAMERA_VIEW_STATIC_HUD, 0, 0.0, &main_vp);
+			get_object_3d_camera_position(virtual_cockpit_inst3d,
+					OBJECT_3D_CAMERA_VIEW_STATIC_HUD, 0, 0.0, &main_vp);
 
 			position.x = -main_vp.x;
 			position.y = -main_vp.y;
 			position.z = -main_vp.z;
 
-			multiply_transpose_matrix3x3_vec3d (&virtual_cockpit_inst3d->vp.position, main_vp.attitude, &position);
+		multiply_transpose_matrix3x3_vec3d(&virtual_cockpit_inst3d->vp.position,
+				main_vp.attitude, &position);
 
-			get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &position);
+			get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+					&position);
 
 			main_vp.x += position.x;
 			main_vp.y += position.y;
@@ -2400,39 +2213,37 @@ void draw_virtual_cockpit_3d_hud_view (void)
 			// draw view
 			//
 
-			set_pilots_full_screen_params (night_vision_system_active);
+			set_pilots_full_screen_params(night_vision_system_active);
 
-			draw_main_3d_scene (&main_vp);
+			draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			set_pilots_full_screen_params(FALSE);
 
-			draw_hokum_virtual_cockpit ();
+			draw_hokum_virtual_cockpit();
 
-			draw_hokum_hms ();
+			draw_hokum_hms();
 
 			break;
 		}
-		////moje 030615 think I missed out a section here. This code isn't in the 030615 exe
-		////////////////////////////////////////
+			////moje 030615 think I missed out a section here. This code isn't in the 030615 exe
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HIND:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (night_vision_system_active);
+			set_pilots_full_screen_params(night_vision_system_active);
 
-			draw_main_3d_scene (&main_vp);
+//			draw_main_3d_scene (&main_vp); // moved to draw_hind_external_3d_cockpit function
 
-			if (get_global_draw_cockpit_graphics ())
-			{
-				set_pilots_full_screen_params (FALSE);
+			if (get_global_draw_cockpit_graphics ()) {
+				set_pilots_full_screen_params(FALSE);
 
 				draw_hind_external_3d_cockpit(0, NULL);
 				draw_hind_internal_3d_cockpit(0);
-			}
-			else
-			{
-				if (get_global_draw_overlaid_instruments ())
-				{
-					draw_overlaid_hind_mfd (68.0, 412.0, 128.0);
+			} else {
+			draw_main_3d_scene(&main_vp);
+
+				if (get_global_draw_overlaid_instruments ()) {
+					draw_overlaid_hind_mfd(68.0, 412.0, 128.0);
 
 #if 0
 					draw_overlaid_hind_threat_warning_display (int_full_screen_width - 64, int_full_screen_height - 84);
@@ -2440,24 +2251,23 @@ void draw_virtual_cockpit_3d_hud_view (void)
 				}
 			}
 
-			draw_external_hind_hud ();
+			draw_external_hind_hud();
 
-			draw_hind_hms ();
+			draw_hind_hms();
 
 			break;
 		}
-		////Moje 030615 end
-		////moje 030816
-		////////////////////////////////////////
+			////Moje 030615 end
+			////moje 030816
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KA50:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			vec3d
-				position;
+			vec3d position;
 
-			ASSERT (virtual_cockpit_inst3d);
+			ASSERT(virtual_cockpit_inst3d);
 
-			pre_render_hokum_virtual_cockpit_displays ();
+			pre_render_hokum_virtual_cockpit_displays();
 
 			//
 			// get camera viewpoint
@@ -2467,17 +2277,21 @@ void draw_virtual_cockpit_3d_hud_view (void)
 			virtual_cockpit_inst3d->vp.position.y = 0.0;
 			virtual_cockpit_inst3d->vp.position.z = 0.0;
 
-			get_local_entity_attitude_matrix (get_gunship_entity (), virtual_cockpit_inst3d->vp.attitude);
+			get_local_entity_attitude_matrix(get_gunship_entity (),
+					virtual_cockpit_inst3d->vp.attitude);
 
-			get_object_3d_camera_position (virtual_cockpit_inst3d, OBJECT_3D_CAMERA_VIEW_STATIC_HUD, 0, 0.0, &main_vp);
+			get_object_3d_camera_position(virtual_cockpit_inst3d,
+					OBJECT_3D_CAMERA_VIEW_STATIC_HUD, 0, 0.0, &main_vp);
 
 			position.x = -main_vp.x;
 			position.y = -main_vp.y;
 			position.z = -main_vp.z;
 
-			multiply_transpose_matrix3x3_vec3d (&virtual_cockpit_inst3d->vp.position, main_vp.attitude, &position);
+		multiply_transpose_matrix3x3_vec3d(&virtual_cockpit_inst3d->vp.position,
+				main_vp.attitude, &position);
 
-			get_local_entity_vec3d (get_gunship_entity (), VEC3D_TYPE_POSITION, &position);
+			get_local_entity_vec3d(get_gunship_entity (), VEC3D_TYPE_POSITION,
+					&position);
 
 			main_vp.x += position.x;
 			main_vp.y += position.y;
@@ -2487,178 +2301,173 @@ void draw_virtual_cockpit_3d_hud_view (void)
 			// draw view
 			//
 
-			set_pilots_full_screen_params (night_vision_system_active);
+			set_pilots_full_screen_params(night_vision_system_active);
 
-			draw_main_3d_scene (&main_vp);
+			draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			set_pilots_full_screen_params(FALSE);
 
-			draw_hokum_virtual_cockpit ();
+			draw_hokum_virtual_cockpit();
 
-			draw_hokum_hms ();
+			draw_hokum_hms();
 
 			break;
 		}
-		////Moje 030816 end
+			////Moje 030816 end
+		}
+
+		//
+		// restore virtual cockpit 3D instance
+		//
+
+#ifndef OGRE_EE
+		specular_rendering_enabled = specular;
+#endif
+
+		get_pilot_head_viewpoint();
 	}
 
-	//
-	// restore virtual cockpit 3D instance
-	//
-
-#ifndef OGRE_EE
-	specular_rendering_enabled = specular;
-#endif
-
-	get_pilot_head_viewpoint ();
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_virtual_cockpit_3d_periscope_view (void)
-{
-	int
-		x_excess = ((full_screen_x_max - full_screen_x_min) - (full_screen_y_max - full_screen_y_min)) / 2,
-		x_min = full_screen_x_min + x_excess,
-		x_max = full_screen_x_max - x_excess;
-#ifndef OGRE_EE
-	int
-		specular = 	specular_rendering_enabled;
-#endif
+	void draw_virtual_cockpit_3d_periscope_view(void) {
+		int x_excess = ((full_screen_x_max - full_screen_x_min)
+				- (full_screen_y_max - full_screen_y_min)) / 2, x_min =
+			full_screen_x_min + x_excess, x_max = full_screen_x_max - x_excess,
+			specular = specular_rendering_enabled;
 
-	ASSERT (get_gunship_entity ());
+		ASSERT(get_gunship_entity ());
 
 #ifndef OGRE_EE
-	specular_rendering_enabled = FALSE;
+		specular_rendering_enabled = FALSE;
 
-	// clear lights and fog
+		// clear lights and fog
 
-	set_3d_lightmode ( main_3d_env, LIGHTMODE_AUTOMATIC_LIGHT );
-	set_3d_fogmode ( main_3d_env, FOGMODE_ON_AUTOMATIC );
-	recalculate_3d_environment_settings (main_3d_env);
+		set_3d_lightmode(main_3d_env, LIGHTMODE_AUTOMATIC_LIGHT);
+		set_3d_fogmode(main_3d_env, FOGMODE_ON_AUTOMATIC);
+		recalculate_3d_environment_settings(main_3d_env);
 #endif
 
-	switch (get_global_gunship_type())
-	{
-	case  GUNSHIP_TYPE_APACHE:
-		draw_apache_virtual_cockpit_ort_view(full_screen_x_min, full_screen_x_max);
-		draw_virtual_cockpit_periscope_filler(x_min, x_max);
-		draw_virtual_cockpit_periscope_mask (x_min, x_max, TRUE);
-		draw_apache_virtual_cockpit_ort_symbology();
-		break;
-	case GUNSHIP_TYPE_HOKUM:
-		draw_hokum_virtual_cockpit_periscope_view ();
-		draw_virtual_cockpit_periscope_mask (full_screen_x_min, full_screen_x_max, FALSE);
-		draw_hokum_virtual_cockpit_periscope_symbology ();
-		break;
-	case GUNSHIP_TYPE_HIND:
-		draw_hind_virtual_cockpit_ort_view(full_screen_x_min, full_screen_x_max);
-		draw_virtual_cockpit_periscope_filler(x_min, x_max);
-		draw_virtual_cockpit_periscope_mask (x_min, x_max, TRUE);
-		draw_hind_virtual_cockpit_ort_symbology();
-		break;
-	default:
-		ASSERT(FALSE);
+		switch (get_global_gunship_type()) {
+		case GUNSHIP_TYPE_APACHE:
+			draw_apache_virtual_cockpit_ort_view(full_screen_x_min,
+					full_screen_x_max);
+			draw_virtual_cockpit_periscope_filler(x_min, x_max);
+			draw_virtual_cockpit_periscope_mask(x_min, x_max, TRUE);
+			draw_apache_virtual_cockpit_ort_symbology();
+			break;
+		case GUNSHIP_TYPE_HOKUM:
+			draw_hokum_virtual_cockpit_periscope_view();
+			draw_virtual_cockpit_periscope_mask(full_screen_x_min,
+					full_screen_x_max, FALSE);
+			draw_hokum_virtual_cockpit_periscope_symbology();
+			break;
+		case GUNSHIP_TYPE_HIND:
+			draw_hind_virtual_cockpit_ort_view(full_screen_x_min,
+					full_screen_x_max);
+			draw_virtual_cockpit_periscope_filler(x_min, x_max);
+			draw_virtual_cockpit_periscope_mask(x_min, x_max, TRUE);
+			draw_hind_virtual_cockpit_ort_symbology();
+			break;
+		default:
+			ASSERT(FALSE);
+		}
+		//
+		// restore virtual cockpit 3D instance
+		//
+
+#ifndef OGRE_EE
+		specular_rendering_enabled = specular;
+#endif
+
+		get_pilot_head_viewpoint();
 	}
-	//
-	// restore virtual cockpit 3D instance
-	//
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void draw_virtual_cockpit_3d_display_view(void) {
+		//VJ# THIS CODE IS ONLY REACHED WHEN CLOSEUP F3 or F4!!!!!!!
+		//
 #ifndef OGRE_EE
-	specular_rendering_enabled = specular;
+		int specular = specular_rendering_enabled;
+
+		specular_rendering_enabled = FALSE;
 #endif
 
-	get_pilot_head_viewpoint ();
-}
+		set_main_3d_full_screen_params(DISPLAY_3D_TINT_CLEAR,
+				DISPLAY_3D_LIGHT_LEVEL_HIGH, DISPLAY_3D_NOISE_LEVEL_NONE);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		set_pilots_full_screen_params(night_vision_active());
 
-void draw_virtual_cockpit_3d_display_view (void)
-{
-	//VJ# THIS CODE IS ONLY REACHED WHEN CLOSEUP F3 or F4!!!!!!!
-	//
-#ifndef OGRE_EE
-	int specular = 	specular_rendering_enabled;
-
-	specular_rendering_enabled = FALSE;
-#endif
-
-	set_main_3d_full_screen_params (DISPLAY_3D_TINT_CLEAR, DISPLAY_3D_LIGHT_LEVEL_HIGH, DISPLAY_3D_NOISE_LEVEL_NONE);
-
-	set_pilots_full_screen_params (night_vision_active());
-
-	draw_main_3d_scene (&main_vp);
-
-	switch (get_global_gunship_type ())
-	{
+		switch (get_global_gunship_type ()) {
 		////////////////////////////////////////
 		// JB 030313 Fly any aircraft
 //		default:
 		case GUNSHIP_TYPE_APACHE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			if (get_local_entity_int_value (get_pilot_entity (), INT_TYPE_CREW_ROLE) == CREW_ROLE_PILOT)
-				draw_apache_internal_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_COCKPIT |
-					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-					VIRTUAL_COCKPIT_PILOT_LHS_MFD_DISPLAY |
-					VIRTUAL_COCKPIT_PILOT_RHS_MFD_DISPLAY |
-					VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES
-				);
+			set_pilots_full_screen_params(FALSE);
+
+		if (get_local_entity_int_value(get_pilot_entity (), INT_TYPE_CREW_ROLE)
+					== CREW_ROLE_PILOT)
+				draw_apache_internal_virtual_cockpit(
+				VIRTUAL_COCKPIT_COCKPIT |
+				VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+				VIRTUAL_COCKPIT_PILOT_LHS_MFD_DISPLAY |
+				VIRTUAL_COCKPIT_PILOT_RHS_MFD_DISPLAY |
+				VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
 			else
-				draw_apache_internal_virtual_cockpit
-				(
-					VIRTUAL_COCKPIT_COCKPIT |
-					VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
-					VIRTUAL_COCKPIT_CPG_LHS_MFD_DISPLAY |
-					VIRTUAL_COCKPIT_CPG_RHS_MFD_DISPLAY |
-					VIRTUAL_COCKPIT_ORT_DISPLAY
-				);
+				draw_apache_internal_virtual_cockpit(
+				VIRTUAL_COCKPIT_COCKPIT |
+				VIRTUAL_COCKPIT_UPFRONT_DISPLAY |
+				VIRTUAL_COCKPIT_CPG_LHS_MFD_DISPLAY |
+				VIRTUAL_COCKPIT_CPG_RHS_MFD_DISPLAY |
+				VIRTUAL_COCKPIT_ORT_DISPLAY);
 
 #if 0
 			draw_apache_internal_virtual_cockpit
 			(
-				VIRTUAL_COCKPIT_DISPLAY_VIEW |
-				VIRTUAL_COCKPIT_COCKPIT |
-				VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-				VIRTUAL_COCKPIT_RHS_MFD_DISPLAY
+					VIRTUAL_COCKPIT_DISPLAY_VIEW |
+					VIRTUAL_COCKPIT_COCKPIT |
+					VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
+					VIRTUAL_COCKPIT_RHS_MFD_DISPLAY
 			);
 #endif
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HAVOC:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_havoc_internal_virtual_cockpit
-			(
-				VIRTUAL_COCKPIT_COCKPIT |
-				VIRTUAL_COCKPIT_CRT_DISPLAY |
-				VIRTUAL_COCKPIT_EKRAN_DISPLAY
-			);
+			set_pilots_full_screen_params(FALSE);
+
+			draw_havoc_internal_virtual_cockpit(
+			VIRTUAL_COCKPIT_COCKPIT |
+			VIRTUAL_COCKPIT_CRT_DISPLAY |
+			VIRTUAL_COCKPIT_EKRAN_DISPLAY);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_COMANCHE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_comanche_virtual_cockpit_displays ();
+		draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			pre_render_comanche_virtual_cockpit_displays();
+
+			set_pilots_full_screen_params(FALSE);
 //VJ#
-			get_comanche_display_viewpoint (get_view_mode ());
+			get_comanche_display_viewpoint(get_view_mode ());
 
-			draw_comanche_virtual_cockpit ();
+			draw_comanche_virtual_cockpit();
 
 #if 0
 			draw_comanche_full_screen_display ();
@@ -2666,17 +2475,19 @@ void draw_virtual_cockpit_3d_display_view (void)
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HOKUM:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_hokum_virtual_cockpit_displays ();
+		draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			pre_render_hokum_virtual_cockpit_displays();
 
-			get_hokum_display_viewpoint (get_view_mode ());
+			set_pilots_full_screen_params(FALSE);
 
-			draw_hokum_virtual_cockpit ();
+			get_hokum_display_viewpoint(get_view_mode ());
+
+			draw_hokum_virtual_cockpit();
 
 #if 0
 			draw_hokum_full_screen_display ();
@@ -2684,62 +2495,66 @@ void draw_virtual_cockpit_3d_display_view (void)
 
 			break;
 		}
-		////Moje 030518 Start
-		case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
+		case GUNSHIP_TYPE_BLACKHAWK:
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_blackhawk_internal_virtual_cockpit
-			(
-				VIRTUAL_COCKPIT_DISPLAY_VIEW |
-				VIRTUAL_COCKPIT_COCKPIT |
-				VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-				VIRTUAL_COCKPIT_RHS_MFD_DISPLAY
-			);
+			pre_render_blackhawk_virtual_cockpit_displays();
+
+			set_pilots_full_screen_params(FALSE);
+//VJ#
+			get_blackhawk_display_viewpoint(get_view_mode ());
+
+			draw_blackhawk_virtual_cockpit();
+
+#if 0
+			draw_blackhawk_full_screen_display ();
+#endif
 
 			break;
 		}
-		////Moje 030518 End
-		////Moje 030612 Start
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_HIND:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+			set_pilots_full_screen_params(FALSE);
 
 			draw_hind_internal_3d_cockpit(0);
 
 			break;
 		}
-		////Moje 030612 End
-		////Moje 030816 Start
+			////Moje 030612 End
+			////Moje 030816 Start
 		case GUNSHIP_TYPE_AH64A:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_ah64a_internal_virtual_cockpit
-			(
-				VIRTUAL_COCKPIT_DISPLAY_VIEW |
-				VIRTUAL_COCKPIT_COCKPIT |
-				VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-				VIRTUAL_COCKPIT_RHS_MFD_DISPLAY
-			);
+			set_pilots_full_screen_params(FALSE);
+
+			draw_ah64a_internal_virtual_cockpit(
+			VIRTUAL_COCKPIT_DISPLAY_VIEW |
+			VIRTUAL_COCKPIT_COCKPIT |
+			VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
+			VIRTUAL_COCKPIT_RHS_MFD_DISPLAY);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KA50:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_ka50_virtual_cockpit_displays ();
+		draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			pre_render_ka50_virtual_cockpit_displays();
 
-			get_ka50_display_viewpoint (get_view_mode ());
+			set_pilots_full_screen_params(FALSE);
 
-			draw_ka50_virtual_cockpit ();
+			get_ka50_display_viewpoint(get_view_mode ());
+
+			draw_ka50_virtual_cockpit();
 
 #if 0
 			draw_ka50_full_screen_display ();
@@ -2747,18 +2562,20 @@ void draw_virtual_cockpit_3d_display_view (void)
 
 			break;
 		}
-		////Moje 030816 End
-		////////////////////////////////////////
+			////Moje 030816 End
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_VIPER:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_viper_virtual_cockpit_displays ();
+		draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			pre_render_viper_virtual_cockpit_displays();
+
+			set_pilots_full_screen_params(FALSE);
 //VJ#
-			get_viper_display_viewpoint (get_view_mode ());
+			get_viper_display_viewpoint(get_view_mode ());
 
-			draw_viper_virtual_cockpit ();
+			draw_viper_virtual_cockpit();
 
 #if 0
 			draw_viper_full_screen_display ();
@@ -2766,17 +2583,19 @@ void draw_virtual_cockpit_3d_display_view (void)
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case GUNSHIP_TYPE_KIOWA:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			pre_render_kiowa_virtual_cockpit_displays ();
+		draw_main_3d_scene(&main_vp);
 
-			set_pilots_full_screen_params (FALSE);
+			pre_render_kiowa_virtual_cockpit_displays();
+
+			set_pilots_full_screen_params(FALSE);
 //VJ#
-			get_kiowa_display_viewpoint (get_view_mode ());
+			get_kiowa_display_viewpoint(get_view_mode ());
 
-			draw_kiowa_virtual_cockpit ();
+			draw_kiowa_virtual_cockpit();
 
 #if 0
 			draw_kiowa_full_screen_display ();
@@ -2784,359 +2603,321 @@ void draw_virtual_cockpit_3d_display_view (void)
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 
-		////////////////////////////////////////
-		// GCsDriver  08-12-2007
+			////////////////////////////////////////
+			// GCsDriver  08-12-2007
 		default:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			set_pilots_full_screen_params (FALSE);
+		draw_main_3d_scene(&main_vp);
 
-			draw_default_internal_virtual_cockpit
-			(
-				VIRTUAL_COCKPIT_DISPLAY_VIEW |
-				VIRTUAL_COCKPIT_COCKPIT |
-				VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
-				VIRTUAL_COCKPIT_RHS_MFD_DISPLAY
-			);
+			set_pilots_full_screen_params(FALSE);
+
+			draw_default_internal_virtual_cockpit(
+			VIRTUAL_COCKPIT_DISPLAY_VIEW |
+			VIRTUAL_COCKPIT_COCKPIT |
+			VIRTUAL_COCKPIT_LHS_MFD_DISPLAY |
+			VIRTUAL_COCKPIT_RHS_MFD_DISPLAY);
 
 			break;
 		}
 
-	}
+		}
 
-	//
-	// restore virtual cockpit 3D instance
-	//
+		//
+		// restore virtual cockpit 3D instance
+		//
 
 #ifndef OGRE_EE
-	specular_rendering_enabled = specular;
+		specular_rendering_enabled = specular;
 #endif
 
-	get_pilot_head_viewpoint ();
-}
+		get_pilot_head_viewpoint();
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void store_pilot_seat_values (void)
-{
-	#if DEBUG_MODULE_SEAT_SWITCHING
+	static void store_pilot_seat_values(void) {
+#if DEBUG_MODULE_SEAT_SWITCHING
 
-	debug_filtered_log ("store_pilot_seat_values");
+		debug_filtered_log ("store_pilot_seat_values");
 
-	#endif
+#endif
 
-	stored_pilot_head_heading = pilot_head_heading;
-	stored_pilot_head_pitch = pilot_head_pitch;
+		stored_pilot_head_heading = pilot_head_heading;
+		stored_pilot_head_pitch = pilot_head_pitch;
 
-	switch (get_view_mode ())
-	{
+		switch (get_view_mode ()) {
 		case VIEW_MODE_VIRTUAL_COCKPIT:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK:
 		case VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET:
 		case VIEW_MODE_VIRTUAL_COCKPIT_CREW:
 		case VIEW_MODE_VIRTUAL_COCKPIT_HUD:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
-		{
+		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY: {
 			stored_pilot_view_mode = get_view_mode ();
 
 			break;
 		}
-		default:
-		{
+		default: {
 			stored_pilot_view_mode = VIEW_MODE_VIRTUAL_COCKPIT;
 
 			break;
 		}
+		}
+
+		stored_pilot_padlock_mode = padlock_mode;
 	}
 
-	stored_pilot_padlock_mode = padlock_mode;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void restore_pilot_seat_values (void)
-{
-	#if DEBUG_MODULE_SEAT_SWITCHING
+	static void restore_pilot_seat_values(void) {
+#if DEBUG_MODULE_SEAT_SWITCHING
 
-	debug_filtered_log ("restore_pilot_seat_values");
+		debug_filtered_log ("restore_pilot_seat_values");
 
-	#endif
+#endif
 
-	pilot_head_heading = stored_pilot_head_heading;
-	pilot_head_pitch = stored_pilot_head_pitch;
+		pilot_head_heading = stored_pilot_head_heading;
+		pilot_head_pitch = stored_pilot_head_pitch;
 
-	if (stored_pilot_view_mode == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
-	{
-		//
-		// clear co-pilot padlock mode (if any) and set default mode (in case padlock not available)
-		//
+		if (stored_pilot_view_mode == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) {
+			//
+			// clear co-pilot padlock mode (if any) and set default mode (in case padlock not available)
+			//
 
-		set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT);
+			set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT);
 
-		select_padlock_view_event (stored_pilot_padlock_mode);
+			select_padlock_view_event(stored_pilot_padlock_mode);
+		} else if (!set_view_mode(stored_pilot_view_mode)) {
+			set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT);
+		}
 	}
-	else if (!set_view_mode (stored_pilot_view_mode))
-	{
-		set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT);
-	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void store_co_pilot_seat_values (void)
-{
-	#if DEBUG_MODULE_SEAT_SWITCHING
+	static void store_co_pilot_seat_values(void) {
+#if DEBUG_MODULE_SEAT_SWITCHING
 
-	debug_filtered_log ("store_co_pilot_seat_values");
+		debug_filtered_log ("store_co_pilot_seat_values");
 
-	#endif
+#endif
 
-	stored_co_pilot_head_heading = pilot_head_heading;
-	stored_co_pilot_head_pitch = pilot_head_pitch;
+		stored_co_pilot_head_heading = pilot_head_heading;
+		stored_co_pilot_head_pitch = pilot_head_pitch;
 
-	switch (get_view_mode ())
-	{
+		switch (get_view_mode ()) {
 		case VIEW_MODE_VIRTUAL_COCKPIT:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK:
 		case VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET:
 		case VIEW_MODE_VIRTUAL_COCKPIT_CREW:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PERISCOPE:
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
-		{
+		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY: {
 			stored_co_pilot_view_mode = get_view_mode ();
 
 			break;
 		}
-		default:
-		{
+		default: {
 			stored_co_pilot_view_mode = VIEW_MODE_VIRTUAL_COCKPIT;
 
 			break;
 		}
-	}
-
-	stored_co_pilot_padlock_mode = padlock_mode;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void restore_co_pilot_seat_values (void)
-{
-	#if DEBUG_MODULE_SEAT_SWITCHING
-
-	debug_filtered_log ("restore_co_pilot_seat_values");
-
-	#endif
-
-	pilot_head_heading = stored_co_pilot_head_heading;
-	pilot_head_pitch = stored_co_pilot_head_pitch;
-
-	if (stored_co_pilot_view_mode == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
-	{
-		//
-		// clear pilot padlock mode (if any) and set default mode (in case padlock not available)
-		//
-
-		set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT);
-
-		select_padlock_view_event (stored_co_pilot_padlock_mode);
-	}
-	else if (!set_view_mode (stored_co_pilot_view_mode))
-	{
-		set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void switch_seat_position (void)
-{
-	entity
-		*en;
-
-	ASSERT (get_gunship_entity ());
-
-	ASSERT (get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
-
-	if (get_time_acceleration () == 0)
-	{
-		return;
-	}
-
-	en = get_pilot_entity ();
-
-	ASSERT (en);
-
-	if (get_local_entity_int_value (en, INT_TYPE_CREW_ROLE) == CREW_ROLE_PILOT)
-	{
-		////////////////////////////////////////
-		//
-		// PILOT ---> CO-PILOT
-		//
-		////////////////////////////////////////
-
-		set_local_entity_int_value (en, INT_TYPE_CREW_ROLE, CREW_ROLE_CO_PILOT);
-
-		store_pilot_seat_values ();
-
-		restore_co_pilot_seat_values ();
-
-		switch (wide_cockpit_nr)
-		{
-		case WIDEVIEW_COMANCHE_PILOT:
-		case WIDEVIEW_HOKUM_PILOT:
-		case WIDEVIEW_APACHE_PILOT:
-		case WIDEVIEW_HIND_PILOT:
-		case WIDEVIEW_VIPER_PILOT:
-		case WIDEVIEW_KIOWA_PILOT:
-			wide_cockpit_nr++;  // swtiches to co-pilot
-			break;
-		default:
-			break;
 		}
 
-		// start periscope check by GCsDriver  08-12-2007
-	  	// as copilot is no longer periscopes default position it can already be active
-		if(command_line_pilot_as_periscope_default){
-	  	if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_PERISCOPE)
-	  	{
-			set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PERISCOPE);
-		}
-		}
-		// end periscope check by GCsDriver  08-12-2007
-
+		stored_co_pilot_padlock_mode = padlock_mode;
 	}
-	else
-	{
-		////////////////////////////////////////
-		//
-		// CO-PILOT ---> PILOT
-		//
-		////////////////////////////////////////
 
-		set_local_entity_int_value (en, INT_TYPE_CREW_ROLE, CREW_ROLE_PILOT);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		store_co_pilot_seat_values ();
+	static void restore_co_pilot_seat_values(void) {
+#if DEBUG_MODULE_SEAT_SWITCHING
 
-		restore_pilot_seat_values ();
+		debug_filtered_log ("restore_co_pilot_seat_values");
 
-		switch (wide_cockpit_nr)
-		{
-		case WIDEVIEW_COMANCHE_COPILOT:
-		case WIDEVIEW_HOKUM_COPILOT:
-		case WIDEVIEW_APACHE_COPILOT:
-		case WIDEVIEW_HIND_COPILOT:
-		case WIDEVIEW_VIPER_COPILOT:
-		case WIDEVIEW_KIOWA_COPILOT:
-			wide_cockpit_nr--;  // swtiches to pilot
-			break;
-		default:
-			break;
+#endif
+
+		pilot_head_heading = stored_co_pilot_head_heading;
+		pilot_head_pitch = stored_co_pilot_head_pitch;
+
+		if (stored_co_pilot_view_mode == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) {
+			//
+			// clear pilot padlock mode (if any) and set default mode (in case padlock not available)
+			//
+
+			set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT);
+
+			select_padlock_view_event(stored_co_pilot_padlock_mode);
+		} else if (!set_view_mode(stored_co_pilot_view_mode)) {
+			set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT);
 		}
 	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void set_pilot_seat_position (void)
-{
-	ASSERT (get_gunship_entity ());
+	void switch_seat_position(void) {
+		entity *en;
 
-	ASSERT (get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
+		ASSERT(get_gunship_entity ());
 
-	ASSERT (get_pilot_entity ());
+		ASSERT(
+				get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
 
-	if (get_time_acceleration () == 0)
+		if (get_time_acceleration() == 0) {
+			return;
+		}
+
+		en = get_pilot_entity ();
+
+		ASSERT(en);
+
+		if (get_local_entity_int_value(en, INT_TYPE_CREW_ROLE)
+				== CREW_ROLE_PILOT) {
+			////////////////////////////////////////
+			//
+			// PILOT ---> CO-PILOT
+			//
+			////////////////////////////////////////
+
+		set_local_entity_int_value(en, INT_TYPE_CREW_ROLE, CREW_ROLE_CO_PILOT);
+
+			store_pilot_seat_values();
+
+			restore_co_pilot_seat_values();
+
+			switch (wide_cockpit_nr) {
+			case WIDEVIEW_COMANCHE_PILOT:
+			case WIDEVIEW_HOKUM_PILOT:
+			case WIDEVIEW_APACHE_PILOT:
+			case WIDEVIEW_BLACKHAWK_PILOT:
+			case WIDEVIEW_HIND_PILOT:
+			case WIDEVIEW_VIPER_PILOT:
+			case WIDEVIEW_KIOWA_PILOT:
+				wide_cockpit_nr++;  // switches to co-pilot
+				break;
+			default:
+				break;
+			}
+
+			// start periscope check by GCsDriver  08-12-2007
+			// as copilot is no longer periscopes default position it can already be active
+			if (command_line_pilot_as_periscope_default) {
+				if (target_acquisition_system
+						== TARGET_ACQUISITION_SYSTEM_PERISCOPE) {
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT_PERISCOPE);
+				}
+			}
+			// end periscope check by GCsDriver  08-12-2007
+
+	} else // if (get_global_gunship_type () != GUNSHIP_TYPE_HIND)
 	{
-		return;
-	}
+			////////////////////////////////////////
+			//
+			// CO-PILOT ---> PILOT
+			//
+			////////////////////////////////////////
 
-	if (get_crew_role () == CREW_ROLE_PILOT)
-	{
-		if (!in_cockpit)
-		{
-			restore_pilot_seat_values ();
+			set_local_entity_int_value(en, INT_TYPE_CREW_ROLE, CREW_ROLE_PILOT);
+
+			store_co_pilot_seat_values();
+
+			restore_pilot_seat_values();
+
+			switch (wide_cockpit_nr) {
+			case WIDEVIEW_COMANCHE_COPILOT:
+			case WIDEVIEW_HOKUM_COPILOT:
+			case WIDEVIEW_APACHE_COPILOT:
+			case WIDEVIEW_HIND_COPILOT:
+			case WIDEVIEW_VIPER_COPILOT:
+			case WIDEVIEW_KIOWA_COPILOT:
+				wide_cockpit_nr--;  // swtiches to pilot
+				break;
+			default:
+				break;
+			}
 		}
 	}
-	else
-	{
-		switch_seat_position ();
-	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void set_co_pilot_seat_position (void)
-{
-	ASSERT (get_gunship_entity ());
+	void set_pilot_seat_position(void) {
+		ASSERT(get_gunship_entity ());
 
-	ASSERT (get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
+		ASSERT(
+				get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
 
-	ASSERT (get_pilot_entity ());
+		ASSERT(get_pilot_entity ());
 
-	if (get_time_acceleration () == 0)
-	{
-		return;
-	}
+		if (get_time_acceleration() == 0) {
+			return;
+		}
 
-	if (get_crew_role () == CREW_ROLE_CO_PILOT)
-	{
-		if (!in_cockpit)
-		{
-			restore_co_pilot_seat_values ();
+		if (get_crew_role() == CREW_ROLE_PILOT) {
+			if (!in_cockpit) {
+				restore_pilot_seat_values();
+			}
+		} else {
+			switch_seat_position();
 		}
 	}
-	else
-	{
-		switch_seat_position ();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void set_co_pilot_seat_position(void) {
+		ASSERT(get_gunship_entity ());
+
+		ASSERT(
+				get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
+
+		ASSERT(get_pilot_entity ());
+
+		if (get_time_acceleration() == 0) {
+			return;
+		}
+
+		if (get_crew_role() == CREW_ROLE_CO_PILOT) {
+			if (!in_cockpit) {
+				restore_co_pilot_seat_values();
+			}
+		} else {
+			switch_seat_position();
+		}
 	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void leave_seat_position (view_modes new_view_mode, view_modes old_view_mode)
-{
-	if (!in_cockpit_flags[new_view_mode] && in_cockpit_flags[old_view_mode])
-	{
-		if (get_gunship_entity ())
-		{
-			if (get_comanche_hokum_gunship ())
-			{
-				if (get_pilot_entity ())
-				{
-					if (get_crew_role () == CREW_ROLE_PILOT)
-					{
-						store_pilot_seat_values ();
-					}
-					else
-					{
-						store_co_pilot_seat_values ();
+	void leave_seat_position(view_modes new_view_mode, view_modes old_view_mode) {
+	if (!in_cockpit_flags[new_view_mode] && in_cockpit_flags[old_view_mode]) {
+			if (get_gunship_entity ()) {
+				if (get_comanche_hokum_gunship ()) {
+					if (get_pilot_entity ()) {
+						if (get_crew_role() == CREW_ROLE_PILOT) {
+							store_pilot_seat_values();
+						} else {
+							store_co_pilot_seat_values();
+						}
 					}
 				}
 			}
 		}
 	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3148,10 +2929,9 @@ void leave_seat_position (view_modes new_view_mode, view_modes old_view_mode)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-padlock_modes get_padlock_mode (void)
-{
-	return (padlock_mode);
-}
+	padlock_modes get_padlock_mode(void) {
+		return (padlock_mode);
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3161,811 +2941,705 @@ padlock_modes get_padlock_mode (void)
 // invoked via set_view_mode ()
 //
 
-void leave_padlock_view (void)
-{
-	if (get_gunship_entity ())
-	{
-		unlink_local_entity_children (get_gunship_entity (), LIST_TYPE_PADLOCK);
+	void leave_padlock_view(void) {
+		if (get_gunship_entity ()) {
+		unlink_local_entity_children(get_gunship_entity (), LIST_TYPE_PADLOCK);
+		}
+
+		padlock_mode = PADLOCK_MODE_NONE;
 	}
 
-	padlock_mode = PADLOCK_MODE_NONE;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void display_padlock_message (padlock_modes mode)
-{
-	char
-		s[200];
+	static void display_padlock_message(padlock_modes mode) {
+		char s[200];
 
-	switch (mode)
-	{
+		switch (mode) {
 		////////////////////////////////////////
 		case PADLOCK_MODE_NONE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			debug_fatal ("Invalid padlock mode = PADLOCK_MODE_NONE");
+			debug_fatal("Invalid padlock mode = PADLOCK_MODE_NONE");
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_WINGMAN:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			char
-				pilot_name[200];
+			char pilot_name[200];
 
-			entity
-				*wingman,
-				*group,
-				*pilot;
+			entity *wingman, *group, *pilot;
 
-			wingman = get_local_entity_first_child (get_gunship_entity (), LIST_TYPE_PADLOCK);
+			wingman = get_local_entity_first_child(get_gunship_entity (),
+					LIST_TYPE_PADLOCK);
 
-			ASSERT (wingman);
+			ASSERT(wingman);
 
-			group = get_local_entity_parent (wingman, LIST_TYPE_MEMBER);
+			group = get_local_entity_parent(wingman, LIST_TYPE_MEMBER);
 
-			if (group)
-			{
-				sprintf (s, "%s %s 1-%d", get_trans ("Padlock wingman"), get_local_entity_string (group, STRING_TYPE_GROUP_CALLSIGN), get_local_entity_int_value (wingman, INT_TYPE_GROUP_MEMBER_ID));
+			if (group) {
+				sprintf(s, "%s %s 1-%d", get_trans("Padlock wingman"),
+					get_local_entity_string(group, STRING_TYPE_GROUP_CALLSIGN),
+						get_local_entity_int_value(wingman,
+								INT_TYPE_GROUP_MEMBER_ID));
 
-				if (get_local_entity_int_value (wingman, INT_TYPE_PLAYER) != ENTITY_PLAYER_AI)
-				{
-					pilot = get_local_entity_first_child (wingman, LIST_TYPE_AIRCREW);
+				if (get_local_entity_int_value(wingman, INT_TYPE_PLAYER)
+						!= ENTITY_PLAYER_AI) {
+					pilot = get_local_entity_first_child(wingman,
+							LIST_TYPE_AIRCREW);
 
-					while (pilot)
-					{
-						sprintf (pilot_name, " (%s)", get_local_entity_string (pilot, STRING_TYPE_PILOTS_NAME));
+					while (pilot) {
+						sprintf(pilot_name, " (%s)",
+								get_local_entity_string(pilot,
+										STRING_TYPE_PILOTS_NAME));
 
-						strcat (s, pilot_name);
+						strcat(s, pilot_name);
 
-						pilot = get_local_entity_child_succ (pilot, LIST_TYPE_AIRCREW);
+						pilot = get_local_entity_child_succ(pilot,
+								LIST_TYPE_AIRCREW);
 					}
 				}
 
-				set_status_message (s, STATUS_MESSAGE_TYPE_NONE);
-			}
-			else
-			{
-				set_status_message (get_trans ("Padlock wingman"), STATUS_MESSAGE_TYPE_NONE);
+				set_status_message(s, STATUS_MESSAGE_TYPE_NONE);
+			} else {
+				set_status_message(get_trans("Padlock wingman"),
+						STATUS_MESSAGE_TYPE_NONE);
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_AIR_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			entity
-				*air_threat;
+			entity *air_threat;
 
-			air_threat = get_local_entity_first_child (get_gunship_entity (), LIST_TYPE_PADLOCK);
+			air_threat = get_local_entity_first_child(get_gunship_entity (),
+					LIST_TYPE_PADLOCK);
 
-			ASSERT (air_threat);
+			ASSERT(air_threat);
 
-			sprintf (s, "%s %s", get_trans ("Padlock air threat"), get_local_entity_string (air_threat, STRING_TYPE_FULL_NAME));
+			sprintf(s, "%s %s", get_trans("Padlock air threat"),
+					get_local_entity_string(air_threat, STRING_TYPE_FULL_NAME));
 
-			set_status_message (s, STATUS_MESSAGE_TYPE_NONE);
+			set_status_message(s, STATUS_MESSAGE_TYPE_NONE);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_GROUND_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			entity
-				*ground_threat;
+			entity *ground_threat;
 
-			ground_threat = get_local_entity_first_child (get_gunship_entity (), LIST_TYPE_PADLOCK);
+			ground_threat = get_local_entity_first_child(get_gunship_entity (),
+					LIST_TYPE_PADLOCK);
 
-			ASSERT (ground_threat);
+			ASSERT(ground_threat);
 
-			sprintf (s, "%s %s", get_trans ("Padlock ground threat"), get_local_entity_string (ground_threat, STRING_TYPE_FULL_NAME));
+			sprintf(s, "%s %s", get_trans("Padlock ground threat"),
+				get_local_entity_string(ground_threat, STRING_TYPE_FULL_NAME));
 
-			set_status_message (s, STATUS_MESSAGE_TYPE_NONE);
+			set_status_message(s, STATUS_MESSAGE_TYPE_NONE);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_MISSILE_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			entity
-				*incoming;
+			entity *incoming;
 
-			incoming = get_local_entity_first_child (get_gunship_entity (), LIST_TYPE_PADLOCK);
+			incoming = get_local_entity_first_child(get_gunship_entity (),
+					LIST_TYPE_PADLOCK);
 
-			ASSERT (incoming);
+			ASSERT(incoming);
 
-			sprintf (s, "%s %s", get_trans ("Padlock incoming"), get_local_entity_string (incoming, STRING_TYPE_FULL_NAME));
+			sprintf(s, "%s %s", get_trans("Padlock incoming"),
+					get_local_entity_string(incoming, STRING_TYPE_FULL_NAME));
 
-			set_status_message (s, STATUS_MESSAGE_TYPE_NONE);
+			set_status_message(s, STATUS_MESSAGE_TYPE_NONE);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_WAYPOINT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			entity
-				*waypoint;
+			entity *waypoint;
 
-			waypoint = get_local_entity_current_waypoint (get_gunship_entity ());
+			waypoint = get_local_entity_current_waypoint(get_gunship_entity ());
 
-			ASSERT (waypoint);
+			ASSERT(waypoint);
 
-			sprintf (s, "%s '%c'", get_trans ("Padlock waypoint"), get_local_entity_char_value (waypoint, CHAR_TYPE_TAG));
+			sprintf(s, "%s '%c'", get_trans("Padlock waypoint"),
+					get_local_entity_char_value(waypoint, CHAR_TYPE_TAG));
 
-			set_status_message (s, STATUS_MESSAGE_TYPE_NONE);
+			set_status_message(s, STATUS_MESSAGE_TYPE_NONE);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		default:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			debug_fatal ("Invalid padlock mode = %d", mode);
+			debug_fatal("Invalid padlock mode = %d", mode);
 
 			break;
 		}
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static int get_valid_wingman (entity *wingman)
-{
-	ASSERT (wingman);
-
-	if (get_local_entity_int_value (wingman, INT_TYPE_VIEWABLE))
-	{
-		if (wingman != get_gunship_entity ())
-		{
-			return (TRUE);
 		}
 	}
 
-	return (FALSE);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static entity *get_first_wingman (void)
-{
-	entity
-		*source,
-		*group,
-		*wingman;
+	static int get_valid_wingman(entity *wingman) {
+		ASSERT(wingman);
 
-	source = get_gunship_entity ();
-
-	ASSERT (source);
-
-	group = get_local_entity_parent (source, LIST_TYPE_MEMBER);
-
-	if (group)
-	{
-		wingman = get_local_entity_first_child (group, LIST_TYPE_MEMBER);
-
-		while (wingman)
-		{
-			if (get_valid_wingman (wingman))
-			{
-				break;
+		if (get_local_entity_int_value(wingman, INT_TYPE_VIEWABLE)) {
+			if (wingman != get_gunship_entity ()) {
+				return (TRUE);
 			}
-
-			wingman = get_local_entity_child_succ (wingman, LIST_TYPE_MEMBER);
 		}
-	}
-	else
-	{
-		wingman = NULL;
-	}
 
-	return (wingman);
-}
+		return (FALSE);
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static entity *get_next_wingman (void)
-{
-	entity
-		*source,
-		*group,
-		*wingman;
+	static entity *get_first_wingman(void) {
+		entity *source, *group, *wingman;
 
-	source = get_gunship_entity ();
+		source = get_gunship_entity ();
 
-	ASSERT (source);
+		ASSERT(source);
 
-	wingman = get_local_entity_first_child (source, LIST_TYPE_PADLOCK);
+		group = get_local_entity_parent(source, LIST_TYPE_MEMBER);
 
-	//
-	// check wingman is still a wingman
-	//
+		if (group) {
+			wingman = get_local_entity_first_child(group, LIST_TYPE_MEMBER);
 
-	if (wingman)
-	{
-		if (get_local_entity_parent (wingman, LIST_TYPE_MEMBER) != get_local_entity_parent (source, LIST_TYPE_MEMBER))
-		{
-			wingman = NULL;
-		}
-	}
-
-	//
-	// find next wingman in list
-	//
-
-	if (wingman)
-	{
-		wingman = get_local_entity_child_succ (wingman, LIST_TYPE_MEMBER);
-
-		while (wingman)
-		{
-			if (get_valid_wingman (wingman))
-			{
-				break;
-			}
-
-			wingman = get_local_entity_child_succ (wingman, LIST_TYPE_MEMBER);
-		}
-	}
-
-	//
-	// find first wingman in list
-	//
-
-	if (!wingman)
-	{
-		group = get_local_entity_parent (source, LIST_TYPE_MEMBER);
-
-		if (group)
-		{
-			wingman = get_local_entity_first_child (group, LIST_TYPE_MEMBER);
-
-			while (wingman)
-			{
-				if (get_valid_wingman (wingman))
-				{
+			while (wingman) {
+				if (get_valid_wingman(wingman)) {
 					break;
 				}
 
-				wingman = get_local_entity_child_succ (wingman, LIST_TYPE_MEMBER);
+			wingman = get_local_entity_child_succ(wingman, LIST_TYPE_MEMBER);
 			}
+		} else {
+			wingman = NULL;
 		}
+
+		return (wingman);
 	}
 
-	return (wingman);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static int get_valid_air_threat (entity *threat, entity_sides source_side)
-{
-	ASSERT (threat);
+	static entity *get_next_wingman(void) {
+		entity *source, *group, *wingman;
 
-	if (get_local_entity_int_value (threat, INT_TYPE_IDENTIFY_AIRCRAFT))
-	{
-		if (get_local_entity_int_value (threat, INT_TYPE_VIEWABLE))
-		{
-			if (source_side != get_local_entity_int_value (threat, INT_TYPE_SIDE))
-			{
-				return (TRUE);
-			}
-		}
-	}
+		source = get_gunship_entity ();
 
-	return (FALSE);
-}
+		ASSERT(source);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		wingman = get_local_entity_first_child(source, LIST_TYPE_PADLOCK);
 
-static entity *get_first_air_threat (void)
-{
-	entity
-		*source,
-		*threat,
-		*closest_threat;
+		//
+		// check wingman is still a wingman
+		//
 
-	entity_sides
-		source_side;
-
-	float
-		range,
-		closest_threat_range;
-
-	vec3d
-		*source_position,
-		*threat_position;
-
-	source = get_gunship_entity ();
-
-	ASSERT (source);
-
-	source_side = (entity_sides) get_local_entity_int_value (source, INT_TYPE_SIDE);
-
-	source_position = get_local_entity_vec3d_ptr (source, VEC3D_TYPE_POSITION);
-
-	closest_threat = NULL;
-
-	closest_threat_range = FLT_MAX;
-
-	threat = get_local_entity_first_child (source, LIST_TYPE_TARGET);
-
-	while (threat)
-	{
-		if (get_valid_air_threat (threat, source_side))
-		{
-			threat_position = get_local_entity_vec3d_ptr (threat, VEC3D_TYPE_POSITION);
-
-			range = get_sqr_3d_range (source_position, threat_position);
-
-			if (range < closest_threat_range)
-			{
-				closest_threat = threat;
-
-				closest_threat_range = range;
+		if (wingman) {
+			if (get_local_entity_parent(wingman,
+					LIST_TYPE_MEMBER) != get_local_entity_parent (source, LIST_TYPE_MEMBER)) {
+				wingman = NULL;
 			}
 		}
 
-		threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-	}
+		//
+		// find next wingman in list
+		//
 
-	return (closest_threat);
-}
+		if (wingman) {
+			wingman = get_local_entity_child_succ(wingman, LIST_TYPE_MEMBER);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			while (wingman) {
+				if (get_valid_wingman(wingman)) {
+					break;
+				}
 
-static entity *get_next_air_threat (void)
-{
-	entity
-		*source,
-		*threat;
-
-	entity_sides
-		source_side;
-
-	source = get_gunship_entity ();
-
-	ASSERT (source);
-
-	source_side = (entity_sides) get_local_entity_int_value (source, INT_TYPE_SIDE);
-
-	threat = get_local_entity_first_child (source, LIST_TYPE_PADLOCK);
-
-	//
-	// check threat is still a threat
-	//
-
-	if (threat)
-	{
-		if (get_local_entity_parent (threat, LIST_TYPE_TARGET) != source)
-		{
-			threat = NULL;
-		}
-	}
-
-	//
-	// find next threat in list
-	//
-
-	if (threat)
-	{
-		threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-
-		while (threat)
-		{
-			if (get_valid_air_threat (threat, source_side))
-			{
-				break;
-			}
-
-			threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-		}
-	}
-
-	//
-	// find first threat in list
-	//
-
-	if (!threat)
-	{
-		threat = get_local_entity_first_child (source, LIST_TYPE_TARGET);
-
-		while (threat)
-		{
-			if (get_valid_air_threat (threat, source_side))
-			{
-				break;
-			}
-
-			threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-		}
-	}
-
-	return (threat);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static int get_valid_ground_threat (entity *threat, entity_sides source_side)
-{
-	ASSERT (threat);
-
-	if (get_local_entity_int_value (threat, INT_TYPE_IDENTIFY_VEHICLE))
-	{
-		if (get_local_entity_int_value (threat, INT_TYPE_VIEWABLE))
-		{
-			if (source_side != get_local_entity_int_value (threat, INT_TYPE_SIDE))
-			{
-				return (TRUE);
-			}
-		}
-	}
-
-	return (FALSE);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static entity *get_first_ground_threat (void)
-{
-	entity
-		*source,
-		*threat,
-		*closest_threat;
-
-	entity_sides
-		source_side;
-
-	float
-		range,
-		closest_threat_range;
-
-	vec3d
-		*source_position,
-		*threat_position;
-
-	source = get_gunship_entity ();
-
-	ASSERT (source);
-
-	source_side = (entity_sides) get_local_entity_int_value (source, INT_TYPE_SIDE);
-
-	source_position = get_local_entity_vec3d_ptr (source, VEC3D_TYPE_POSITION);
-
-	closest_threat = NULL;
-
-	closest_threat_range = FLT_MAX;
-
-	threat = get_local_entity_first_child (source, LIST_TYPE_TARGET);
-
-	while (threat)
-	{
-		if (get_valid_ground_threat (threat, source_side))
-		{
-			threat_position = get_local_entity_vec3d_ptr (threat, VEC3D_TYPE_POSITION);
-
-			range = get_sqr_3d_range (source_position, threat_position);
-
-			if (range < closest_threat_range)
-			{
-				closest_threat = threat;
-
-				closest_threat_range = range;
+			wingman = get_local_entity_child_succ(wingman, LIST_TYPE_MEMBER);
 			}
 		}
 
-		threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-	}
+		//
+		// find first wingman in list
+		//
 
-	return (closest_threat);
-}
+		if (!wingman) {
+			group = get_local_entity_parent(source, LIST_TYPE_MEMBER);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (group) {
+				wingman = get_local_entity_first_child(group, LIST_TYPE_MEMBER);
 
-static entity *get_next_ground_threat (void)
-{
-	entity
-		*source,
-		*threat;
+				while (wingman) {
+					if (get_valid_wingman(wingman)) {
+						break;
+					}
 
-	entity_sides
-		source_side;
-
-	source = get_gunship_entity ();
-
-	ASSERT (source);
-
-	source_side = (entity_sides) get_local_entity_int_value (source, INT_TYPE_SIDE);
-
-	threat = get_local_entity_first_child (source, LIST_TYPE_PADLOCK);
-
-	//
-	// check threat is still a threat
-	//
-
-	if (threat)
-	{
-		if (get_local_entity_parent (threat, LIST_TYPE_TARGET) != source)
-		{
-			threat = NULL;
+					wingman = get_local_entity_child_succ(wingman,
+							LIST_TYPE_MEMBER);
+				}
+			}
 		}
+
+		return (wingman);
 	}
 
-	//
-	// find next threat in list
-	//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if (threat)
-	{
-		threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
+	static int get_valid_air_threat(entity *threat, entity_sides source_side) {
+		ASSERT(threat);
 
-		while (threat)
-		{
-			if (get_valid_ground_threat (threat, source_side))
-			{
-				break;
+		if (get_local_entity_int_value(threat, INT_TYPE_IDENTIFY_AIRCRAFT)) {
+			if (get_local_entity_int_value(threat, INT_TYPE_VIEWABLE)) {
+			if (source_side != get_local_entity_int_value(threat, INT_TYPE_SIDE)) {
+					return (TRUE);
+				}
+			}
+		}
+
+		return (FALSE);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	static entity *get_first_air_threat(void) {
+		entity *source, *threat, *closest_threat;
+
+		entity_sides source_side;
+
+		float range, closest_threat_range;
+
+		vec3d *source_position, *threat_position;
+
+		source = get_gunship_entity ();
+
+		ASSERT(source);
+
+		source_side = (entity_sides) get_local_entity_int_value(source,
+				INT_TYPE_SIDE);
+
+	source_position = get_local_entity_vec3d_ptr(source, VEC3D_TYPE_POSITION);
+
+		closest_threat = NULL;
+
+		closest_threat_range = FLT_MAX;
+
+		threat = get_local_entity_first_child(source, LIST_TYPE_TARGET);
+
+		while (threat) {
+			if (get_valid_air_threat(threat, source_side)) {
+				threat_position = get_local_entity_vec3d_ptr(threat,
+						VEC3D_TYPE_POSITION);
+
+				range = get_sqr_3d_range(source_position, threat_position);
+
+				if (range < closest_threat_range) {
+					closest_threat = threat;
+
+					closest_threat_range = range;
+				}
 			}
 
-			threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
+			threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
 		}
+
+		return (closest_threat);
 	}
 
-	//
-	// find first threat in list
-	//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if (!threat)
-	{
-		threat = get_local_entity_first_child (source, LIST_TYPE_TARGET);
+	static entity *get_next_air_threat(void) {
+		entity *source, *threat;
 
-		while (threat)
-		{
-			if (get_valid_ground_threat (threat, source_side))
-			{
-				break;
+		entity_sides source_side;
+
+		source = get_gunship_entity ();
+
+		ASSERT(source);
+
+		source_side = (entity_sides) get_local_entity_int_value(source,
+				INT_TYPE_SIDE);
+
+		threat = get_local_entity_first_child(source, LIST_TYPE_PADLOCK);
+
+		//
+		// check threat is still a threat
+		//
+
+		if (threat) {
+			if (get_local_entity_parent (threat, LIST_TYPE_TARGET) != source) {
+				threat = NULL;
+			}
+		}
+
+		//
+		// find next threat in list
+		//
+
+		if (threat) {
+			threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+
+			while (threat) {
+				if (get_valid_air_threat(threat, source_side)) {
+					break;
+				}
+
+				threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+			}
+		}
+
+		//
+		// find first threat in list
+		//
+
+		if (!threat) {
+			threat = get_local_entity_first_child(source, LIST_TYPE_TARGET);
+
+			while (threat) {
+				if (get_valid_air_threat(threat, source_side)) {
+					break;
+				}
+
+				threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+			}
+		}
+
+		return (threat);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	static int get_valid_ground_threat(entity *threat, entity_sides source_side) {
+		ASSERT(threat);
+
+		if (get_local_entity_int_value(threat, INT_TYPE_IDENTIFY_VEHICLE)) {
+			if (get_local_entity_int_value(threat, INT_TYPE_VIEWABLE)) {
+			if (source_side != get_local_entity_int_value(threat, INT_TYPE_SIDE)) {
+					return (TRUE);
+				}
+			}
+		}
+
+		return (FALSE);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	static entity *get_first_ground_threat(void) {
+		entity *source, *threat, *closest_threat;
+
+		entity_sides source_side;
+
+		float range, closest_threat_range;
+
+		vec3d *source_position, *threat_position;
+
+		source = get_gunship_entity ();
+
+		ASSERT(source);
+
+		source_side = (entity_sides) get_local_entity_int_value(source,
+				INT_TYPE_SIDE);
+
+	source_position = get_local_entity_vec3d_ptr(source, VEC3D_TYPE_POSITION);
+
+		closest_threat = NULL;
+
+		closest_threat_range = FLT_MAX;
+
+		threat = get_local_entity_first_child(source, LIST_TYPE_TARGET);
+
+		while (threat) {
+			if (get_valid_ground_threat(threat, source_side)) {
+				threat_position = get_local_entity_vec3d_ptr(threat,
+						VEC3D_TYPE_POSITION);
+
+				range = get_sqr_3d_range(source_position, threat_position);
+
+				if (range < closest_threat_range) {
+					closest_threat = threat;
+
+					closest_threat_range = range;
+				}
 			}
 
-			threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
+			threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
 		}
+
+		return (closest_threat);
 	}
 
-	return (threat);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static int get_valid_missile_threat (entity *threat)
-{
-	ASSERT (threat);
+	static entity *get_next_ground_threat(void) {
+		entity *source, *threat;
 
-	if (get_local_entity_int_value (threat, INT_TYPE_VIEWABLE_WEAPON))
-	{
-		return (TRUE);
+		entity_sides source_side;
+
+		source = get_gunship_entity ();
+
+		ASSERT(source);
+
+		source_side = (entity_sides) get_local_entity_int_value(source,
+				INT_TYPE_SIDE);
+
+		threat = get_local_entity_first_child(source, LIST_TYPE_PADLOCK);
+
+		//
+		// check threat is still a threat
+		//
+
+		if (threat) {
+			if (get_local_entity_parent (threat, LIST_TYPE_TARGET) != source) {
+				threat = NULL;
+			}
+		}
+
+		//
+		// find next threat in list
+		//
+
+		if (threat) {
+			threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+
+			while (threat) {
+				if (get_valid_ground_threat(threat, source_side)) {
+					break;
+				}
+
+				threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+			}
+		}
+
+		//
+		// find first threat in list
+		//
+
+		if (!threat) {
+			threat = get_local_entity_first_child(source, LIST_TYPE_TARGET);
+
+			while (threat) {
+				if (get_valid_ground_threat(threat, source_side)) {
+					break;
+				}
+
+				threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+			}
+		}
+
+		return (threat);
 	}
 
-	return (FALSE);
-}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	static int get_valid_missile_threat(entity *threat) {
+		ASSERT(threat);
+
+		if (get_local_entity_int_value(threat, INT_TYPE_VIEWABLE_WEAPON)) {
+			return (TRUE);
+		}
+
+		return (FALSE);
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static entity *get_first_missile_threat (void)
-{
-	entity
-		*source,
-		*threat,
-		*closest_missile;
+	static entity *get_first_missile_threat(void) {
+		entity *source, *threat, *closest_missile;
 
-	int
-		overshot;
+		int overshot;
 
-	float
-		threat_range,
-		threat_velocity,
-		time_to_impact,
-		closest_missile_time_to_impact,
-		length,
-		cos_error;
+		float threat_range, threat_velocity, time_to_impact,
+				closest_missile_time_to_impact, length, cos_error;
 
-	vec3d
-		*source_position,
-		*threat_position,
-		uvec_threat_to_target;
+		vec3d *source_position, *threat_position, uvec_threat_to_target;
 
-	matrix3x3
-		*attitude;
+		matrix3x3 *attitude;
 
-	source = get_gunship_entity ();
+		source = get_gunship_entity ();
 
-	ASSERT (source);
+		ASSERT(source);
 
-	source_position = get_local_entity_vec3d_ptr (source, VEC3D_TYPE_POSITION);
+	source_position = get_local_entity_vec3d_ptr(source, VEC3D_TYPE_POSITION);
 
-	closest_missile = NULL;
+		closest_missile = NULL;
 
-	closest_missile_time_to_impact = 1000000.0;
+		closest_missile_time_to_impact = 1000000.0;
 
-	threat = get_local_entity_first_child (get_gunship_entity (), LIST_TYPE_TARGET);
+		threat = get_local_entity_first_child(get_gunship_entity (),
+				LIST_TYPE_TARGET);
 
-	while (threat)
-	{
-		if (get_valid_missile_threat (threat))
-		{
-			threat_position = get_local_entity_vec3d_ptr (threat, VEC3D_TYPE_POSITION);
+		while (threat) {
+			if (get_valid_missile_threat(threat)) {
+				threat_position = get_local_entity_vec3d_ptr(threat,
+						VEC3D_TYPE_POSITION);
 
-			threat_range = get_3d_range (source_position, threat_position);
+				threat_range = get_3d_range(source_position, threat_position);
 
-			threat_velocity = get_local_entity_float_value (threat, FLOAT_TYPE_VELOCITY);
+				threat_velocity = get_local_entity_float_value(threat,
+						FLOAT_TYPE_VELOCITY);
 
-			time_to_impact = threat_range / max (threat_velocity, 1.0f);
+				time_to_impact = threat_range / max(threat_velocity, 1.0f);
 
-			//
-			// guard against 'overshot target' to prevent spurious indications
-			//
+				//
+				// guard against 'overshot target' to prevent spurious indications
+				//
 
-			overshot = FALSE;
+				overshot = FALSE;
 
-			if (time_to_impact < 1.0)
-			{
-				uvec_threat_to_target.x = source_position->x - threat_position->x;
-				uvec_threat_to_target.y = source_position->y - threat_position->y;
-				uvec_threat_to_target.z = source_position->z - threat_position->z;
+				if (time_to_impact < 1.0) {
+					uvec_threat_to_target.x = source_position->x
+							- threat_position->x;
+					uvec_threat_to_target.y = source_position->y
+							- threat_position->y;
+					uvec_threat_to_target.z = source_position->z
+							- threat_position->z;
 
-				length = get_3d_vector_magnitude (&uvec_threat_to_target);
+					length = get_3d_vector_magnitude(&uvec_threat_to_target);
 
-				if (length > 1.0)
-				{
-					normalise_3d_vector_given_magnitude (&uvec_threat_to_target, length);
+					if (length > 1.0) {
+					normalise_3d_vector_given_magnitude(&uvec_threat_to_target,
+							length);
 
-					attitude = get_local_entity_attitude_matrix_ptr (threat);
+						attitude = get_local_entity_attitude_matrix_ptr(threat);
 
-					cos_error = get_3d_unit_vector_dot_product ((vec3d *) &((*attitude) [2][0]), &uvec_threat_to_target);
+						cos_error = get_3d_unit_vector_dot_product(
+								(vec3d *) &((*attitude)[2][0]),
+								&uvec_threat_to_target);
 
-					if (cos_error < 0.0)
-					{
+						if (cos_error < 0.0) {
+							overshot = TRUE;
+						}
+					} else {
 						overshot = TRUE;
 					}
 				}
-				else
-				{
-					overshot = TRUE;
+
+				if (!overshot) {
+					if (time_to_impact < closest_missile_time_to_impact) {
+						closest_missile = threat;
+
+						closest_missile_time_to_impact = time_to_impact;
+					}
 				}
 			}
 
-			if (!overshot)
-			{
-				if (time_to_impact < closest_missile_time_to_impact)
-				{
-					closest_missile = threat;
+			threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+		}
 
-					closest_missile_time_to_impact = time_to_impact;
+		return (closest_missile);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	static entity *get_next_missile_threat(void) {
+		entity *source, *threat;
+
+		source = get_gunship_entity ();
+
+		ASSERT(source);
+
+		threat = get_local_entity_first_child(source, LIST_TYPE_PADLOCK);
+
+		//
+		// check threat is still a threat
+		//
+
+		if (threat) {
+			if (get_local_entity_parent (threat, LIST_TYPE_TARGET) != source) {
+				threat = NULL;
+			}
+		}
+
+		//
+		// find next threat in list
+		//
+
+		if (threat) {
+			threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
+
+			while (threat) {
+				if (get_valid_missile_threat(threat)) {
+					break;
 				}
+
+				threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
 			}
 		}
 
-		threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-	}
+		//
+		// find first threat in list
+		//
 
-	return (closest_missile);
-}
+		if (!threat) {
+			threat = get_local_entity_first_child(source, LIST_TYPE_TARGET);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			while (threat) {
+				if (get_valid_missile_threat(threat)) {
+					break;
+				}
 
-static entity *get_next_missile_threat (void)
-{
-	entity
-		*source,
-		*threat;
-
-	source = get_gunship_entity ();
-
-	ASSERT (source);
-
-	threat = get_local_entity_first_child (source, LIST_TYPE_PADLOCK);
-
-	//
-	// check threat is still a threat
-	//
-
-	if (threat)
-	{
-		if (get_local_entity_parent (threat, LIST_TYPE_TARGET) != source)
-		{
-			threat = NULL;
-		}
-	}
-
-	//
-	// find next threat in list
-	//
-
-	if (threat)
-	{
-		threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-
-		while (threat)
-		{
-			if (get_valid_missile_threat (threat))
-			{
-				break;
+				threat = get_local_entity_child_succ(threat, LIST_TYPE_TARGET);
 			}
-
-			threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
 		}
+
+		return (threat);
 	}
 
-	//
-	// find first threat in list
-	//
-
-	if (!threat)
-	{
-		threat = get_local_entity_first_child (source, LIST_TYPE_TARGET);
-
-		while (threat)
-		{
-			if (get_valid_missile_threat (threat))
-			{
-				break;
-			}
-
-			threat = get_local_entity_child_succ (threat, LIST_TYPE_TARGET);
-		}
-	}
-
-	return (threat);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void select_padlock_view_event (padlock_modes mode)
-{
-	entity
-		*source,
-		*target;
+	void select_padlock_view_event(padlock_modes mode) {
+		entity *source, *target;
 
-	source = get_gunship_entity ();
+		source = get_gunship_entity ();
 
-	ASSERT (source);
+		ASSERT(source);
 
-	switch (mode)
-	{
+		switch (mode) {
 		////////////////////////////////////////
 		case PADLOCK_MODE_NONE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET)
-			{
+			if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET) {
 				//
 				// padlock target is handled via VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET
 				//
@@ -3985,11 +3659,9 @@ void select_padlock_view_event (padlock_modes mode)
 				else
 #endif
 				{
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT);
 				}
-			}
-			else if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
-			{
+			} else if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) {
 				//
 				// cancel padlock
 				//
@@ -4010,321 +3682,288 @@ void select_padlock_view_event (padlock_modes mode)
 					// leave_padlock_view () tidies up padlock list and mode
 					//
 
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT);
 				}
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_WINGMAN:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) && (padlock_mode == PADLOCK_MODE_WINGMAN))
-			{
+			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
+					&& (padlock_mode == PADLOCK_MODE_WINGMAN)) {
 				//
 				// padlock next wingman
 				//
 
-				target = get_next_wingman ();
+				target = get_next_wingman();
 
-				if (target)
-				{
-					unlink_local_entity_children (source, LIST_TYPE_PADLOCK);
+				if (target) {
+					unlink_local_entity_children(source, LIST_TYPE_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
-			}
-			else
-			{
+			} else {
 				//
 				// padlock first wingman
 				//
 
-				target = get_first_wingman ();
+				target = get_first_wingman();
 
-				if (target)
-				{
+				if (target) {
 					//
 					// leave_padlock_view () tidies up padlock list and mode
 					//
 
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
 					padlock_mode = mode;
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_AIR_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) && (padlock_mode == PADLOCK_MODE_AIR_THREAT))
-			{
+			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
+					&& (padlock_mode == PADLOCK_MODE_AIR_THREAT)) {
 				//
 				// padlock next air threat
 				//
 
-				target = get_next_air_threat ();
+				target = get_next_air_threat();
 
-				if (target)
-				{
-					unlink_local_entity_children (source, LIST_TYPE_PADLOCK);
+				if (target) {
+					unlink_local_entity_children(source, LIST_TYPE_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
-			}
-			else
-			{
+			} else {
 				//
 				// padlock first air threat
 				//
 
-				target = get_first_air_threat ();
+				target = get_first_air_threat();
 
-				if (target)
-				{
+				if (target) {
 					//
 					// leave_padlock_view () tidies up padlock list and mode
 					//
 
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
 					padlock_mode = mode;
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_GROUND_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) && (padlock_mode == PADLOCK_MODE_GROUND_THREAT))
-			{
+			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
+					&& (padlock_mode == PADLOCK_MODE_GROUND_THREAT)) {
 				//
 				// padlock next ground threat
 				//
 
-				target = get_next_ground_threat ();
+				target = get_next_ground_threat();
 
-				if (target)
-				{
-					unlink_local_entity_children (source, LIST_TYPE_PADLOCK);
+				if (target) {
+					unlink_local_entity_children(source, LIST_TYPE_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
-			}
-			else
-			{
+			} else {
 				//
 				// padlock first ground threat
 				//
 
-				target = get_first_ground_threat ();
+				target = get_first_ground_threat();
 
-				if (target)
-				{
+				if (target) {
 					//
 					// leave_padlock_view () tidies up padlock list and mode
 					//
 
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
 					padlock_mode = mode;
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_MISSILE_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) && (padlock_mode == PADLOCK_MODE_MISSILE_THREAT))
-			{
+			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
+					&& (padlock_mode == PADLOCK_MODE_MISSILE_THREAT)) {
 				//
 				// padlock next missile threat
 				//
 
-				target = get_next_missile_threat ();
+				target = get_next_missile_threat();
 
-				if (target)
-				{
-					unlink_local_entity_children (source, LIST_TYPE_PADLOCK);
+				if (target) {
+					unlink_local_entity_children(source, LIST_TYPE_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
-			}
-			else
-			{
+			} else {
 				//
 				// padlock first missile threat
 				//
 
-				target = get_first_missile_threat ();
+				target = get_first_missile_threat();
 
-				if (target)
-				{
+				if (target) {
 					//
 					// leave_padlock_view () tidies up padlock list and mode
 					//
 
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
 
-					insert_local_entity_into_parents_child_list (target, LIST_TYPE_PADLOCK, source, NULL);
+					insert_local_entity_into_parents_child_list(target,
+							LIST_TYPE_PADLOCK, source, NULL);
 
 					padlock_mode = mode;
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_WAYPOINT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) && (padlock_mode == PADLOCK_MODE_WAYPOINT))
-			{
-				target = get_local_entity_current_waypoint (source);
+			if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
+					&& (padlock_mode == PADLOCK_MODE_WAYPOINT)) {
+				target = get_local_entity_current_waypoint(source);
 
-				if (target)
-				{
-					display_padlock_message (mode);
+				if (target) {
+					display_padlock_message(mode);
 				}
-			}
-			else
-			{
-				target = get_local_entity_current_waypoint (source);
+			} else {
+				target = get_local_entity_current_waypoint(source);
 
-				if (target)
-				{
+				if (target) {
 					//
 					// leave_padlock_view () tidies up padlock list and mode
 					//
 
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
+					set_view_mode(VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK);
 
 					padlock_mode = mode;
 
-					display_padlock_message (mode);
+					display_padlock_message(mode);
 				}
 			}
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		default:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			debug_fatal ("Invalid padlock mode = %d", mode);
+			debug_fatal("Invalid padlock mode = %d", mode);
 
 			break;
+		}
 		}
 	}
-}
 
 // Jabberwock 031016 Inset view
 
-void select_inset_view_event (padlock_modes mode)
-{
-	inset_mode = mode;
-}
+	void select_inset_view_event(padlock_modes mode) {
+		inset_mode = mode;
+	}
 
+	entity *get_inset(void) {
+		entity *source, *target;
 
-entity *get_inset (void)
-{
-	entity
-		*source,
-		*target;
+		source = get_external_view_entity();
 
-	source = get_external_view_entity ();
+		target = NULL;
 
-	target = NULL;
-
-	if (source)
-	{
-		switch (inset_mode)
-		{
-			case PADLOCK_MODE_NONE:
-			{
-				target = get_local_entity_parent (source, LIST_TYPE_TARGET);
+		if (source) {
+			switch (inset_mode) {
+			case PADLOCK_MODE_NONE: {
+				target = get_local_entity_parent(source, LIST_TYPE_TARGET);
 				// Jabberwock 031027 not working :( target = get_gunship_entity();
 				break;
 			}
-			case PADLOCK_MODE_WINGMAN:
-			{
-				if (source == get_gunship_entity())
-				{
-					target = get_next_wingman ();
+			case PADLOCK_MODE_WINGMAN: {
+				if (source == get_gunship_entity()) {
+					target = get_next_wingman();
 				}
 				break;
 			}
-			case PADLOCK_MODE_AIR_THREAT:
-			{
-				if (source == get_gunship_entity())
-				{
-					target = get_next_air_threat ();
+			case PADLOCK_MODE_AIR_THREAT: {
+				if (source == get_gunship_entity()) {
+					target = get_next_air_threat();
 				}
 				break;
 			}
-			case PADLOCK_MODE_GROUND_THREAT:
-			{
-				if (source == get_gunship_entity())
-				{
-					target = get_next_ground_threat ();
+			case PADLOCK_MODE_GROUND_THREAT: {
+				if (source == get_gunship_entity()) {
+					target = get_next_ground_threat();
 				}
 				break;
 			}
-			case PADLOCK_MODE_MISSILE_THREAT:
-			{
-				if (source == get_gunship_entity())
-				{
-					target = get_next_missile_threat ();
+			case PADLOCK_MODE_MISSILE_THREAT: {
+				if (source == get_gunship_entity()) {
+					target = get_next_missile_threat();
 				}
 				break;
 			}
-			case PADLOCK_MODE_WAYPOINT:
-			{
-				if (!target)
-				{
-					if (source == get_gunship_entity())
-					{
-						target = get_local_entity_current_waypoint (source);
+			case PADLOCK_MODE_WAYPOINT: {
+				if (!target) {
+					if (source == get_gunship_entity()) {
+						target = get_local_entity_current_waypoint(source);
 					}
 				}
 				break;
 			}
+			}
 		}
+		return (target);
 	}
-	return (target);
-}
-
-
 
 // Jabberwock 031016 ends
 
@@ -4332,230 +3971,212 @@ entity *get_inset (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-entity *get_players_padlock (void)
-{
-	entity
-		*target;
+	entity *get_players_padlock(void) {
+		entity *target;
 
-	target = NULL;
+		target = NULL;
 
-	if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET)
-	{
-		target = get_local_entity_parent (get_gunship_entity (), LIST_TYPE_TARGET);
-	}
-	else if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK)
-	{
-		switch (padlock_mode)
-		{
+		if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET) {
+			target = get_local_entity_parent(get_gunship_entity (),
+					LIST_TYPE_TARGET);
+		} else if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK) {
+			switch (padlock_mode) {
 			////////////////////////////////////////
 			case PADLOCK_MODE_NONE:
-			////////////////////////////////////////
+				////////////////////////////////////////
 			{
-				debug_fatal ("Invalid padlock mode = PADLOCK_MODE_NONE");
+				debug_fatal("Invalid padlock mode = PADLOCK_MODE_NONE");
 
 				break;
 			}
-			////////////////////////////////////////
+				////////////////////////////////////////
 			case PADLOCK_MODE_WINGMAN:
 			case PADLOCK_MODE_AIR_THREAT:
 			case PADLOCK_MODE_GROUND_THREAT:
 			case PADLOCK_MODE_MISSILE_THREAT:
-			////////////////////////////////////////
+				////////////////////////////////////////
 			{
-				target = get_local_entity_first_child (get_gunship_entity (), LIST_TYPE_PADLOCK);
+				target = get_local_entity_first_child(get_gunship_entity (),
+						LIST_TYPE_PADLOCK);
 
 				break;
 			}
-			////////////////////////////////////////
+				////////////////////////////////////////
 			case PADLOCK_MODE_WAYPOINT:
-			////////////////////////////////////////
+				////////////////////////////////////////
 			{
 				target = NULL;
 
 				break;
 			}
-			////////////////////////////////////////
+				////////////////////////////////////////
 			default:
-			////////////////////////////////////////
+				////////////////////////////////////////
 			{
-				debug_fatal ("Invalid padlock mode = %d", padlock_mode);
+				debug_fatal("Invalid padlock mode = %d", padlock_mode);
 
 				break;
 			}
+			}
 		}
+
+		return (target);
 	}
 
-	return (target);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_virtual_cockpit_padlock_view (void)
-{
-	float
-		old_heading,
-		old_pitch,
-		delta_heading,
-		delta_pitch,
-		frame_rotate_rate;
+	void update_virtual_cockpit_padlock_view(void) {
+	float old_heading, old_pitch, delta_heading, delta_pitch, frame_rotate_rate;
 
-	entity
-		*source,
-		*target;
+		entity *source, *target;
 
-	source = get_gunship_entity ();
+		source = get_gunship_entity ();
 
-	ASSERT (source);
+		ASSERT(source);
 
-	switch (padlock_mode)
-	{
+		switch (padlock_mode) {
 		////////////////////////////////////////
 		case PADLOCK_MODE_NONE:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			debug_fatal ("Invalid padlock mode = PADLOCK_MODE_NONE");
+			debug_fatal("Invalid padlock mode = PADLOCK_MODE_NONE");
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_WINGMAN:
 		case PADLOCK_MODE_AIR_THREAT:
 		case PADLOCK_MODE_GROUND_THREAT:
 		case PADLOCK_MODE_MISSILE_THREAT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			target = get_local_entity_first_child (source, LIST_TYPE_PADLOCK);
+			target = get_local_entity_first_child(source, LIST_TYPE_PADLOCK);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		case PADLOCK_MODE_WAYPOINT:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			target = get_local_entity_current_waypoint (source);
+			target = get_local_entity_current_waypoint(source);
 
 			break;
 		}
-		////////////////////////////////////////
+			////////////////////////////////////////
 		default:
-		////////////////////////////////////////
+			////////////////////////////////////////
 		{
-			debug_fatal ("Invalid padlock mode = %d", padlock_mode);
+			debug_fatal("Invalid padlock mode = %d", padlock_mode);
 
 			break;
 		}
-	}
+		}
 
-	if (target)
-	{
-		old_heading = pilot_head_heading;
+		if (target) {
+			old_heading = pilot_head_heading;
 
-		old_pitch = pilot_head_pitch;
+			old_pitch = pilot_head_pitch;
 
-		get_pilot_head_heading_and_pitch_to_target (target);
+			get_pilot_head_heading_and_pitch_to_target(target);
 
-		frame_rotate_rate = rad (45.0) * get_delta_time ();
+			frame_rotate_rate = rad (45.0) * get_delta_time ();
 
-		delta_heading = pilot_head_heading - old_heading;
+			delta_heading = pilot_head_heading - old_heading;
 
-		delta_heading = bound (delta_heading, -frame_rotate_rate, frame_rotate_rate);
+			delta_heading = bound(delta_heading, -frame_rotate_rate,
+					frame_rotate_rate);
 
-		pilot_head_heading = old_heading + delta_heading;
+			pilot_head_heading = old_heading + delta_heading;
 
-		delta_pitch = pilot_head_pitch - old_pitch;
+			delta_pitch = pilot_head_pitch - old_pitch;
 
-		delta_pitch = bound (delta_pitch, -frame_rotate_rate, frame_rotate_rate);
+		delta_pitch = bound(delta_pitch, -frame_rotate_rate, frame_rotate_rate);
 
-		pilot_head_pitch = old_pitch + delta_pitch;
-	}
-	else
-	{
-		frame_rotate_rate = rad (45.0) * get_delta_time ();
+			pilot_head_pitch = old_pitch + delta_pitch;
+		} else {
+			frame_rotate_rate = rad (45.0) * get_delta_time ();
 
-		delta_heading = bound (-pilot_head_heading, -frame_rotate_rate, frame_rotate_rate);
+			delta_heading = bound(-pilot_head_heading, -frame_rotate_rate,
+					frame_rotate_rate);
 
-		pilot_head_heading += delta_heading;
+			pilot_head_heading += delta_heading;
 
-		delta_pitch = bound (-pilot_head_pitch, -frame_rotate_rate, frame_rotate_rate);
+			delta_pitch = bound(-pilot_head_pitch, -frame_rotate_rate,
+					frame_rotate_rate);
 
-		pilot_head_pitch += delta_pitch;
+			pilot_head_pitch += delta_pitch;
 
-		if
-		(
-			(pilot_head_heading >= rad (-1.0)) &&
-			(pilot_head_heading <= rad (1.0)) &&
-			(pilot_head_pitch >= rad (-1.0)) &&
-			(pilot_head_pitch <= rad (1.0))
-		)
-		{
-			//
-			// leave_padlock_view () tidies up padlock list and mode
-			//
+			if ((pilot_head_heading >= rad(-1.0))
+					&& (pilot_head_heading <= rad(1.0))
+					&& (pilot_head_pitch >= rad(-1.0))
+					&& (pilot_head_pitch <= rad(1.0))) {
+				//
+				// leave_padlock_view () tidies up padlock list and mode
+				//
 
-			set_view_mode (VIEW_MODE_COCKPIT_PANEL_LEVEL_AHEAD);
+				set_view_mode(VIEW_MODE_COCKPIT_PANEL_LEVEL_AHEAD);
+			}
 		}
 	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void get_position_nose_relative_position ( vec3d *position, vec3d *r )
-{
-	vec3d
-		relative_position;
-	matrix3x3*
-		attitude;
+	void get_position_nose_relative_position(vec3d *position, vec3d *r) {
+		vec3d relative_position;
+		matrix3x3* attitude;
 
-	ASSERT(current_flight_dynamics);
+		ASSERT(current_flight_dynamics);
 
-	relative_position.x = position->x - current_flight_dynamics->position.x;
-	relative_position.y = position->y - current_flight_dynamics->position.y;
-	relative_position.z = position->z - current_flight_dynamics->position.z;
+		relative_position.x = position->x - current_flight_dynamics->position.x;
+		relative_position.y = position->y - current_flight_dynamics->position.y;
+		relative_position.z = position->z - current_flight_dynamics->position.z;
 
-	attitude = &current_flight_dynamics->attitude;
+		attitude = &current_flight_dynamics->attitude;
 //	xv = &attitude[0][0];
 
-	r->x = ( relative_position.x * (*attitude)[0][0] + relative_position.y * (*attitude)[0][1] + relative_position.z * (*attitude)[0][2] );
-	r->y = ( relative_position.x * (*attitude)[1][0] + relative_position.y * (*attitude)[1][1] + relative_position.z * (*attitude)[1][2] );
-	r->z = ( relative_position.x * (*attitude)[2][0] + relative_position.y * (*attitude)[2][1] + relative_position.z * (*attitude)[2][2] );
-}
+		r->x = (relative_position.x * (*attitude)[0][0]
+				+ relative_position.y * (*attitude)[0][1]
+				+ relative_position.z * (*attitude)[0][2]);
+		r->y = (relative_position.x * (*attitude)[1][0]
+				+ relative_position.y * (*attitude)[1][1]
+				+ relative_position.z * (*attitude)[1][2]);
+		r->z = (relative_position.x * (*attitude)[2][0]
+				+ relative_position.y * (*attitude)[2][1]
+				+ relative_position.z * (*attitude)[2][2]);
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-enum OBJECT_3D_VISIBILITY get_position_nose_relative_coordinates ( vec3d *position, float *x, float *y )
-{
+	enum OBJECT_3D_VISIBILITY get_position_nose_relative_coordinates(
+			vec3d *position, float *x, float *y) {
 #ifndef OGRE_EE
 
-	vec3d
-		relative_position;
+		vec3d relative_position;
 
-	float
-		q,
-		i,
-		j;
+		float q, i, j;
 
-	get_position_nose_relative_position ( position, &relative_position );
+		get_position_nose_relative_position(position, &relative_position);
 
-	if ( relative_position.z < clip_hither )
-		return ( OBJECT_3D_NOT_VISIBLE );
+		if (relative_position.z < clip_hither)
+			return (OBJECT_3D_NOT_VISIBLE);
 
-	q = 1.0 / relative_position.z;
+		q = 1.0 / relative_position.z;
 
-	i = ( active_3d_environment->screen_i_scale * relative_position.x * q );
-	j = ( active_3d_environment->screen_j_scale * relative_position.y * q );
+		i = (active_3d_environment->screen_i_scale * relative_position.x * q);
+		j = (active_3d_environment->screen_j_scale * relative_position.y * q);
 
-	*x = active_3d_environment->x_origin + i;
-	*y = active_3d_environment->y_origin - j;
+		*x = active_3d_environment->x_origin + i;
+		*y = active_3d_environment->y_origin - j;
 #endif
 
-	return ( OBJECT_3D_COMPLETELY_VISIBLE );
-}
+		return (OBJECT_3D_COMPLETELY_VISIBLE);
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

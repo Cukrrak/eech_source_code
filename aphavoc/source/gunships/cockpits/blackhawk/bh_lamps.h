@@ -67,42 +67,252 @@
 struct BLACKHAWK_LAMP_FLAGS
 {
 	unsigned int
-
-		//
-		// indicator lamps
-		//
-
-		indicator_lamp_1	:1,
-		indicator_lamp_2	:1,
-		indicator_lamp_3	:1,
-		indicator_lamp_4	:1,
-		indicator_lamp_5	:1,
-		indicator_lamp_6	:1,
-		indicator_lamp_7	:1,
-		indicator_lamp_8	:1,
-		indicator_lamp_9	:1,
-
-		//
-		// fire detector lamps
-		//
-
-		engine_1_fire	:1,
+		master_caution						:1,
+		engine_ignition				:1,
+		apu_ignition						:1,
+		engine_fire					:1,
 		apu_fire			:1,
-		engine_2_fire	:1,
+		engine_fire_extinguiser	:1,
+		hydraulic_pressure				:1,
+		oil_pressure						:1,
+		oil_temperature					:1,
+		overtorque							:1,
+		rotor_rpm							:1,
+		fuel_low								:1,
+		rotor_brake							:1,
+		navigation_lights					:1,
+		hover_hold							:1,
+		altitude_hold						:1,
+		auto_pilot							:1,
+		laser									:1,
+		ir_jammer							:1,
+		auto_counter_measures			:1,
+		ase_auto_page		 				:1,
+		// TODO is this needed, as these MFDs don't get focus
+		pilot_top_mfd_focus			:1,
+		pilot_bottom_mfd_focus			:1,
+		pilot_main_mfd_focus			:1,
+		co_pilot_main_mfd_focus		:1,
+//		co_pilot_rh_mfd_focus		:1;
 
-		//
-		// armament lamps
-		//
+		// Rotor RPM
+		// Red LEDs
+		rtr_rpm_red_led1 :1,
+		rtr_rpm_red_led2 :1,
+		rtr_rpm_red_led3 :1,
+		rtr_rpm_red_led4 :1,
+		rtr_rpm_red_led5 :1,
+		rtr_rpm_red_led6 :1,
+		rtr_rpm_red_led7 :1,
+		rtr_rpm_red_led8 :1,
+		rtr_rpm_red_led9 :1,
+		rtr_rpm_red_led10 :1,
+		rtr_rpm_red_led11 :1,
+		rtr_rpm_red_led12 :1,
+		rtr_rpm_red_led13 :1,
+		rtr_rpm_red_led14 :1,
+		rtr_rpm_red_led15 :1,
+		rtr_rpm_red_led16 :1,
+		rtr_rpm_red_led17 :1,
+		rtr_rpm_red_led18 :1,
+		rtr_rpm_red_led19 :1,
+		rtr_rpm_red_led20 :1,
+		rtr_rpm_red_led21 :1,
+		rtr_rpm_red_led22 :1,
+		rtr_rpm_red_led23 :1,
+		rtr_rpm_red_led24 :1,
+		rtr_rpm_red_led25 :1,
+		rtr_rpm_red_led26 :1,
+		rtr_rpm_red_led27 :1,
+//		rtr_rpm_cp_red_led1 :1,
 
-		armament_lamp_1	:1,
-		armament_lamp_2	:1,
+		// Yellow LEDs
+		rtr_rpm_yellow_led1 :1,
+		rtr_rpm_yellow_led2 :1,
+		rtr_rpm_yellow_led3 :1,
+		rtr_rpm_yellow_led4 :1,
+		rtr_rpm_yellow_led5 :1,
+		rtr_rpm_yellow_led6 :1,
+		rtr_rpm_yellow_led7 :1,
+		rtr_rpm_yellow_led8 :1,
+		rtr_rpm_yellow_led9 :1,
 
-		//
-		// mfd lamps
-		//
+		// Green LEDs
+		rtr_rpm_green_led1 :1,
+		rtr_rpm_green_led2 :1,
+		rtr_rpm_green_led3 :1,
+		rtr_rpm_green_led4 :1,
+		rtr_rpm_green_led5 :1,
 
-		mfd_lamp_1	:1,
-		mfd_lamp_2	:1;
+		// L Eng RPM
+		// Red LEDs
+		leng_rpm_red_led1   :1,
+		leng_rpm_red_led2   :1,
+		leng_rpm_red_led3   :1,
+		leng_rpm_red_led4   :1,
+		leng_rpm_red_led5   :1,
+		leng_rpm_red_led6   :1,
+		leng_rpm_red_led7   :1,
+		leng_rpm_red_led8   :1,
+		leng_rpm_red_led9   :1,
+		leng_rpm_red_led10  :1,
+		leng_rpm_red_led11  :1,
+		leng_rpm_red_led12  :1,
+		leng_rpm_red_led13  :1,
+		leng_rpm_red_led14  :1,
+		leng_rpm_red_led15  :1,
+		leng_rpm_red_led16  :1,
+		leng_rpm_red_led17  :1,
+		leng_rpm_red_led18  :1,
+		leng_rpm_red_led19  :1,
+		leng_rpm_red_led20  :1,
+		leng_rpm_red_led21  :1,
+		leng_rpm_red_led22  :1,
+		leng_rpm_red_led23  :1,
+		leng_rpm_red_led24  :1,
+		leng_rpm_red_led25  :1,
+		leng_rpm_red_led26  :1,
+		leng_rpm_red_led27  :1,
+
+		// Yellow LEDs
+		leng_rpm_yellow_led1 :1,
+		leng_rpm_yellow_led2 :1,
+		leng_rpm_yellow_led3 :1,
+		leng_rpm_yellow_led4 :1,
+		leng_rpm_yellow_led5 :1,
+		leng_rpm_yellow_led6 :1,
+		leng_rpm_yellow_led7 :1,
+		leng_rpm_yellow_led8 :1,
+		leng_rpm_yellow_led9 :1,
+
+		// Green LEDs
+		leng_rpm_green_led1 :1,
+		leng_rpm_green_led2 :1,
+		leng_rpm_green_led3 :1,
+		leng_rpm_green_led4 :1,
+		leng_rpm_green_led5 :1,
+
+		// R Eng RPM
+		// Red LEDs
+		reng_rpm_red_led1   :1,
+		reng_rpm_red_led2   :1,
+		reng_rpm_red_led3   :1,
+		reng_rpm_red_led4   :1,
+		reng_rpm_red_led5   :1,
+		reng_rpm_red_led6   :1,
+		reng_rpm_red_led7   :1,
+		reng_rpm_red_led8   :1,
+		reng_rpm_red_led9   :1,
+		reng_rpm_red_led10  :1,
+		reng_rpm_red_led11  :1,
+		reng_rpm_red_led12  :1,
+		reng_rpm_red_led13  :1,
+		reng_rpm_red_led14  :1,
+		reng_rpm_red_led15  :1,
+		reng_rpm_red_led16  :1,
+		reng_rpm_red_led17  :1,
+		reng_rpm_red_led18  :1,
+		reng_rpm_red_led19  :1,
+		reng_rpm_red_led20  :1,
+		reng_rpm_red_led21  :1,
+		reng_rpm_red_led22  :1,
+		reng_rpm_red_led23  :1,
+		reng_rpm_red_led24  :1,
+		reng_rpm_red_led25  :1,
+		reng_rpm_red_led26  :1,
+		reng_rpm_red_led27  :1,
+
+		// Yellow LEDs
+		reng_rpm_yellow_led1 :1,
+		reng_rpm_yellow_led2 :1,
+		reng_rpm_yellow_led3 :1,
+		reng_rpm_yellow_led4 :1,
+		reng_rpm_yellow_led5 :1,
+		reng_rpm_yellow_led6 :1,
+		reng_rpm_yellow_led7 :1,
+		reng_rpm_yellow_led8 :1,
+		reng_rpm_yellow_led9 :1,
+
+		// Green LEDs
+		reng_rpm_green_led1 :1,
+		reng_rpm_green_led2 :1,
+		reng_rpm_green_led3 :1,
+		reng_rpm_green_led4 :1,
+		reng_rpm_green_led5 :1,
+
+		// L Eng TRQ
+		// Green LEDs
+		leng_trq_green_led1 : 1,
+		leng_trq_green_led2 : 1,
+		leng_trq_green_led3 : 1,
+		leng_trq_green_led4 : 1,
+		leng_trq_green_led5 : 1,
+		leng_trq_green_led6 : 1,
+		leng_trq_green_led7 : 1,
+		leng_trq_green_led8 : 1,
+		leng_trq_green_led9 : 1,
+		leng_trq_green_led10 : 1,
+		leng_trq_green_led11 : 1,
+		leng_trq_green_led12 : 1,
+		leng_trq_green_led13 : 1,
+		leng_trq_green_led14 : 1,
+		leng_trq_green_led15 : 1,
+		leng_trq_green_led16 : 1,
+		leng_trq_green_led17 : 1,
+		leng_trq_green_led18 : 1,
+		leng_trq_green_led19 : 1,
+		leng_trq_green_led20 : 1,
+
+		// Yellow LEDs
+		leng_trq_yellow_led1 : 1,
+		leng_trq_yellow_led2 : 1,
+		leng_trq_yellow_led3 : 1,
+		leng_trq_yellow_led4 : 1,
+		leng_trq_yellow_led5 : 1,
+		leng_trq_yellow_led6 : 1,
+
+		// Red LEDs
+		leng_trq_red_led1 : 1,
+		leng_trq_red_led2 : 1,
+		leng_trq_red_led3 : 1,
+		leng_trq_red_led4 : 1,
+
+		// R Eng TRQ
+		// Green LEDs
+		reng_trq_green_led1 : 1,
+		reng_trq_green_led2 : 1,
+		reng_trq_green_led3 : 1,
+		reng_trq_green_led4 : 1,
+		reng_trq_green_led5 : 1,
+		reng_trq_green_led6 : 1,
+		reng_trq_green_led7 : 1,
+		reng_trq_green_led8 : 1,
+		reng_trq_green_led9 : 1,
+		reng_trq_green_led10 : 1,
+		reng_trq_green_led11 : 1,
+		reng_trq_green_led12 : 1,
+		reng_trq_green_led13 : 1,
+		reng_trq_green_led14 : 1,
+		reng_trq_green_led15 : 1,
+		reng_trq_green_led16 : 1,
+		reng_trq_green_led17 : 1,
+		reng_trq_green_led18 : 1,
+		reng_trq_green_led19 : 1,
+		reng_trq_green_led20 : 1,
+
+		// Yellow LEDs
+		reng_trq_yellow_led1 : 1,
+		reng_trq_yellow_led2 : 1,
+		reng_trq_yellow_led3 : 1,
+		reng_trq_yellow_led4 : 1,
+		reng_trq_yellow_led5 : 1,
+		reng_trq_yellow_led6 : 1,
+
+		// Red LEDs
+		reng_trq_red_led1 : 1,
+		reng_trq_red_led2 : 1,
+		reng_trq_red_led3 : 1,
+		reng_trq_red_led4 : 1;
 };
 
 typedef struct BLACKHAWK_LAMP_FLAGS blackhawk_lamp_flags;
@@ -120,15 +330,9 @@ extern blackhawk_lamp_flags
 
 extern void initialise_blackhawk_lamps (void);
 
-extern void draw_blackhawk_indicator_lamps (cockpit_panels panel);
+extern void deinitialise_blackhawk_lamps (void);
 
-extern void draw_blackhawk_fire_detector_lamps (cockpit_panels panel);
-
-extern void draw_blackhawk_fire_detector_lamps (cockpit_panels panel);
-
-extern void draw_blackhawk_armament_lamps (cockpit_panels panel);
-
-extern void draw_blackhawk_mfd_lamps (cockpit_panels panel);
+extern void draw_blackhawk_virtual_cockpit_lamps (void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

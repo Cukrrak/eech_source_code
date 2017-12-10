@@ -158,7 +158,7 @@ void update_blackhawk_weapon_systems (void)
 	switch (weapon_sub_type)
 	{
 		////////////////////////////////////////
-		case ENTITY_SUB_TYPE_WEAPON_M230_30MM_ROUND:
+		case ENTITY_SUB_TYPE_WEAPON_M197_20MM_ROUND:
 		////////////////////////////////////////
 		{
 			if

@@ -70,10 +70,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-eo_params
+eo_params_dynamic_move
 	blackhawk_flir,
-	blackhawk_dtv,
-	blackhawk_dvo;
+	blackhawk_dtv;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,24 +83,31 @@ void initialise_blackhawk_eo (void)
 	eo_sensor							= TARGET_ACQUISITION_SYSTEM_FLIR;
 
 	eo_azimuth							= rad (0.0);
-	eo_min_azimuth						= rad (-120.0);
-	eo_max_azimuth						= rad (120.0);
+	eo_min_azimuth							= rad (-190.0);
+	eo_max_azimuth							= rad (190.0);
 	eo_elevation						= rad (0.0);
-	eo_min_elevation					= rad (-60.0);
+	eo_min_elevation						= rad (-30.0);
 	eo_max_elevation					= rad (30.0);
 	eo_max_visual_range				= 5000.0;
+	eo_ground_stabilised					= 0;
 
+#ifdef OLD_EO
 	blackhawk_flir.field_of_view		= EO_FOV_WIDE;
 	blackhawk_flir.min_field_of_view	= EO_FOV_NARROW;
 	blackhawk_flir.max_field_of_view	= EO_FOV_WIDE;
 
-	blackhawk_dtv.field_of_view		= EO_FOV_NARROW;
+	blackhawk_dtv.field_of_view			= EO_FOV_NARROW; // Jabberwock 031002 EO_FOV_WIDE; to zoom (out) DTV
 	blackhawk_dtv.min_field_of_view	= EO_FOV_NARROW;
-	blackhawk_dtv.max_field_of_view	= EO_FOV_NARROW;
+	blackhawk_dtv.max_field_of_view	= EO_FOV_NARROW; // Jabberwock 031002 EO_FOV_WIDE; to zoom (out) DTV
+#else
+	blackhawk_flir.zoom					= 1.0;
+	blackhawk_flir.min_zoom				= 1.0;
+	blackhawk_flir.max_zoom				= 1.0 / 128.0;
 
-	blackhawk_dvo.field_of_view		= EO_FOV_MEDIUM;
-	blackhawk_dvo.min_field_of_view	= EO_FOV_NARROW;
-	blackhawk_dvo.max_field_of_view	= EO_FOV_MEDIUM;
+	blackhawk_dtv.zoom						= 1.0 / 2.0;
+	blackhawk_dtv.min_zoom				= 1.0 / 2.0; // Jabberwock 031002 1.0 to zoom (out) DTV
+	blackhawk_dtv.max_zoom				= 1.0 / 128.0;
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +156,7 @@ void get_blackhawk_eo_centred_viewpoint (viewpoint *vp)
 	else
 	{
 		//
-		// can happpen if the object is being destroyed
+		// can happen if the object is being destroyed
 		//
 
 		memcpy (&vp->position, &inst3d->vp.position, sizeof (vec3d));
@@ -165,57 +171,140 @@ void get_blackhawk_eo_centred_viewpoint (viewpoint *vp)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void inc_eo_field_of_view (eo_params *eo)
+void get_blackhawk_eo_relative_centred_viewpoint (viewpoint *vp)
+{
+	entity
+		*source;
+
+	object_3d_instance
+		*inst3d;
+
+	object_3d_sub_object_search_data
+		search;
+
+	ASSERT (vp);
+
+	source = get_gunship_entity ();
+
+	inst3d = (object_3d_instance *) get_local_entity_ptr_value (source, PTR_TYPE_INSTANCE_3D_OBJECT);
+
+	ASSERT (inst3d);
+
+	inst3d->vp.x = 0.0;
+	inst3d->vp.y = 0.0;
+	inst3d->vp.z = 0.0;
+
+	get_local_entity_attitude_matrix (source, inst3d->vp.attitude);
+
+	search.search_depth = 0;
+	search.search_object = inst3d;
+	search.sub_object_index = OBJECT_3D_SUB_OBJECT_AH64D_TADS_HEADING;
+
+	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+	{
+		get_3d_sub_object_world_viewpoint (&search, vp);
+	}
+	else
+	{
+		//
+		// can happpen if the object is being destroyed
+		//
+
+		memcpy (&vp->position, &inst3d->vp.position, sizeof (vec3d));
+
+		debug_log ("OBJECT_3D_SUB_OBJECT_AH64D_TADS_HEADING missing from Blackhawk");
+	}
+
+	memcpy (&vp->attitude, &inst3d->vp.attitude, sizeof (matrix3x3));
+
+	//
+	// fix up the instance position (just in case)
+	//
+
+	get_local_entity_vec3d (source, VEC3D_TYPE_POSITION, &inst3d->vp.position);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void inc_eo_field_of_view (eo_params_dynamic_move *eo)
 {
 	ASSERT (eo);
 
+#ifdef OLD_EO
 	if (eo->field_of_view < eo->max_field_of_view)
 	{
 		eo->field_of_view++;
 	}
+#else
+	eo->zoom += 0.2;
+
+	if (eo->zoom > 1.0)
+	{
+		eo->zoom = 1.0;
+	}
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void fast_inc_eo_field_of_view (eo_params *eo)
+static void fast_inc_eo_field_of_view (eo_params_dynamic_move *eo)
 {
 	ASSERT (eo);
 
+#ifdef OLD_EO
 	eo->field_of_view = eo->max_field_of_view;
+#else
+	eo->zoom = 1.0;
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void dec_eo_field_of_view (eo_params *eo)
+static void dec_eo_field_of_view (eo_params_dynamic_move *eo)
 {
 	ASSERT (eo);
 
+#ifdef OLD_EO
 	if (eo->field_of_view > eo->min_field_of_view)
 	{
 		eo->field_of_view--;
 	}
+#else
+	eo->zoom -= 0.2;
+
+	if (eo->zoom < 0.0)
+	{
+		eo->zoom = 0.0;
+	}
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void fast_dec_eo_field_of_view (eo_params *eo)
+static void fast_dec_eo_field_of_view (eo_params_dynamic_move *eo)
 {
 	ASSERT (eo);
 
+#ifdef OLD_EO
 	eo->field_of_view = eo->min_field_of_view;
+#else
+	eo->zoom = 0.0;
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void update_blackhawk_eo (eo_params *eo)
+void update_blackhawk_eo (eo_params_dynamic_move *eo)
 {
 	float
 		fine_slew_rate,
@@ -262,11 +351,30 @@ void update_blackhawk_eo (eo_params *eo)
 	}
 
 	////////////////////////////////////////
+
+	while (toggle_ground_stabilisation_key)
+	{
+		toggle_ground_stabilisation ();
+
+		toggle_ground_stabilisation_key--;
+	}
+
+	////////////////////////////////////////
+
+	if (command_line_eo_zoom_joystick_index != -1)
+	{
+		long pos = get_joystick_axis (command_line_eo_zoom_joystick_index, command_line_eo_zoom_joystick_axis);
+		
+		eo->zoom = (pos + 10000) / 20000.0;
+	}
+
+	////////////////////////////////////////
 	//
 	// slew optics
 	//
 	////////////////////////////////////////
 
+#ifdef OLD_EO
 	switch (eo->field_of_view)
 	{
 		////////////////////////////////////////
@@ -320,89 +428,46 @@ void update_blackhawk_eo (eo_params *eo)
 			break;
 		}
 	}
+#else
+	{
+		float exp_zoom_value = convert_linear_view_value (eo);
+
+		fine_slew_rate = rad (4.0) * exp_zoom_value * get_delta_time ();
+
+		medium_slew_rate = rad (20.0) * exp_zoom_value * get_delta_time ();
+
+		mouse_slew_rate = rad (48.0) * exp_zoom_value * get_delta_time ();	// Jabberwock 030930
+
+		coarse_slew_rate = rad (80.0) * exp_zoom_value * get_delta_time ();
+	}
+#endif
+
+	keyboard_slew_eo_system(fine_slew_rate, medium_slew_rate, coarse_slew_rate);
 
 	////////////////////////////////////////
 
-	if (continuous_target_acquisition_system_steer_left_fast_key)
+	if ( command_line_eo_pan_joystick_index == -1 )
 	{
-		eo_azimuth -= coarse_slew_rate;
+		float ROTATE_RATE = (float) command_line_mouse_look_speed / 5.0;
 
-		eo_azimuth = max (eo_azimuth, eo_min_azimuth);
+		eo_azimuth = get_eo_azimuth (ROTATE_RATE, coarse_slew_rate, eo_azimuth, eo_min_azimuth, eo_max_azimuth, mouse_slew_rate);
+		eo_elevation = get_eo_elevation (ROTATE_RATE, coarse_slew_rate, eo_elevation, eo_min_elevation, eo_max_elevation, mouse_slew_rate);
 	}
-	else if (continuous_target_acquisition_system_steer_left_fine_key)
-	{
-		eo_azimuth -= fine_slew_rate;
-
-		eo_azimuth = max (eo_azimuth, eo_min_azimuth);
-	}
-	else if (continuous_target_acquisition_system_steer_left_key)
-	{
-		eo_azimuth -= medium_slew_rate;
-
-		eo_azimuth = max (eo_azimuth, eo_min_azimuth);
-	}
+	if (command_line_eo_zoom_joystick_index == -1 && (command_line_mouse_look != MOUSELOOK_ON || command_line_field_of_view_joystick_index != -1))
+		eo->zoom = get_new_eo_zoom(eo->zoom);
 
 	////////////////////////////////////////
 
-	if (continuous_target_acquisition_system_steer_right_fast_key)
-	{
-		eo_azimuth += coarse_slew_rate;
-
-		eo_azimuth = min (eo_azimuth, eo_max_azimuth);
-	}
-	else if (continuous_target_acquisition_system_steer_right_fine_key)
-	{
-		eo_azimuth += fine_slew_rate;
-
-		eo_azimuth = min (eo_azimuth, eo_max_azimuth);
-	}
-	else if (continuous_target_acquisition_system_steer_right_key)
-	{
-		eo_azimuth += medium_slew_rate;
-
-		eo_azimuth = min (eo_azimuth, eo_max_azimuth);
-	}
+	joystick_slew_eo_system(medium_slew_rate);
 
 	////////////////////////////////////////
 
-	if (continuous_target_acquisition_system_steer_up_fast_key)
+	// loke 030322
+	// handle the ground stabilisation
+
+	if (eo_ground_stabilised)
 	{
-		eo_elevation += coarse_slew_rate;
-
-		eo_elevation = min (eo_elevation, eo_max_elevation);
-	}
-	else if (continuous_target_acquisition_system_steer_up_fine_key)
-	{
-		eo_elevation += fine_slew_rate;
-
-		eo_elevation = min (eo_elevation, eo_max_elevation);
-	}
-	else if (continuous_target_acquisition_system_steer_up_key)
-	{
-		eo_elevation += medium_slew_rate;
-
-		eo_elevation = min (eo_elevation, eo_max_elevation);
-	}
-
-	////////////////////////////////////////
-
-	if (continuous_target_acquisition_system_steer_down_fast_key)
-	{
-		eo_elevation -= coarse_slew_rate;
-
-		eo_elevation = max (eo_elevation, eo_min_elevation);
-	}
-	else if (continuous_target_acquisition_system_steer_down_fine_key)
-	{
-		eo_elevation -= fine_slew_rate;
-
-		eo_elevation = max (eo_elevation, eo_min_elevation);
-	}
-	else if (continuous_target_acquisition_system_steer_down_key)
-	{
-		eo_elevation -= medium_slew_rate;
-
-		eo_elevation = max (eo_elevation, eo_min_elevation);
+		handle_ground_stabilisation();
 	}
 
 	////////////////////////////////////////
@@ -442,64 +507,6 @@ void update_blackhawk_eo (eo_params *eo)
 	}	
 
 // Jabberwock 031107 ends	
-
-	if ( command_line_eo_pan_joystick_index == -1 )
-	{						
-		float ROTATE_RATE = (float) command_line_mouse_look_speed / 5.0;
-
-		eo_azimuth = get_eo_azimuth (ROTATE_RATE, coarse_slew_rate, eo_azimuth, eo_min_azimuth, eo_max_azimuth, mouse_slew_rate);
-		eo_elevation = get_eo_elevation (ROTATE_RATE, coarse_slew_rate, eo_elevation, eo_min_elevation, eo_max_elevation, mouse_slew_rate);
-	}
-	
-	eo->field_of_view = get_old_eo_zoom(eo->field_of_view, eo->max_field_of_view, eo->min_field_of_view);
-
-	////////////////////////////////////////
-
-	// Retro 31Oct2004 - copy+paste of loke's comanche EO slew code
-	// loke 030315
-	// added code to allow the user to slew the eo device using joystick axes
-
-	if (command_line_eo_pan_joystick_index != -1)
-	{
-		float
-			panning_offset_horiz,
-			panning_offset_vert;
-
-		int
-			horizontal_value,
-			vertical_value;
-		
-		horizontal_value = get_joystick_axis (command_line_eo_pan_joystick_index, command_line_eo_pan_horizontal_joystick_axis);
-
-		panning_offset_horiz = make_panning_offset_from_axis (horizontal_value);
-
-		eo_azimuth += panning_offset_horiz * coarse_slew_rate;
-
-		if (panning_offset_horiz > 0)
-		{
-			eo_azimuth = min (eo_azimuth, eo_max_azimuth);
-		}
-		else
-		{
-			eo_azimuth = max (eo_azimuth, eo_min_azimuth);
-		}
-
-
-		vertical_value = get_joystick_axis (command_line_eo_pan_joystick_index, command_line_eo_pan_vertical_joystick_axis);
-
-		panning_offset_vert = make_panning_offset_from_axis (vertical_value);
-
-		eo_elevation -= panning_offset_vert * coarse_slew_rate;
-
-		if (panning_offset_vert < 0)
-		{
-			eo_elevation = min (eo_elevation, eo_max_elevation);
-		}
-		else
-		{
-			eo_elevation = max (eo_elevation, eo_min_elevation);
-		}
-	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -520,8 +527,7 @@ void centre_blackhawk_eo (void)
 void animate_blackhawk_eo (object_3d_instance *inst3d)
 {
 	object_3d_sub_object_search_data
-		search_heading,
-		search_pitch;
+		search_heading;
 
 	ASSERT (inst3d);
 
@@ -531,19 +537,11 @@ void animate_blackhawk_eo (object_3d_instance *inst3d)
 
 	search_heading.search_depth = 0;
 	search_heading.search_object = inst3d;
-	search_heading.sub_object_index = OBJECT_3D_SUB_OBJECT_AH64D_TADS_HEADING;
+	search_heading.sub_object_index = OBJECT_3D_SUB_OBJECT_RAH66_TADS_HEADING;
 
 	if (find_object_3d_sub_object (&search_heading) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 	{
 		search_heading.result_sub_object->relative_heading = eo_azimuth;
-
-		search_pitch.search_depth = 0;
-		search_pitch.sub_object_index = OBJECT_3D_SUB_OBJECT_AH64D_TADS_PITCH;
-
-		if (find_object_3d_sub_object_from_sub_object (&search_heading, &search_pitch) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-		{
-			search_pitch.result_sub_object->relative_pitch = -eo_elevation;
-		}
 	}
 
 	//
@@ -552,7 +550,7 @@ void animate_blackhawk_eo (object_3d_instance *inst3d)
 
 	search_heading.search_depth = 0;
 	search_heading.search_object = inst3d;
-	search_heading.sub_object_index = OBJECT_3D_SUB_OBJECT_AH64D_PNVS_HEADING;
+	search_heading.sub_object_index = OBJECT_3D_SUB_OBJECT_RAH66_PNVS_HEADING;
 
 	if (find_object_3d_sub_object (&search_heading) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 	{
@@ -564,27 +562,95 @@ void animate_blackhawk_eo (object_3d_instance *inst3d)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void inc_blackhawk_eo_zoom(void)
+{
+	switch (eo_sensor)
+	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:
+			dec_eo_field_of_view(&blackhawk_flir);
+			break;
+		case TARGET_ACQUISITION_SYSTEM_DTV:
+			dec_eo_field_of_view(&blackhawk_dtv);
+			break;
+		default:
+			break;
+	}
+}
+
+void dec_blackhawk_eo_zoom(void)
+{
+	switch (eo_sensor)
+	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:
+			inc_eo_field_of_view(&blackhawk_flir);
+			break;
+		case TARGET_ACQUISITION_SYSTEM_DTV:
+			inc_eo_field_of_view(&blackhawk_dtv);
+			break;
+		default:
+			break;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void toggle_blackhawk_eo_system(void)
+{
+	switch (eo_sensor)
+	{
+	case TARGET_ACQUISITION_SYSTEM_FLIR:
+		eo_sensor = TARGET_ACQUISITION_SYSTEM_DTV;
+
+		copy_eo_zoom(&blackhawk_flir, &blackhawk_dtv);
+
+		if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_FLIR)
+			target_acquisition_system = TARGET_ACQUISITION_SYSTEM_DTV;
+
+		break;
+	case TARGET_ACQUISITION_SYSTEM_DTV:
+		eo_sensor = TARGET_ACQUISITION_SYSTEM_FLIR;
+
+		copy_eo_zoom(&blackhawk_dtv, &blackhawk_flir);
+
+		if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_DTV)
+			target_acquisition_system = TARGET_ACQUISITION_SYSTEM_FLIR;
+
+		break;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void slave_blackhawk_eo_to_current_target (void)
 {
+	if (command_line_manual_laser_radar)
+		return;
+	
 	if (eo_on_target)
 	{
 		switch (eo_sensor)
 		{
 			case TARGET_ACQUISITION_SYSTEM_FLIR:
 			{
+#ifdef OLD_EO
 				blackhawk_flir.field_of_view = blackhawk_flir.min_field_of_view;
+#else
+				blackhawk_flir.zoom = 0.0;
+#endif
 
 				break;
 			}
 			case TARGET_ACQUISITION_SYSTEM_DTV:
 			{
+#ifdef OLD_EO
 				blackhawk_dtv.field_of_view = blackhawk_dtv.min_field_of_view;
-
-				break;
-			}
-			case TARGET_ACQUISITION_SYSTEM_DVO:
-			{
-				blackhawk_dvo.field_of_view = blackhawk_dvo.min_field_of_view;
+#else
+				blackhawk_dtv.zoom = 0.0;
+#endif
 
 				break;
 			}
@@ -596,19 +662,21 @@ void slave_blackhawk_eo_to_current_target (void)
 		{
 			case TARGET_ACQUISITION_SYSTEM_FLIR:
 			{
+#ifdef OLD_EO
 				blackhawk_flir.field_of_view = blackhawk_flir.max_field_of_view;
+#else
+				blackhawk_flir.zoom = 1.0;
+#endif
 
 				break;
 			}
 			case TARGET_ACQUISITION_SYSTEM_DTV:
 			{
+#ifdef OLD_EO
 				blackhawk_dtv.field_of_view = blackhawk_dtv.max_field_of_view;
-
-				break;
-			}
-			case TARGET_ACQUISITION_SYSTEM_DVO:
-			{
-				blackhawk_dvo.field_of_view = blackhawk_dvo.max_field_of_view;
+#else
+				blackhawk_dtv.zoom = 1.0;
+#endif
 
 				break;
 			}

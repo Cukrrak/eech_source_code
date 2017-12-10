@@ -125,7 +125,7 @@ static object_3d_sub_instance
 #else
 static struct OgreGameObjectSceneElement
 #endif
-	*rwr_above_light,
+//	*rwr_above_light,
 	*rwr_airborne_light,
 	*rwr_below_light,
 	*rwr_left10_light,
@@ -221,7 +221,7 @@ static object_3d_sub_instance
 #else
 static struct OgreGameObjectSceneElement
 #endif
-	*rwr_above_light,
+//	*rwr_above_light,
 	*rwr_airborne_light,
 	*rwr_below_light,
 	*rwr_left10_light,
@@ -326,7 +326,7 @@ void initialise_havoc_virtual_cockpit (void)
 
 	virtual_cockpit_instrument_needles_inst3d = construct_3d_object (OBJECT_3D_HAVOC_VIRTUAL_COCKPIT_INSTRUMENT_NEEDLES);
 	
-	rwr_above_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_ABOVE_LIGHT);
+//	rwr_above_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_ABOVE_LIGHT);
 	rwr_airborne_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_AIRBORNE_LIGHT);
 	rwr_below_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_BELOW_LIGHT);
 	rwr_left10_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_LEFT10_LIGHT);
@@ -359,7 +359,7 @@ void initialise_havoc_virtual_cockpit (void)
 	rwr_signal_strength8 = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_SIGNAL_STRENGTH8_LIGHT);
 	rwr_signal_strength9 = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_SIGNAL_STRENGTH9_LIGHT);
 
-	rwr_above_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_ABOVE_LIGHT);
+//	rwr_above_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_ABOVE_LIGHT);
 	rwr_airborne_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_AIRBORNE_LIGHT);
 	rwr_below_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_BELOW_LIGHT);
 	rwr_left10_light = find_sub_object(virtual_cockpit_instrument_needles_inst3d, OBJECT_3D_SUB_OBJECT_RWR_LEFT10_LIGHT);
@@ -1990,7 +1990,7 @@ void draw_havoc_external_virtual_cockpit (unsigned int flags, unsigned char *wip
 #ifndef OGRE_EE
 static void update_threat_warning_lights(void)
 {
-	rwr_above_light->visible_object = havoc_lamps.threat_warning_missile_above;
+//	rwr_above_light->visible_object = havoc_lamps.threat_warning_missile_above;
 	rwr_below_light->visible_object = havoc_lamps.threat_warning_missile_below;
 	rwr_missile_launch_light->visible_object = havoc_lamps.threat_warning_missile_lh_lock;
 

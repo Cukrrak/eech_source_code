@@ -76,31 +76,19 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static object_3d_instance
-	*virtual_cockpit_wiper_inst3d,
-	*virtual_cockpit_rain_effect_inst3d;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void initialise_blackhawk_virtual_cockpit_wiper_and_rain_effect (void)
 {
-	virtual_cockpit_wiper_inst3d = construct_3d_object (OBJECT_3D_APACHE_VIRTUAL_COCKPIT_WIPER);
+	pilot_wiper = FALSE;
 
-	virtual_cockpit_rain_effect_inst3d = construct_3d_object (OBJECT_3D_APACHE_GLASS);
+	pilot_wiped_rain_texture_screen = NULL;//get_screen_of_system_texture (TEXTURE_INDEX_HOKUM_PILOT_RAIN_WIPE);
 
-	pilot_wiper = TRUE;
+	pilot_wipe_type = WIPE_TYPE_INVALID;
 
-	pilot_wiped_rain_texture_screen = get_screen_of_system_texture (TEXTURE_INDEX_APACHE_PILOT_RAIN_WIPE);
+	co_pilot_wiper = FALSE;
 
-	pilot_wipe_type = WIPE_TYPE_RIGHT_THEN_LEFT;
+	co_pilot_wiped_rain_texture_screen = NULL;//get_screen_of_system_texture (TEXTURE_INDEX_HOKUM_WSO_RAIN_WIPE);
 
-	co_pilot_wiper = TRUE;
-
-	co_pilot_wiped_rain_texture_screen = get_screen_of_system_texture (TEXTURE_INDEX_APACHE_COPILOT_RAIN_WIPE);
-
-	co_pilot_wipe_type = WIPE_TYPE_UP_THEN_DOWN;
+	co_pilot_wipe_type = WIPE_TYPE_INVALID;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,10 +97,6 @@ void initialise_blackhawk_virtual_cockpit_wiper_and_rain_effect (void)
 
 void deinitialise_blackhawk_virtual_cockpit_wiper_and_rain_effect (void)
 {
-	destruct_3d_object (virtual_cockpit_wiper_inst3d);
-
-	destruct_3d_object (virtual_cockpit_rain_effect_inst3d);
-
 	pilot_wiped_rain_texture_screen = NULL;
 
 	co_pilot_wiped_rain_texture_screen = NULL;
@@ -122,64 +106,12 @@ void deinitialise_blackhawk_virtual_cockpit_wiper_and_rain_effect (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_blackhawk_virtual_cockpit_wiper (viewpoint *vp)
+void animate_blackhawk_wipers (object_3d_instance *inst3d)
 {
 	float
 		state;
 
-	ASSERT (vp);
-
-	//
-	// rotate wiper
-	//
-
-	state = (wiper_position - MIN_WIPER_POSITION) * (1.0 / (MAX_WIPER_POSITION - MIN_WIPER_POSITION));
-
-	state = bound (state, 0.0, 1.0);
-
-	animate_keyframed_sub_object_type (virtual_cockpit_wiper_inst3d, OBJECT_3D_SUB_OBJECT_WIPER, state);
-
-	//
-	// draw wiper
-	//
-
-	memcpy (&virtual_cockpit_wiper_inst3d->vp, vp, sizeof (viewpoint));
-
-#ifndef OGRE_EE
-	insert_relative_object_into_3d_scene (OBJECT_3D_DRAW_TYPE_ZBUFFERED_OBJECT, &virtual_cockpit_wiper_inst3d->vp.position, virtual_cockpit_wiper_inst3d);
-#else
-	object_3d_draw (virtual_cockpit_wiper_inst3d);
-#endif
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_blackhawk_virtual_cockpit_rain_effect (viewpoint *vp)
-{
-	ASSERT (vp);
-
-	if (get_global_graphics_rain_textures_enabled ())
-	{
-		memcpy (&virtual_cockpit_rain_effect_inst3d->vp, vp, sizeof (viewpoint));
-
-#ifndef OGRE_EE
-		insert_relative_object_into_3d_scene (OBJECT_3D_DRAW_TYPE_ZBUFFERED_OBJECT, &virtual_cockpit_rain_effect_inst3d->vp.position, virtual_cockpit_rain_effect_inst3d);
-#else
-		object_3d_draw (virtual_cockpit_rain_effect_inst3d);
-#endif
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void animate_blackhawk_external_wipers (object_3d_instance *inst3d)
-{
-	float
-		state;
+	ASSERT (inst3d);
 
 	state = (wiper_position - MIN_WIPER_POSITION) * (1.0 / (MAX_WIPER_POSITION - MIN_WIPER_POSITION));
 

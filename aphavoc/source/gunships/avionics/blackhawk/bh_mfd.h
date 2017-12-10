@@ -64,51 +64,132 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+enum BLACKHAWK_MFD_MODES
+{
+	BLACKHAWK_MFD_MODE_OFF,
+	BLACKHAWK_MFD_MODE_DAMAGED,
+	BLACKHAWK_MFD_MODE_FLIR,
+	BLACKHAWK_MFD_MODE_DTV,
+	BLACKHAWK_MFD_MODE_TSD,
+	BLACKHAWK_MFD_MODE_ASE,
+	BLACKHAWK_MFD_MODE_WEAPON,
+	BLACKHAWK_MFD_MODE_SYSTEM,
+	BLACKHAWK_MFD_MODE_ENGINE,
+	BLACKHAWK_MFD_MODE_FLIGHT,
+	BLACKHAWK_MFD_MODE_MISSION,
+	BLACKHAWK_MFD_MODE_COMPASS,
+	NUM_BLACKHAWK_MFD_MODES
+};
+
+typedef enum BLACKHAWK_MFD_MODES blackhawk_mfd_modes;
+
+#define blackhawk_mfd_mode_valid(MODE) (((MODE) >= BLACKHAWK_MFD_MODE_OFF) && ((MODE) < NUM_BLACKHAWK_MFD_MODES))
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+enum BLACKHAWK_MFD_LOCATIONS
+{
+	BLACKHAWK_MFD_LOCATION_PILOT_MAIN,
+	BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN,
+	NUM_BLACKHAWK_MFD_LOCATIONS
+};
+
+typedef enum BLACKHAWK_MFD_LOCATIONS blackhawk_mfd_locations;
+
+#define blackhawk_mfd_location_valid(LOCATION) (((LOCATION) >= BLACKHAWK_MFD_LOCATION_PILOT_MAIN) && ((LOCATION) < NUM_BLACKHAWK_MFD_LOCATIONS))
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+enum BLACKHAWK_SMALL_MFD_MODES
+{
+	BLACKHAWK_SMALL_MFD_MODE_OFF,
+	BLACKHAWK_SMALL_MFD_MODE_DAMAGED,
+	BLACKHAWK_SMALL_MFD_MODE_SYSTEM,
+	BLACKHAWK_SMALL_MFD_MODE_FLIGHT,
+	BLACKHAWK_SMALL_MFD_MODE_COMPASS,
+	NUM_BLACKHAWK_SMALL_MFD_MODES
+};
+
+typedef enum BLACKHAWK_SMALL_MFD_MODES blackhawk_small_mfd_modes;
+
+#define blackhawk_small_mfd_mode_valid(MODE) (((MODE) >= BLACKHAWK_SMALL_MFD_MODE_OFF) && ((MODE) < NUM_BLACKHAWK_SMALL_MFD_MODES))
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+enum BLACKHAWK_SMALL_MFD_LOCATIONS
+{
+	BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP,
+	BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM,
+	NUM_BLACKHAWK_SMALL_MFD_LOCATIONS
+};
+
+typedef enum BLACKHAWK_SMALL_MFD_LOCATIONS blackhawk_small_mfd_locations;
+
+#define blackhawk_small_mfd_location_valid(LOCATION) (((LOCATION) >= BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP) && ((LOCATION) < NUM_BLACKHAWK_SMALL_MFD_LOCATIONS))
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 extern void initialise_blackhawk_mfd (void);
 
 extern void deinitialise_blackhawk_mfd (void);
 
-extern void select_blackhawk_mfd_mode (mfd_modes mode, mfd_locations location);
+extern void draw_blackhawk_mfd (void);
 
-extern void draw_blackhawk_mfd_on_cockpit (float x_org, float y_org, int large_mfd, int draw_translucent_background, mfd_locations location);
+extern void set_blackhawk_text_display_text (char *s1, char *s2);
 
-extern void draw_blackhawk_mfd_on_texture (mfd_locations location);
+extern void draw_blackhawk_full_screen_display (void);
 
-extern void draw_overlaid_blackhawk_mfd (float x_org, float y_org, float size, mfd_locations location);
+extern void draw_overlaid_blackhawk_mfd (void);
 
-extern void select_next_blackhawk_tsd_ase_range (void);
+extern int get_blackhawk_mfd_has_focus (blackhawk_mfd_locations mfd_location);
 
-extern void select_previous_blackhawk_tsd_ase_range (void);
+extern void select_blackhawk_mfd_mode (blackhawk_mfd_modes mfd_mode, blackhawk_mfd_locations mfd_location);
 
-extern void select_next_blackhawk_tsd_declutter_level (void);
+extern void select_blackhawk_small_mfd_mode (blackhawk_small_mfd_modes mfd_mode, blackhawk_small_mfd_locations mfd_location);
 
-extern void select_previous_blackhawk_tsd_declutter_level (void);
+extern void select_next_blackhawk_mfd (blackhawk_mfd_locations mfd_location);
 
-extern void select_next_blackhawk_lhs_mfd (void);
+extern void select_next_blackhawk_small_mfd (blackhawk_small_mfd_locations mfd_location);
 
-extern void select_previous_blackhawk_lhs_mfd (void);
+extern void select_previous_blackhawk_mfd (blackhawk_mfd_locations mfd_location);
 
-extern void select_next_blackhawk_rhs_mfd (void);
+extern void select_previous_blackhawk_small_mfd (blackhawk_small_mfd_locations mfd_location);
 
-extern void select_previous_blackhawk_rhs_mfd (void);
+extern void toggle_blackhawk_mfd_on_off (blackhawk_mfd_locations mfd_location);
 
-extern void select_blackhawk_ground_radar_mfd (void);
+extern void toggle_blackhawk_small_mfd_on_off (blackhawk_small_mfd_locations mfd_location);
 
-extern void select_blackhawk_air_radar_mfd (void);
+extern blackhawk_mfd_modes get_blackhawk_mfd_mode (blackhawk_mfd_locations mfd_location);
 
-extern void select_blackhawk_tads_mfd (void);
+extern void select_next_blackhawk_pilot_tsd_ase_range (void);
+
+extern void select_next_blackhawk_co_pilot_tsd_ase_range (void);
+
+extern void select_previous_blackhawk_pilot_tsd_ase_range (void);
+
+extern void select_previous_blackhawk_co_pilot_tsd_ase_range (void);
+
+extern void select_next_blackhawk_pilot_tsd_declutter_level (void);
+
+extern void select_next_blackhawk_co_pilot_tsd_declutter_level (void);
+
+extern void select_previous_blackhawk_pilot_tsd_declutter_level (void);
+
+extern void select_previous_blackhawk_co_pilot_tsd_declutter_level (void);
 
 extern void toggle_blackhawk_ase_auto_page (void);
 
 extern void auto_page_blackhawk_ase_mfd (void);
 
-extern void toggle_blackhawk_lhs_mfd_on_off (void);
-
-extern void toggle_blackhawk_rhs_mfd_on_off (void);
-
-extern int get_blackhawk_mfd_has_focus (mfd_locations mfd_location);
-
-extern int get_blackhawk_tads_display_visible (void);
+extern void select_blackhawk_tads_mfd (void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

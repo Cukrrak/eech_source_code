@@ -72,38 +72,25 @@ union BLACKHAWK_DAMAGE_FLAGS
 	struct
 	{
 		unsigned int
-			radar		  					:1,	// 1
-			spare_1						:1,	// 2
-			flir							:1,	// 3
-			dtv							:1,	// 4
-			dvo							:1,	// 5
-			spare_2						:1,	// 6
-			laser_designator			:1,	// 7
-			radar_jammer				:1,	// 8
-			infra_red_jammer	  		:1,	// 9
-			spare_3						:1,	// 10
-			navigation_computer 		:1,	// 11
-			spare_4						:1,	// 12
-			communications		  		:1,	// 13
-			radar_warning_system		:1,	// 14
-			ihadss						:1,	// 15
-			lh_mfd						:1,	// 16
-			spare_5						:1,	// 17
-			rh_mfd						:1,	// 18
-			pnvs							:1,	// 19
-			gun_jammed					:1,	// 20
-			lh_wing_tip_mount			:1,	// 21
-			spare_6						:1,	// 22
-			lh_outer_pylon				:1,	// 23
-			lh_inner_pylon				:1,	// 24
-			spare_7						:1,	// 25
-			rh_wing_tip_mount			:1,	// 26
-			rh_outer_pylon				:1,	// 27
-			spare_8						:1,	// 28
-			rh_inner_pylon				:1,	// 29
-			chaff_dispenser			:1,	// 30
-			spare_9						:1,	// 31
-			flare_dispenser			:1;	// 32
+			flir							:1,	// 1
+			dtv							:1,	// 2
+			laser_designator			:1,	// 3
+			infra_red_jammer	  		:1,	// 4
+			navigation_computer 		:1,	// 5
+			communications		  		:1,	// 6
+			radar_warning_system		:1,	// 7
+			pilot_top_mfd						:1,	// 8
+			pilot_bottom_mfd					:1, // 9
+			pilot_main_mfd						:1,	// 10
+			co_pilot_main_mfd						:1,	// 11
+//			co_pilot_rh_mfd						:1,	// 12
+			pnvs							:1,	// 13
+			lh_outer_pylon				:1,	// 14
+			lh_inner_pylon				:1,	// 15
+			rh_outer_pylon				:1,	// 16
+			rh_inner_pylon				:1,	// 17
+			chaff_dispenser			:1,	// 18
+			flare_dispenser			:1;	// 19
 	};
 };
 
