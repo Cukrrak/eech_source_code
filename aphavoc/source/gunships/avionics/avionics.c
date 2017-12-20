@@ -1181,6 +1181,8 @@ void update_avionics (void)
 
 			update_blackhawk_threat_warning_system ();
 
+			update_blackhawk_upfront_display ();
+
 			if (command_line_shared_mem_export != 0)
 				update_blackhawk_avionics_shared_mem ();	// Retro 8Mar2005
 

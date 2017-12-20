@@ -5014,7 +5014,7 @@ static void draw_engine_display_mfd (void)
 
 	print_mono_font_string ("THROTTLE");
 
-	fvalue = bound (current_flight_dynamics->left_engine_n1_rpm.max, 0.0, 110.0);
+	fvalue = bound (current_flight_dynamics->left_engine_n1_rpm.max, 0.0, 120.0);
 	convert_float_to_int (fvalue, &ivalue);
 
 	if (ivalue < 60)
@@ -5028,7 +5028,7 @@ static void draw_engine_display_mfd (void)
 
 	set_2d_mono_font_position (0.0, -0.7);
 
-	fvalue = bound (current_flight_dynamics->right_engine_n1_rpm.max, 0.0, 110.0);
+	fvalue = bound (current_flight_dynamics->right_engine_n1_rpm.max, 0.0, 120.0);
 	convert_float_to_int (fvalue, &ivalue);
 
 	if (ivalue < 60)

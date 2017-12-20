@@ -82,12 +82,11 @@
 
 static object_3d_instance
 	*virtual_cockpit_inst3d_detail_level_normal_inst3d,
-	*virtual_cockpit_inst3d_detail_level_glass_inst3d,
-	*virtual_cockpit_engine_displays_inst3d;
+	*virtual_cockpit_inst3d_detail_level_glass_inst3d;
+//	*virtual_cockpit_inst3d;
 
 static object_3d_sub_instance
-	// Display LEDs
-
+	// Pilot Display Unit
 	// Rotor RPM
 	// Red LEDs
 	*rtr_rpm_red_led1,
@@ -173,7 +172,6 @@ static object_3d_sub_instance
 	*leng_rpm_yellow_led7,
 	*leng_rpm_yellow_led8,
 	*leng_rpm_yellow_led9,
-
 	// Green LEDs
 	*leng_rpm_green_led1,
 	*leng_rpm_green_led2,
@@ -210,7 +208,6 @@ static object_3d_sub_instance
 	*reng_rpm_red_led25,
 	*reng_rpm_red_led26,
 	*reng_rpm_red_led27,
-
 	// Yellow LEDs
 	*reng_rpm_yellow_led1,
 	*reng_rpm_yellow_led2,
@@ -221,7 +218,6 @@ static object_3d_sub_instance
 	*reng_rpm_yellow_led7,
 	*reng_rpm_yellow_led8,
 	*reng_rpm_yellow_led9,
-
 	// Green LEDs
 	*reng_rpm_green_led1,
 	*reng_rpm_green_led2,
@@ -251,7 +247,6 @@ static object_3d_sub_instance
 	*leng_trq_green_led18,
 	*leng_trq_green_led19,
 	*leng_trq_green_led20,
-
 	// Yellow LEDs
 	*leng_trq_yellow_led1,
 	*leng_trq_yellow_led2,
@@ -259,7 +254,6 @@ static object_3d_sub_instance
 	*leng_trq_yellow_led4,
 	*leng_trq_yellow_led5,
 	*leng_trq_yellow_led6,
-
 	// Red LEDs
 	*leng_trq_red_led1,
 	*leng_trq_red_led2,
@@ -288,7 +282,6 @@ static object_3d_sub_instance
 	*reng_trq_green_led18,
 	*reng_trq_green_led19,
 	*reng_trq_green_led20,
-
 	// Yellow LEDs
 	*reng_trq_yellow_led1,
 	*reng_trq_yellow_led2,
@@ -296,14 +289,432 @@ static object_3d_sub_instance
 	*reng_trq_yellow_led4,
 	*reng_trq_yellow_led5,
 	*reng_trq_yellow_led6,
-
 	// Red LEDs
 	*reng_trq_red_led1,
 	*reng_trq_red_led2,
 	*reng_trq_red_led3,
-	*reng_trq_red_led4;
+	*reng_trq_red_led4,
 
-//	*rtr_rpm_cp_red_led1;
+	// Co-Pilot Display Unit
+	// Rotor RPM
+	// Red LEDs
+	*cp_rtr_rpm_red_led1,
+	*cp_rtr_rpm_red_led2,
+	*cp_rtr_rpm_red_led3,
+	*cp_rtr_rpm_red_led4,
+	*cp_rtr_rpm_red_led5,
+	*cp_rtr_rpm_red_led6,
+	*cp_rtr_rpm_red_led7,
+	*cp_rtr_rpm_red_led8,
+	*cp_rtr_rpm_red_led9,
+	*cp_rtr_rpm_red_led10,
+	*cp_rtr_rpm_red_led11,
+	*cp_rtr_rpm_red_led12,
+	*cp_rtr_rpm_red_led13,
+	*cp_rtr_rpm_red_led14,
+	*cp_rtr_rpm_red_led15,
+	*cp_rtr_rpm_red_led16,
+	*cp_rtr_rpm_red_led17,
+	*cp_rtr_rpm_red_led18,
+	*cp_rtr_rpm_red_led19,
+	*cp_rtr_rpm_red_led20,
+	*cp_rtr_rpm_red_led21,
+	*cp_rtr_rpm_red_led22,
+	*cp_rtr_rpm_red_led23,
+	*cp_rtr_rpm_red_led24,
+	*cp_rtr_rpm_red_led25,
+	*cp_rtr_rpm_red_led26,
+	*cp_rtr_rpm_red_led27,
+	// Yellow LEDs
+	*cp_rtr_rpm_yellow_led1,
+	*cp_rtr_rpm_yellow_led2,
+	*cp_rtr_rpm_yellow_led3,
+	*cp_rtr_rpm_yellow_led4,
+	*cp_rtr_rpm_yellow_led5,
+	*cp_rtr_rpm_yellow_led6,
+	*cp_rtr_rpm_yellow_led7,
+	*cp_rtr_rpm_yellow_led8,
+	*cp_rtr_rpm_yellow_led9,
+	// Green LEDs
+	*cp_rtr_rpm_green_led1,
+	*cp_rtr_rpm_green_led2,
+	*cp_rtr_rpm_green_led3,
+	*cp_rtr_rpm_green_led4,
+	*cp_rtr_rpm_green_led5,
+
+	//L Eng RPM
+	// Red LEDs
+	*cp_leng_rpm_red_led1,
+	*cp_leng_rpm_red_led2,
+	*cp_leng_rpm_red_led3,
+	*cp_leng_rpm_red_led4,
+	*cp_leng_rpm_red_led5,
+	*cp_leng_rpm_red_led6,
+	*cp_leng_rpm_red_led7,
+	*cp_leng_rpm_red_led8,
+	*cp_leng_rpm_red_led9,
+	*cp_leng_rpm_red_led10,
+	*cp_leng_rpm_red_led11,
+	*cp_leng_rpm_red_led12,
+	*cp_leng_rpm_red_led13,
+	*cp_leng_rpm_red_led14,
+	*cp_leng_rpm_red_led15,
+	*cp_leng_rpm_red_led16,
+	*cp_leng_rpm_red_led17,
+	*cp_leng_rpm_red_led18,
+	*cp_leng_rpm_red_led19,
+	*cp_leng_rpm_red_led20,
+	*cp_leng_rpm_red_led21,
+	*cp_leng_rpm_red_led22,
+	*cp_leng_rpm_red_led23,
+	*cp_leng_rpm_red_led24,
+	*cp_leng_rpm_red_led25,
+	*cp_leng_rpm_red_led26,
+	*cp_leng_rpm_red_led27,
+	// Yellow LEDs
+	*cp_leng_rpm_yellow_led1,
+	*cp_leng_rpm_yellow_led2,
+	*cp_leng_rpm_yellow_led3,
+	*cp_leng_rpm_yellow_led4,
+	*cp_leng_rpm_yellow_led5,
+	*cp_leng_rpm_yellow_led6,
+	*cp_leng_rpm_yellow_led7,
+	*cp_leng_rpm_yellow_led8,
+	*cp_leng_rpm_yellow_led9,
+	// Green LEDs
+	*cp_leng_rpm_green_led1,
+	*cp_leng_rpm_green_led2,
+	*cp_leng_rpm_green_led3,
+	*cp_leng_rpm_green_led4,
+	*cp_leng_rpm_green_led5,
+
+	// R Eng RPM
+	// Red LEDs
+	*cp_reng_rpm_red_led1,
+	*cp_reng_rpm_red_led2,
+	*cp_reng_rpm_red_led3,
+	*cp_reng_rpm_red_led4,
+	*cp_reng_rpm_red_led5,
+	*cp_reng_rpm_red_led6,
+	*cp_reng_rpm_red_led7,
+	*cp_reng_rpm_red_led8,
+	*cp_reng_rpm_red_led9,
+	*cp_reng_rpm_red_led10,
+	*cp_reng_rpm_red_led11,
+	*cp_reng_rpm_red_led12,
+	*cp_reng_rpm_red_led13,
+	*cp_reng_rpm_red_led14,
+	*cp_reng_rpm_red_led15,
+	*cp_reng_rpm_red_led16,
+	*cp_reng_rpm_red_led17,
+	*cp_reng_rpm_red_led18,
+	*cp_reng_rpm_red_led19,
+	*cp_reng_rpm_red_led20,
+	*cp_reng_rpm_red_led21,
+	*cp_reng_rpm_red_led22,
+	*cp_reng_rpm_red_led23,
+	*cp_reng_rpm_red_led24,
+	*cp_reng_rpm_red_led25,
+	*cp_reng_rpm_red_led26,
+	*cp_reng_rpm_red_led27,
+	// Yellow LEDs
+	*cp_reng_rpm_yellow_led1,
+	*cp_reng_rpm_yellow_led2,
+	*cp_reng_rpm_yellow_led3,
+	*cp_reng_rpm_yellow_led4,
+	*cp_reng_rpm_yellow_led5,
+	*cp_reng_rpm_yellow_led6,
+	*cp_reng_rpm_yellow_led7,
+	*cp_reng_rpm_yellow_led8,
+	*cp_reng_rpm_yellow_led9,
+	// Green LEDs
+	*cp_reng_rpm_green_led1,
+	*cp_reng_rpm_green_led2,
+	*cp_reng_rpm_green_led3,
+	*cp_reng_rpm_green_led4,
+	*cp_reng_rpm_green_led5,
+
+	// L Eng TRQ
+	// Green LEDs
+	*cp_leng_trq_green_led1,
+	*cp_leng_trq_green_led2,
+	*cp_leng_trq_green_led3,
+	*cp_leng_trq_green_led4,
+	*cp_leng_trq_green_led5,
+	*cp_leng_trq_green_led6,
+	*cp_leng_trq_green_led7,
+	*cp_leng_trq_green_led8,
+	*cp_leng_trq_green_led9,
+	*cp_leng_trq_green_led10,
+	*cp_leng_trq_green_led11,
+	*cp_leng_trq_green_led12,
+	*cp_leng_trq_green_led13,
+	*cp_leng_trq_green_led14,
+	*cp_leng_trq_green_led15,
+	*cp_leng_trq_green_led16,
+	*cp_leng_trq_green_led17,
+	*cp_leng_trq_green_led18,
+	*cp_leng_trq_green_led19,
+	*cp_leng_trq_green_led20,
+	// Yellow LEDs
+	*cp_leng_trq_yellow_led1,
+	*cp_leng_trq_yellow_led2,
+	*cp_leng_trq_yellow_led3,
+	*cp_leng_trq_yellow_led4,
+	*cp_leng_trq_yellow_led5,
+	*cp_leng_trq_yellow_led6,
+	// Red LEDs
+	*cp_leng_trq_red_led1,
+	*cp_leng_trq_red_led2,
+	*cp_leng_trq_red_led3,
+	*cp_leng_trq_red_led4,
+
+	// R Eng TRQ
+	// Green LEDs
+	*cp_reng_trq_green_led1,
+	*cp_reng_trq_green_led2,
+	*cp_reng_trq_green_led3,
+	*cp_reng_trq_green_led4,
+	*cp_reng_trq_green_led5,
+	*cp_reng_trq_green_led6,
+	*cp_reng_trq_green_led7,
+	*cp_reng_trq_green_led8,
+	*cp_reng_trq_green_led9,
+	*cp_reng_trq_green_led10,
+	*cp_reng_trq_green_led11,
+	*cp_reng_trq_green_led12,
+	*cp_reng_trq_green_led13,
+	*cp_reng_trq_green_led14,
+	*cp_reng_trq_green_led15,
+	*cp_reng_trq_green_led16,
+	*cp_reng_trq_green_led17,
+	*cp_reng_trq_green_led18,
+	*cp_reng_trq_green_led19,
+	*cp_reng_trq_green_led20,
+	// Yellow LEDs
+	*cp_reng_trq_yellow_led1,
+	*cp_reng_trq_yellow_led2,
+	*cp_reng_trq_yellow_led3,
+	*cp_reng_trq_yellow_led4,
+	*cp_reng_trq_yellow_led5,
+	*cp_reng_trq_yellow_led6,
+	// Red LEDs
+	*cp_reng_trq_red_led1,
+	*cp_reng_trq_red_led2,
+	*cp_reng_trq_red_led3,
+	*cp_reng_trq_red_led4,
+
+	// Central Display Unit
+	// Fuel Quantity
+	// Left Fuel Tank
+	// Yellow LEDs
+	*lfuel_tank_yellow1,
+	*lfuel_tank_yellow2,
+	*lfuel_tank_yellow3,
+	*lfuel_tank_yellow4,
+	// Green LEDs
+	*lfuel_tank_green1,
+	*lfuel_tank_green2,
+	*lfuel_tank_green3,
+	*lfuel_tank_green4,
+	*lfuel_tank_green5,
+	*lfuel_tank_green6,
+	*lfuel_tank_green7,
+	*lfuel_tank_green8,
+	*lfuel_tank_green9,
+	*lfuel_tank_green10,
+	*lfuel_tank_green11,
+	*lfuel_tank_green12,
+	*lfuel_tank_green13,
+	*lfuel_tank_green14,
+	*lfuel_tank_green15,
+	*lfuel_tank_green16,
+	*lfuel_tank_green17,
+	*lfuel_tank_green18,
+	*lfuel_tank_green19,
+	*lfuel_tank_green20,
+	*lfuel_tank_green21,
+	*lfuel_tank_green22,
+	*lfuel_tank_green23,
+	*lfuel_tank_green24,
+	*lfuel_tank_green25,
+	*lfuel_tank_green26,
+
+	// Right Fuel Tank
+	// Yellow LEDs
+	*rfuel_tank_yellow1,
+	*rfuel_tank_yellow2,
+	*rfuel_tank_yellow3,
+	*rfuel_tank_yellow4,
+	// Green LEDs
+	*rfuel_tank_green1,
+	*rfuel_tank_green2,
+	*rfuel_tank_green3,
+	*rfuel_tank_green4,
+	*rfuel_tank_green5,
+	*rfuel_tank_green6,
+	*rfuel_tank_green7,
+	*rfuel_tank_green8,
+	*rfuel_tank_green9,
+	*rfuel_tank_green10,
+	*rfuel_tank_green11,
+	*rfuel_tank_green12,
+	*rfuel_tank_green13,
+	*rfuel_tank_green14,
+	*rfuel_tank_green15,
+	*rfuel_tank_green16,
+	*rfuel_tank_green17,
+	*rfuel_tank_green18,
+	*rfuel_tank_green19,
+	*rfuel_tank_green20,
+	*rfuel_tank_green21,
+	*rfuel_tank_green22,
+	*rfuel_tank_green23,
+	*rfuel_tank_green24,
+	*rfuel_tank_green25,
+	*rfuel_tank_green26,
+
+	// NG Speed
+	// Left Engine
+	// Green LEDs
+	*lng_spd_green1,
+	*lng_spd_green2,
+	*lng_spd_green3,
+	*lng_spd_green4,
+	*lng_spd_green5,
+	*lng_spd_green6,
+	*lng_spd_green7,
+	*lng_spd_green8,
+	*lng_spd_green9,
+	*lng_spd_green10,
+	*lng_spd_green11,
+	*lng_spd_green12,
+	*lng_spd_green13,
+	*lng_spd_green14,
+	*lng_spd_green15,
+	*lng_spd_green16,
+	*lng_spd_green17,
+	*lng_spd_green18,
+	*lng_spd_green19,
+	*lng_spd_green20,
+	*lng_spd_green21,
+	*lng_spd_green22,
+	*lng_spd_green23,
+	*lng_spd_green24,
+	// Yellow LEDs
+	*lng_spd_yellow1,
+	*lng_spd_yellow2,
+	// Red LEDs
+	*lng_spd_red1,
+	*lng_spd_red2,
+	*lng_spd_red3,
+	*lng_spd_red4,
+
+	// Right Engine
+	// Green LEDs
+	*rng_spd_green1,
+	*rng_spd_green2,
+	*rng_spd_green3,
+	*rng_spd_green4,
+	*rng_spd_green5,
+	*rng_spd_green6,
+	*rng_spd_green7,
+	*rng_spd_green8,
+	*rng_spd_green9,
+	*rng_spd_green10,
+	*rng_spd_green11,
+	*rng_spd_green12,
+	*rng_spd_green13,
+	*rng_spd_green14,
+	*rng_spd_green15,
+	*rng_spd_green16,
+	*rng_spd_green17,
+	*rng_spd_green18,
+	*rng_spd_green19,
+	*rng_spd_green20,
+	*rng_spd_green21,
+	*rng_spd_green22,
+	*rng_spd_green23,
+	*rng_spd_green24,
+	// Yellow LEDs
+	*rng_spd_yellow1,
+	*rng_spd_yellow2,
+	// Red LEDs
+	*rng_spd_red1,
+	*rng_spd_red2,
+	*rng_spd_red3,
+	*rng_spd_red4,
+
+	// TGT Temp
+	// Left Engine
+	// Green LEDs
+	*ltgt_tmp_green1,
+	*ltgt_tmp_green2,
+	*ltgt_tmp_green3,
+	*ltgt_tmp_green4,
+	*ltgt_tmp_green5,
+	*ltgt_tmp_green6,
+	*ltgt_tmp_green7,
+	*ltgt_tmp_green8,
+	*ltgt_tmp_green9,
+	*ltgt_tmp_green10,
+	*ltgt_tmp_green11,
+	*ltgt_tmp_green12,
+	*ltgt_tmp_green13,
+	*ltgt_tmp_green14,
+	*ltgt_tmp_green15,
+	*ltgt_tmp_green16,
+	*ltgt_tmp_green17,
+	*ltgt_tmp_green18,
+	*ltgt_tmp_green19,
+	*ltgt_tmp_green20,
+	*ltgt_tmp_green21,
+	*ltgt_tmp_green22,
+	*ltgt_tmp_green23,
+	// Yellow LEDs
+	*ltgt_tmp_yellow1,
+	*ltgt_tmp_yellow2,
+	*ltgt_tmp_yellow3,
+	// Red LEDs
+	*ltgt_tmp_red1,
+	*ltgt_tmp_red2,
+	*ltgt_tmp_red3,
+	*ltgt_tmp_red4,
+
+	// Right Engine
+	// Green LEDs
+	*rtgt_tmp_green1,
+	*rtgt_tmp_green2,
+	*rtgt_tmp_green3,
+	*rtgt_tmp_green4,
+	*rtgt_tmp_green5,
+	*rtgt_tmp_green6,
+	*rtgt_tmp_green7,
+	*rtgt_tmp_green8,
+	*rtgt_tmp_green9,
+	*rtgt_tmp_green10,
+	*rtgt_tmp_green11,
+	*rtgt_tmp_green12,
+	*rtgt_tmp_green13,
+	*rtgt_tmp_green14,
+	*rtgt_tmp_green15,
+	*rtgt_tmp_green16,
+	*rtgt_tmp_green17,
+	*rtgt_tmp_green18,
+	*rtgt_tmp_green19,
+	*rtgt_tmp_green20,
+	*rtgt_tmp_green21,
+	*rtgt_tmp_green22,
+	*rtgt_tmp_green23,
+	// Yellow LEDs
+	*rtgt_tmp_yellow1,
+	*rtgt_tmp_yellow2,
+	*rtgt_tmp_yellow3,
+	// Red LEDs
+	*rtgt_tmp_red1,
+	*rtgt_tmp_red2,
+	*rtgt_tmp_red3,
+	*rtgt_tmp_red4;
 
 static void animate_mh60l_virtual_cockpit (void);
 
@@ -323,220 +734,637 @@ void initialise_blackhawk_virtual_cockpit (void)
 
 	virtual_cockpit_inst3d = virtual_cockpit_inst3d_detail_level_normal_inst3d;
 
-	virtual_cockpit_engine_displays_inst3d = construct_3d_object(OBJECT_3D_BH_ENGINE_DISPLAYS);
+//	virtual_cockpit_inst3d = construct_3d_object(OBJECT_3D_MH_60L_COCKPIT);
 
-	// Display LEDs
+	// Pilot Display Unit
 	// Rotor RPM
 	// Red LEDs
-	rtr_rpm_red_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED1);
-	rtr_rpm_red_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED2);
-	rtr_rpm_red_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED3);
-	rtr_rpm_red_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED4);
-	rtr_rpm_red_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED5);
-	rtr_rpm_red_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED6);
-	rtr_rpm_red_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED7);
-	rtr_rpm_red_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED8);
-	rtr_rpm_red_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED9);
-	rtr_rpm_red_led10 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED10);
-	rtr_rpm_red_led11 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED11);
-	rtr_rpm_red_led12 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED12);
-	rtr_rpm_red_led13 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED13);
-	rtr_rpm_red_led14 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED14);
-	rtr_rpm_red_led15 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED15);
-	rtr_rpm_red_led16 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED16);
-	rtr_rpm_red_led17 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED17);
-	rtr_rpm_red_led18 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED18);
-	rtr_rpm_red_led19 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED19);
-	rtr_rpm_red_led20 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED20);
-	rtr_rpm_red_led21 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED21);
-	rtr_rpm_red_led22 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED22);
-	rtr_rpm_red_led23 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED23);
-	rtr_rpm_red_led24 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED24);
-	rtr_rpm_red_led25 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED25);
-	rtr_rpm_red_led26 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED26);
-	rtr_rpm_red_led27 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED27);
-
-//	rtr_rpm_cp_red_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED1);
-
+	rtr_rpm_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED1);
+	rtr_rpm_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED2);
+	rtr_rpm_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED3);
+	rtr_rpm_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED4);
+	rtr_rpm_red_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED5);
+	rtr_rpm_red_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED6);
+	rtr_rpm_red_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED7);
+	rtr_rpm_red_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED8);
+	rtr_rpm_red_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED9);
+	rtr_rpm_red_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED10);
+	rtr_rpm_red_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED11);
+	rtr_rpm_red_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED12);
+	rtr_rpm_red_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED13);
+	rtr_rpm_red_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED14);
+	rtr_rpm_red_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED15);
+	rtr_rpm_red_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED16);
+	rtr_rpm_red_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED17);
+	rtr_rpm_red_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED18);
+	rtr_rpm_red_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED19);
+	rtr_rpm_red_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED20);
+	rtr_rpm_red_led21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED21);
+	rtr_rpm_red_led22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED22);
+	rtr_rpm_red_led23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED23);
+	rtr_rpm_red_led24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED24);
+	rtr_rpm_red_led25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED25);
+	rtr_rpm_red_led26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED26);
+	rtr_rpm_red_led27 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_RED27);
 	// Yellow LEDs
-	rtr_rpm_yellow_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW1);
-	rtr_rpm_yellow_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW2);
-	rtr_rpm_yellow_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW3);
-	rtr_rpm_yellow_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW4);
-	rtr_rpm_yellow_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW5);
-	rtr_rpm_yellow_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW6);
-	rtr_rpm_yellow_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW7);
-	rtr_rpm_yellow_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW8);
-	rtr_rpm_yellow_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW9);
-
+	rtr_rpm_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW1);
+	rtr_rpm_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW2);
+	rtr_rpm_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW3);
+	rtr_rpm_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW4);
+	rtr_rpm_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW5);
+	rtr_rpm_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW6);
+	rtr_rpm_yellow_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW7);
+	rtr_rpm_yellow_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW8);
+	rtr_rpm_yellow_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_YELLOW9);
 	// Green LEDs
-	rtr_rpm_green_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN1);
-	rtr_rpm_green_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN2);
-	rtr_rpm_green_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN3);
-	rtr_rpm_green_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN4);
-	rtr_rpm_green_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN5);
+	rtr_rpm_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN1);
+	rtr_rpm_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN2);
+	rtr_rpm_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN3);
+	rtr_rpm_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN4);
+	rtr_rpm_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTR_RPM_GRN5);
 
 	// L Eng RPM
 	// Red LEDs
-	leng_rpm_red_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED1);
-	leng_rpm_red_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED2);
-	leng_rpm_red_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED3);
-	leng_rpm_red_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED4);
-	leng_rpm_red_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED5);
-	leng_rpm_red_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED6);
-	leng_rpm_red_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED7);
-	leng_rpm_red_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED8);
-	leng_rpm_red_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED9);
-	leng_rpm_red_led10 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED10);
-	leng_rpm_red_led11 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED11);
-	leng_rpm_red_led12 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED12);
-	leng_rpm_red_led13 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED13);
-	leng_rpm_red_led14 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED14);
-	leng_rpm_red_led15 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED15);
-	leng_rpm_red_led16 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED16);
-	leng_rpm_red_led17 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED17);
-	leng_rpm_red_led18 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED18);
-	leng_rpm_red_led19 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED19);
-	leng_rpm_red_led20 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED20);
-	leng_rpm_red_led21 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED21);
-	leng_rpm_red_led22 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED22);
-	leng_rpm_red_led23 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED23);
-	leng_rpm_red_led24 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED24);
-	leng_rpm_red_led25 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED25);
-	leng_rpm_red_led26 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED26);
-	leng_rpm_red_led27 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED27);
+	leng_rpm_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED1);
+	leng_rpm_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED2);
+	leng_rpm_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED3);
+	leng_rpm_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED4);
+	leng_rpm_red_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED5);
+	leng_rpm_red_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED6);
+	leng_rpm_red_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED7);
+	leng_rpm_red_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED8);
+	leng_rpm_red_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED9);
+	leng_rpm_red_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED10);
+	leng_rpm_red_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED11);
+	leng_rpm_red_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED12);
+	leng_rpm_red_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED13);
+	leng_rpm_red_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED14);
+	leng_rpm_red_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED15);
+	leng_rpm_red_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED16);
+	leng_rpm_red_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED17);
+	leng_rpm_red_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED18);
+	leng_rpm_red_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED19);
+	leng_rpm_red_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED20);
+	leng_rpm_red_led21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED21);
+	leng_rpm_red_led22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED22);
+	leng_rpm_red_led23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED23);
+	leng_rpm_red_led24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED24);
+	leng_rpm_red_led25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED25);
+	leng_rpm_red_led26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED26);
+	leng_rpm_red_led27 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_RED27);
 	// Yellow LEDs
-	leng_rpm_yellow_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW1);
-	leng_rpm_yellow_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW2);
-	leng_rpm_yellow_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW3);
-	leng_rpm_yellow_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW4);
-	leng_rpm_yellow_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW5);
-	leng_rpm_yellow_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW6);
-	leng_rpm_yellow_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW7);
-	leng_rpm_yellow_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW8);
-	leng_rpm_yellow_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW9);
+	leng_rpm_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW1);
+	leng_rpm_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW2);
+	leng_rpm_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW3);
+	leng_rpm_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW4);
+	leng_rpm_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW5);
+	leng_rpm_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW6);
+	leng_rpm_yellow_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW7);
+	leng_rpm_yellow_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW8);
+	leng_rpm_yellow_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_YELLOW9);
 	// Green LEDs
-	leng_rpm_green_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN1);
-	leng_rpm_green_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN2);
-	leng_rpm_green_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN3);
-	leng_rpm_green_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN4);
-	leng_rpm_green_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN5);
+	leng_rpm_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN1);
+	leng_rpm_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN2);
+	leng_rpm_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN3);
+	leng_rpm_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN4);
+	leng_rpm_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_RPM_GRN5);
 
 	// R Eng RPM
 	// Red LEDs
-	reng_rpm_red_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED1);
-	reng_rpm_red_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED2);
-	reng_rpm_red_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED3);
-	reng_rpm_red_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED4);
-	reng_rpm_red_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED5);
-	reng_rpm_red_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED6);
-	reng_rpm_red_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED7);
-	reng_rpm_red_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED8);
-	reng_rpm_red_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED9);
-	reng_rpm_red_led10 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED10);
-	reng_rpm_red_led11 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED11);
-	reng_rpm_red_led12 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED12);
-	reng_rpm_red_led13 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED13);
-	reng_rpm_red_led14 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED14);
-	reng_rpm_red_led15 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED15);
-	reng_rpm_red_led16 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED16);
-	reng_rpm_red_led17 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED17);
-	reng_rpm_red_led18 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED18);
-	reng_rpm_red_led19 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED19);
-	reng_rpm_red_led20 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED20);
-	reng_rpm_red_led21 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED21);
-	reng_rpm_red_led22 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED22);
-	reng_rpm_red_led23 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED23);
-	reng_rpm_red_led24 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED24);
-	reng_rpm_red_led25 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED25);
-	reng_rpm_red_led26 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED26);
-	reng_rpm_red_led27 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED27);
+	reng_rpm_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED1);
+	reng_rpm_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED2);
+	reng_rpm_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED3);
+	reng_rpm_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED4);
+	reng_rpm_red_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED5);
+	reng_rpm_red_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED6);
+	reng_rpm_red_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED7);
+	reng_rpm_red_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED8);
+	reng_rpm_red_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED9);
+	reng_rpm_red_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED10);
+	reng_rpm_red_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED11);
+	reng_rpm_red_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED12);
+	reng_rpm_red_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED13);
+	reng_rpm_red_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED14);
+	reng_rpm_red_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED15);
+	reng_rpm_red_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED16);
+	reng_rpm_red_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED17);
+	reng_rpm_red_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED18);
+	reng_rpm_red_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED19);
+	reng_rpm_red_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED20);
+	reng_rpm_red_led21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED21);
+	reng_rpm_red_led22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED22);
+	reng_rpm_red_led23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED23);
+	reng_rpm_red_led24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED24);
+	reng_rpm_red_led25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED25);
+	reng_rpm_red_led26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED26);
+	reng_rpm_red_led27 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_RED27);
 	// Yellow LEDs
-	reng_rpm_yellow_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW1);
-	reng_rpm_yellow_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW2);
-	reng_rpm_yellow_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW3);
-	reng_rpm_yellow_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW4);
-	reng_rpm_yellow_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW5);
-	reng_rpm_yellow_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW6);
-	reng_rpm_yellow_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW7);
-	reng_rpm_yellow_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW8);
-	reng_rpm_yellow_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW9);
+	reng_rpm_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW1);
+	reng_rpm_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW2);
+	reng_rpm_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW3);
+	reng_rpm_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW4);
+	reng_rpm_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW5);
+	reng_rpm_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW6);
+	reng_rpm_yellow_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW7);
+	reng_rpm_yellow_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW8);
+	reng_rpm_yellow_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_YELLOW9);
 	// Green LEDs
-	reng_rpm_green_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN1);
-	reng_rpm_green_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN2);
-	reng_rpm_green_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN3);
-	reng_rpm_green_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN4);
-	reng_rpm_green_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN5);
+	reng_rpm_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN1);
+	reng_rpm_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN2);
+	reng_rpm_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN3);
+	reng_rpm_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN4);
+	reng_rpm_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_RPM_GRN5);
 
 	// L Eng TRQ
 	// Green LEDs
-	leng_trq_green_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN1);
-	leng_trq_green_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN2);
-	leng_trq_green_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN3);
-	leng_trq_green_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN4);
-	leng_trq_green_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN5);
-	leng_trq_green_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN6);
-	leng_trq_green_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN7);
-	leng_trq_green_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN8);
-	leng_trq_green_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN9);
-	leng_trq_green_led10 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN10);
-	leng_trq_green_led11 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN11);
-	leng_trq_green_led12 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN12);
-	leng_trq_green_led13 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN13);
-	leng_trq_green_led14 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN14);
-	leng_trq_green_led15 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN15);
-	leng_trq_green_led16 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN16);
-	leng_trq_green_led17 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN17);
-	leng_trq_green_led18 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN18);
-	leng_trq_green_led19 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN19);
-	leng_trq_green_led20 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN20);
+	leng_trq_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN1);
+	leng_trq_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN2);
+	leng_trq_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN3);
+	leng_trq_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN4);
+	leng_trq_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN5);
+	leng_trq_green_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN6);
+	leng_trq_green_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN7);
+	leng_trq_green_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN8);
+	leng_trq_green_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN9);
+	leng_trq_green_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN10);
+	leng_trq_green_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN11);
+	leng_trq_green_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN12);
+	leng_trq_green_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN13);
+	leng_trq_green_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN14);
+	leng_trq_green_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN15);
+	leng_trq_green_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN16);
+	leng_trq_green_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN17);
+	leng_trq_green_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN18);
+	leng_trq_green_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN19);
+	leng_trq_green_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_GRN20);
 	// Yellow LEDs
-	leng_trq_yellow_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW1);
-	leng_trq_yellow_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW2);
-	leng_trq_yellow_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW3);
-	leng_trq_yellow_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW4);
-	leng_trq_yellow_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW5);
-	leng_trq_yellow_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW6);
+	leng_trq_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW1);
+	leng_trq_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW2);
+	leng_trq_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW3);
+	leng_trq_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW4);
+	leng_trq_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW5);
+	leng_trq_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_YELLOW6);
 	// Red LEDs
-	leng_trq_red_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED1);
-	leng_trq_red_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED2);
-	leng_trq_red_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED3);
-	leng_trq_red_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED4);
+	leng_trq_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED1);
+	leng_trq_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED2);
+	leng_trq_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED3);
+	leng_trq_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LENG_TRQ_RED4);
 
 	// R Eng TRQ
 	// Green LEDs
-	reng_trq_green_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN1);
-	reng_trq_green_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN2);
-	reng_trq_green_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN3);
-	reng_trq_green_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN4);
-	reng_trq_green_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN5);
-	reng_trq_green_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN6);
-	reng_trq_green_led7 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN7);
-	reng_trq_green_led8 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN8);
-	reng_trq_green_led9 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN9);
-	reng_trq_green_led10 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN10);
-	reng_trq_green_led11 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN11);
-	reng_trq_green_led12 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN12);
-	reng_trq_green_led13 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN13);
-	reng_trq_green_led14 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN14);
-	reng_trq_green_led15 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN15);
-	reng_trq_green_led16 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN16);
-	reng_trq_green_led17 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN17);
-	reng_trq_green_led18 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN18);
-	reng_trq_green_led19 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN19);
-	reng_trq_green_led20 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN20);
+	reng_trq_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN1);
+	reng_trq_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN2);
+	reng_trq_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN3);
+	reng_trq_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN4);
+	reng_trq_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN5);
+	reng_trq_green_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN6);
+	reng_trq_green_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN7);
+	reng_trq_green_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN8);
+	reng_trq_green_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN9);
+	reng_trq_green_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN10);
+	reng_trq_green_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN11);
+	reng_trq_green_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN12);
+	reng_trq_green_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN13);
+	reng_trq_green_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN14);
+	reng_trq_green_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN15);
+	reng_trq_green_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN16);
+	reng_trq_green_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN17);
+	reng_trq_green_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN18);
+	reng_trq_green_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN19);
+	reng_trq_green_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_GRN20);
 	// Yellow LEDs
-	reng_trq_yellow_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW1);
-	reng_trq_yellow_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW2);
-	reng_trq_yellow_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW3);
-	reng_trq_yellow_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW4);
-	reng_trq_yellow_led5 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW5);
-	reng_trq_yellow_led6 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW6);
+	reng_trq_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW1);
+	reng_trq_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW2);
+	reng_trq_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW3);
+	reng_trq_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW4);
+	reng_trq_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW5);
+	reng_trq_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_YELLOW6);
 	// Red LEDs
-	reng_trq_red_led1 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED1);
-	reng_trq_red_led2 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED2);
-	reng_trq_red_led3 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED3);
-	reng_trq_red_led4 = find_sub_object(virtual_cockpit_engine_displays_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED4);
+	reng_trq_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED1);
+	reng_trq_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED2);
+	reng_trq_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED3);
+	reng_trq_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RENG_TRQ_RED4);
+
+	// Co-Pilot Display Unit
+	// Rotor RPM
+	// Red LEDs
+	cp_rtr_rpm_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED1);
+	cp_rtr_rpm_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED2);
+	cp_rtr_rpm_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED3);
+	cp_rtr_rpm_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED4);
+	cp_rtr_rpm_red_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED5);
+	cp_rtr_rpm_red_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED6);
+	cp_rtr_rpm_red_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED7);
+	cp_rtr_rpm_red_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED8);
+	cp_rtr_rpm_red_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED9);
+	cp_rtr_rpm_red_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED10);
+	cp_rtr_rpm_red_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED11);
+	cp_rtr_rpm_red_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED12);
+	cp_rtr_rpm_red_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED13);
+	cp_rtr_rpm_red_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED14);
+	cp_rtr_rpm_red_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED15);
+	cp_rtr_rpm_red_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED16);
+	cp_rtr_rpm_red_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED17);
+	cp_rtr_rpm_red_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED18);
+	cp_rtr_rpm_red_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED19);
+	cp_rtr_rpm_red_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED20);
+	cp_rtr_rpm_red_led21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED21);
+	cp_rtr_rpm_red_led22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED22);
+	cp_rtr_rpm_red_led23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED23);
+	cp_rtr_rpm_red_led24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED24);
+	cp_rtr_rpm_red_led25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED25);
+	cp_rtr_rpm_red_led26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED26);
+	cp_rtr_rpm_red_led27 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_RED27);
+	// Yellow LEDs
+	cp_rtr_rpm_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW1);
+	cp_rtr_rpm_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW2);
+	cp_rtr_rpm_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW3);
+	cp_rtr_rpm_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW4);
+	cp_rtr_rpm_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW5);
+	cp_rtr_rpm_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW6);
+	cp_rtr_rpm_yellow_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW7);
+	cp_rtr_rpm_yellow_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW8);
+	cp_rtr_rpm_yellow_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_YELLOW9);
+	// Green LEDs
+	cp_rtr_rpm_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_GRN1);
+	cp_rtr_rpm_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_GRN2);
+	cp_rtr_rpm_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_GRN3);
+	cp_rtr_rpm_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_GRN4);
+	cp_rtr_rpm_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RTR_RPM_GRN5);
+
+	// L Eng RPM
+	// Red LEDs
+	cp_leng_rpm_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED1);
+	cp_leng_rpm_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED2);
+	cp_leng_rpm_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED3);
+	cp_leng_rpm_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED4);
+	cp_leng_rpm_red_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED5);
+	cp_leng_rpm_red_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED6);
+	cp_leng_rpm_red_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED7);
+	cp_leng_rpm_red_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED8);
+	cp_leng_rpm_red_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED9);
+	cp_leng_rpm_red_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED10);
+	cp_leng_rpm_red_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED11);
+	cp_leng_rpm_red_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED12);
+	cp_leng_rpm_red_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED13);
+	cp_leng_rpm_red_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED14);
+	cp_leng_rpm_red_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED15);
+	cp_leng_rpm_red_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED16);
+	cp_leng_rpm_red_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED17);
+	cp_leng_rpm_red_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED18);
+	cp_leng_rpm_red_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED19);
+	cp_leng_rpm_red_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED20);
+	cp_leng_rpm_red_led21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED21);
+	cp_leng_rpm_red_led22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED22);
+	cp_leng_rpm_red_led23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED23);
+	cp_leng_rpm_red_led24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED24);
+	cp_leng_rpm_red_led25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED25);
+	cp_leng_rpm_red_led26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED26);
+	cp_leng_rpm_red_led27 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_RED27);
+	// Yellow LEDs
+	cp_leng_rpm_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW1);
+	cp_leng_rpm_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW2);
+	cp_leng_rpm_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW3);
+	cp_leng_rpm_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW4);
+	cp_leng_rpm_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW5);
+	cp_leng_rpm_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW6);
+	cp_leng_rpm_yellow_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW7);
+	cp_leng_rpm_yellow_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW8);
+	cp_leng_rpm_yellow_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_YELLOW9);
+	// Green LEDs
+	cp_leng_rpm_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_GRN1);
+	cp_leng_rpm_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_GRN2);
+	cp_leng_rpm_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_GRN3);
+	cp_leng_rpm_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_GRN4);
+	cp_leng_rpm_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_RPM_GRN5);
+
+	// R Eng RPM
+	// Red LEDs
+	cp_reng_rpm_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED1);
+	cp_reng_rpm_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED2);
+	cp_reng_rpm_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED3);
+	cp_reng_rpm_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED4);
+	cp_reng_rpm_red_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED5);
+	cp_reng_rpm_red_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED6);
+	cp_reng_rpm_red_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED7);
+	cp_reng_rpm_red_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED8);
+	cp_reng_rpm_red_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED9);
+	cp_reng_rpm_red_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED10);
+	cp_reng_rpm_red_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED11);
+	cp_reng_rpm_red_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED12);
+	cp_reng_rpm_red_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED13);
+	cp_reng_rpm_red_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED14);
+	cp_reng_rpm_red_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED15);
+	cp_reng_rpm_red_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED16);
+	cp_reng_rpm_red_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED17);
+	cp_reng_rpm_red_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED18);
+	cp_reng_rpm_red_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED19);
+	cp_reng_rpm_red_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED20);
+	cp_reng_rpm_red_led21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED21);
+	cp_reng_rpm_red_led22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED22);
+	cp_reng_rpm_red_led23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED23);
+	cp_reng_rpm_red_led24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED24);
+	cp_reng_rpm_red_led25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED25);
+	cp_reng_rpm_red_led26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED26);
+	cp_reng_rpm_red_led27 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_RED27);
+	// Yellow LEDs
+	cp_reng_rpm_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW1);
+	cp_reng_rpm_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW2);
+	cp_reng_rpm_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW3);
+	cp_reng_rpm_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW4);
+	cp_reng_rpm_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW5);
+	cp_reng_rpm_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW6);
+	cp_reng_rpm_yellow_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW7);
+	cp_reng_rpm_yellow_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW8);
+	cp_reng_rpm_yellow_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_YELLOW9);
+	// Green LEDs
+	cp_reng_rpm_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_GRN1);
+	cp_reng_rpm_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_GRN2);
+	cp_reng_rpm_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_GRN3);
+	cp_reng_rpm_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_GRN4);
+	cp_reng_rpm_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_RPM_GRN5);
+
+	// L Eng TRQ
+	// Green LEDs
+	cp_leng_trq_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN1);
+	cp_leng_trq_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN2);
+	cp_leng_trq_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN3);
+	cp_leng_trq_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN4);
+	cp_leng_trq_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN5);
+	cp_leng_trq_green_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN6);
+	cp_leng_trq_green_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN7);
+	cp_leng_trq_green_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN8);
+	cp_leng_trq_green_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN9);
+	cp_leng_trq_green_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN10);
+	cp_leng_trq_green_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN11);
+	cp_leng_trq_green_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN12);
+	cp_leng_trq_green_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN13);
+	cp_leng_trq_green_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN14);
+	cp_leng_trq_green_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN15);
+	cp_leng_trq_green_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN16);
+	cp_leng_trq_green_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN17);
+	cp_leng_trq_green_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN18);
+	cp_leng_trq_green_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN19);
+	cp_leng_trq_green_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_GRN20);
+	// Yellow LEDs
+	cp_leng_trq_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_YELLOW1);
+	cp_leng_trq_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_YELLOW2);
+	cp_leng_trq_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_YELLOW3);
+	cp_leng_trq_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_YELLOW4);
+	cp_leng_trq_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_YELLOW5);
+	cp_leng_trq_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_YELLOW6);
+	// Red LEDs
+	cp_leng_trq_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_RED1);
+	cp_leng_trq_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_RED2);
+	cp_leng_trq_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_RED3);
+	cp_leng_trq_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_LENG_TRQ_RED4);
+
+	// R Eng TRQ
+	// Green LEDs
+	cp_reng_trq_green_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN1);
+	cp_reng_trq_green_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN2);
+	cp_reng_trq_green_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN3);
+	cp_reng_trq_green_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN4);
+	cp_reng_trq_green_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN5);
+	cp_reng_trq_green_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN6);
+	cp_reng_trq_green_led7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN7);
+	cp_reng_trq_green_led8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN8);
+	cp_reng_trq_green_led9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN9);
+	cp_reng_trq_green_led10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN10);
+	cp_reng_trq_green_led11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN11);
+	cp_reng_trq_green_led12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN12);
+	cp_reng_trq_green_led13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN13);
+	cp_reng_trq_green_led14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN14);
+	cp_reng_trq_green_led15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN15);
+	cp_reng_trq_green_led16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN16);
+	cp_reng_trq_green_led17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN17);
+	cp_reng_trq_green_led18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN18);
+	cp_reng_trq_green_led19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN19);
+	cp_reng_trq_green_led20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_GRN20);
+	// Yellow LEDs
+	cp_reng_trq_yellow_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_YELLOW1);
+	cp_reng_trq_yellow_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_YELLOW2);
+	cp_reng_trq_yellow_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_YELLOW3);
+	cp_reng_trq_yellow_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_YELLOW4);
+	cp_reng_trq_yellow_led5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_YELLOW5);
+	cp_reng_trq_yellow_led6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_YELLOW6);
+	// Red LEDs
+	cp_reng_trq_red_led1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_RED1);
+	cp_reng_trq_red_led2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_RED2);
+	cp_reng_trq_red_led3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_RED3);
+	cp_reng_trq_red_led4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_CP_RENG_TRQ_RED4);
+
+	// Central Display Unit
+	// Fuel Quantity
+	// Left Fuel Tank
+	// Yellow LEDs
+	lfuel_tank_yellow1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_YELLOW1);
+	lfuel_tank_yellow2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_YELLOW2);
+	lfuel_tank_yellow3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_YELLOW3);
+	lfuel_tank_yellow4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_YELLOW4);
+	// Green LEDs
+	lfuel_tank_green1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN1);
+	lfuel_tank_green2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN2);
+	lfuel_tank_green3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN3);
+	lfuel_tank_green4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN4);
+	lfuel_tank_green5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN5);
+	lfuel_tank_green6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN6);
+	lfuel_tank_green7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN7);
+	lfuel_tank_green8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN8);
+	lfuel_tank_green9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN9);
+	lfuel_tank_green10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN10);
+	lfuel_tank_green11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN11);
+	lfuel_tank_green12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN12);
+	lfuel_tank_green13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN13);
+	lfuel_tank_green14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN14);
+	lfuel_tank_green15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN15);
+	lfuel_tank_green16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN16);
+	lfuel_tank_green17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN17);
+	lfuel_tank_green18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN18);
+	lfuel_tank_green19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN19);
+	lfuel_tank_green20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN20);
+	lfuel_tank_green21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN21);
+	lfuel_tank_green22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN22);
+	lfuel_tank_green23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN23);
+	lfuel_tank_green24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN24);
+	lfuel_tank_green25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN25);
+	lfuel_tank_green26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LFUEL_GREEN26);
+
+	// Right Fuel Tank
+	// Yellow LEDs
+	rfuel_tank_yellow1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_YELLOW1);
+	rfuel_tank_yellow2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_YELLOW2);
+	rfuel_tank_yellow3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_YELLOW3);
+	rfuel_tank_yellow4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_YELLOW4);
+	// Green LEDs
+	rfuel_tank_green1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN1);
+	rfuel_tank_green2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN2);
+	rfuel_tank_green3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN3);
+	rfuel_tank_green4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN4);
+	rfuel_tank_green5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN5);
+	rfuel_tank_green6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN6);
+	rfuel_tank_green7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN7);
+	rfuel_tank_green8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN8);
+	rfuel_tank_green9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN9);
+	rfuel_tank_green10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN10);
+	rfuel_tank_green11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN11);
+	rfuel_tank_green12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN12);
+	rfuel_tank_green13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN13);
+	rfuel_tank_green14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN14);
+	rfuel_tank_green15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN15);
+	rfuel_tank_green16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN16);
+	rfuel_tank_green17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN17);
+	rfuel_tank_green18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN18);
+	rfuel_tank_green19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN19);
+	rfuel_tank_green20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN20);
+	rfuel_tank_green21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN21);
+	rfuel_tank_green22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN22);
+	rfuel_tank_green23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN23);
+	rfuel_tank_green24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN24);
+	rfuel_tank_green25 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN25);
+	rfuel_tank_green26 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RFUEL_GREEN26);
+
+	// NG Speed
+	// Left Engine
+	// Green LEDs
+	lng_spd_green1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN1);
+	lng_spd_green2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN2);
+	lng_spd_green3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN3);
+	lng_spd_green4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN4);
+	lng_spd_green5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN5);
+	lng_spd_green6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN6);
+	lng_spd_green7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN7);
+	lng_spd_green8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN8);
+	lng_spd_green9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN9);
+	lng_spd_green10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN10);
+	lng_spd_green11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN11);
+	lng_spd_green12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN12);
+	lng_spd_green13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN13);
+	lng_spd_green14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN14);
+	lng_spd_green15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN15);
+	lng_spd_green16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN16);
+	lng_spd_green17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN17);
+	lng_spd_green18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN18);
+	lng_spd_green19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN19);
+	lng_spd_green20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN20);
+	lng_spd_green21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN21);
+	lng_spd_green22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN22);
+	lng_spd_green23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN23);
+	lng_spd_green24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_GREEN24);
+	// Yellow LEDs
+	lng_spd_yellow1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_YELLOW1);
+	lng_spd_yellow2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_YELLOW2);
+	// Red LEDs
+	lng_spd_red1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_RED1);
+	lng_spd_red2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_RED2);
+	lng_spd_red3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_RED3);
+	lng_spd_red4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LNG_SPD_RED4);
+
+	// Right Engine
+	// Green LEDs
+	rng_spd_green1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN1);
+	rng_spd_green2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN2);
+	rng_spd_green3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN3);
+	rng_spd_green4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN4);
+	rng_spd_green5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN5);
+	rng_spd_green6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN6);
+	rng_spd_green7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN7);
+	rng_spd_green8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN8);
+	rng_spd_green9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN9);
+	rng_spd_green10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN10);
+	rng_spd_green11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN11);
+	rng_spd_green12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN12);
+	rng_spd_green13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN13);
+	rng_spd_green14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN14);
+	rng_spd_green15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN15);
+	rng_spd_green16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN16);
+	rng_spd_green17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN17);
+	rng_spd_green18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN18);
+	rng_spd_green19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN19);
+	rng_spd_green20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN20);
+	rng_spd_green21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN21);
+	rng_spd_green22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN22);
+	rng_spd_green23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN23);
+	rng_spd_green24 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_GREEN24);
+	// Yellow LEDs
+	rng_spd_yellow1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_YELLOW1);
+	rng_spd_yellow2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_YELLOW2);
+	// Red LEDs
+	rng_spd_red1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_RED1);
+	rng_spd_red2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_RED2);
+	rng_spd_red3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_RED3);
+	rng_spd_red4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RNG_SPD_RED4);
+
+	// TGT Temp
+	// Left Engine
+	// Green LEDs
+	ltgt_tmp_green1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN1);
+	ltgt_tmp_green2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN2);
+	ltgt_tmp_green3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN3);
+	ltgt_tmp_green4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN4);
+	ltgt_tmp_green5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN5);
+	ltgt_tmp_green6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN6);
+	ltgt_tmp_green7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN7);
+	ltgt_tmp_green8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN8);
+	ltgt_tmp_green9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN9);
+	ltgt_tmp_green10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN10);
+	ltgt_tmp_green11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN11);
+	ltgt_tmp_green12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN12);
+	ltgt_tmp_green13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN13);
+	ltgt_tmp_green14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN14);
+	ltgt_tmp_green15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN15);
+	ltgt_tmp_green16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN16);
+	ltgt_tmp_green17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN17);
+	ltgt_tmp_green18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN18);
+	ltgt_tmp_green19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN19);
+	ltgt_tmp_green20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN20);
+	ltgt_tmp_green21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN21);
+	ltgt_tmp_green22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN22);
+	ltgt_tmp_green23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_GREEN23);
+	// Yellow LEDs
+	ltgt_tmp_yellow1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_YELLOW1);
+	ltgt_tmp_yellow2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_YELLOW2);
+	ltgt_tmp_yellow3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_YELLOW3);
+	// Red LEDs
+	ltgt_tmp_red1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_RED1);
+	ltgt_tmp_red2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_RED2);
+	ltgt_tmp_red3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_RED3);
+	ltgt_tmp_red4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_LTGT_TEMP_RED4);
+
+	// Right Engine
+	// Green LEDs
+	rtgt_tmp_green1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN1);
+	rtgt_tmp_green2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN2);
+	rtgt_tmp_green3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN3);
+	rtgt_tmp_green4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN4);
+	rtgt_tmp_green5 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN5);
+	rtgt_tmp_green6 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN6);
+	rtgt_tmp_green7 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN7);
+	rtgt_tmp_green8 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN8);
+	rtgt_tmp_green9 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN9);
+	rtgt_tmp_green10 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN10);
+	rtgt_tmp_green11 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN11);
+	rtgt_tmp_green12 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN12);
+	rtgt_tmp_green13 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN13);
+	rtgt_tmp_green14 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN14);
+	rtgt_tmp_green15 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN15);
+	rtgt_tmp_green16 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN16);
+	rtgt_tmp_green17 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN17);
+	rtgt_tmp_green18 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN18);
+	rtgt_tmp_green19 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN19);
+	rtgt_tmp_green20 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN20);
+	rtgt_tmp_green21 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN21);
+	rtgt_tmp_green22 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN22);
+	rtgt_tmp_green23 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_GREEN23);
+	// Yellow LEDs
+	rtgt_tmp_yellow1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_YELLOW1);
+	rtgt_tmp_yellow2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_YELLOW2);
+	rtgt_tmp_yellow3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_YELLOW3);
+	// Red LEDs
+	rtgt_tmp_red1 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_RED1);
+	rtgt_tmp_red2 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_RED2);
+	rtgt_tmp_red3 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_RED3);
+	rtgt_tmp_red4 = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_RTGT_TEMP_RED4);
 
 	//	create list of interactive scenes
 
@@ -894,6 +1722,11 @@ void update_blackhawk_virtual_cockpit (void)
 	update_reng_rpm_display();
 	update_leng_trq_display();
 	update_reng_trq_display();
+	update_fuel_display();
+	update_lng_speed_display();
+	update_rng_speed_display();
+	update_ltgt_temp_display();
+	update_rtgt_temp_display();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -974,6 +1807,12 @@ void draw_blackhawk_virtual_cockpit (void)
 	//
 
 	draw_blackhawk_virtual_cockpit_lamps ();
+
+	//
+	// upfront
+	//
+
+	draw_blackhawk_upfront_display_on_texture();
 
 	//
 	// crew animation
@@ -1599,6 +2438,7 @@ void get_blackhawk_display_viewpoint (view_modes mode)
 
 void update_rtr_rpm_display (void)
 {
+	// Pilot Display Unit
 	// Red LEDs
 	rtr_rpm_red_led1->visible_object = blackhawk_lamps.rtr_rpm_red_led1;
 	rtr_rpm_red_led2->visible_object = blackhawk_lamps.rtr_rpm_red_led2;
@@ -1627,8 +2467,6 @@ void update_rtr_rpm_display (void)
 	rtr_rpm_red_led25->visible_object = blackhawk_lamps.rtr_rpm_red_led25;
 	rtr_rpm_red_led26->visible_object = blackhawk_lamps.rtr_rpm_red_led26;
 	rtr_rpm_red_led27->visible_object = blackhawk_lamps.rtr_rpm_red_led27;
-
-//	rtr_rpm_cp_red_led1->visible_object = blackhawk_lamps.rtr_rpm_cp_red_led1;
 	// Yellow LEDs
 	rtr_rpm_yellow_led1->visible_object = blackhawk_lamps.rtr_rpm_yellow_led1;
 	rtr_rpm_yellow_led2->visible_object = blackhawk_lamps.rtr_rpm_yellow_led2;
@@ -1645,6 +2483,52 @@ void update_rtr_rpm_display (void)
 	rtr_rpm_green_led3->visible_object = blackhawk_lamps.rtr_rpm_green_led3;
 	rtr_rpm_green_led4->visible_object = blackhawk_lamps.rtr_rpm_green_led4;
 	rtr_rpm_green_led5->visible_object = blackhawk_lamps.rtr_rpm_green_led5;
+
+	// Co-Pilot Display Unit
+	// Red LEDs
+	cp_rtr_rpm_red_led1->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led1;
+	cp_rtr_rpm_red_led2->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led2;
+	cp_rtr_rpm_red_led3->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led3;
+	cp_rtr_rpm_red_led4->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led4;
+	cp_rtr_rpm_red_led5->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led5;
+	cp_rtr_rpm_red_led6->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led6;
+	cp_rtr_rpm_red_led7->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led7;
+	cp_rtr_rpm_red_led8->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led8;
+	cp_rtr_rpm_red_led9->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led9;
+	cp_rtr_rpm_red_led10->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led10;
+	cp_rtr_rpm_red_led11->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led11;
+	cp_rtr_rpm_red_led12->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led12;
+	cp_rtr_rpm_red_led13->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led13;
+	cp_rtr_rpm_red_led14->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led14;
+	cp_rtr_rpm_red_led15->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led15;
+	cp_rtr_rpm_red_led16->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led16;
+	cp_rtr_rpm_red_led17->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led17;
+	cp_rtr_rpm_red_led18->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led18;
+	cp_rtr_rpm_red_led19->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led19;
+	cp_rtr_rpm_red_led20->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led20;
+	cp_rtr_rpm_red_led21->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led21;
+	cp_rtr_rpm_red_led22->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led22;
+	cp_rtr_rpm_red_led23->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led23;
+	cp_rtr_rpm_red_led24->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led24;
+	cp_rtr_rpm_red_led25->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led25;
+	cp_rtr_rpm_red_led26->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led26;
+	cp_rtr_rpm_red_led27->visible_object = blackhawk_lamps.cp_rtr_rpm_red_led27;
+	// Yellow LEDs
+	cp_rtr_rpm_yellow_led1->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led1;
+	cp_rtr_rpm_yellow_led2->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led2;
+	cp_rtr_rpm_yellow_led3->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led3;
+	cp_rtr_rpm_yellow_led4->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led4;
+	cp_rtr_rpm_yellow_led5->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led5;
+	cp_rtr_rpm_yellow_led6->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led6;
+	cp_rtr_rpm_yellow_led7->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led7;
+	cp_rtr_rpm_yellow_led8->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led8;
+	cp_rtr_rpm_yellow_led9->visible_object = blackhawk_lamps.cp_rtr_rpm_yellow_led9;
+	// Green LEDs
+	cp_rtr_rpm_green_led1->visible_object = blackhawk_lamps.cp_rtr_rpm_green_led1;
+	cp_rtr_rpm_green_led2->visible_object = blackhawk_lamps.cp_rtr_rpm_green_led2;
+	cp_rtr_rpm_green_led3->visible_object = blackhawk_lamps.cp_rtr_rpm_green_led3;
+	cp_rtr_rpm_green_led4->visible_object = blackhawk_lamps.cp_rtr_rpm_green_led4;
+	cp_rtr_rpm_green_led5->visible_object = blackhawk_lamps.cp_rtr_rpm_green_led5;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1653,6 +2537,7 @@ void update_rtr_rpm_display (void)
 
 void update_leng_rpm_display (void)
 {
+	// Pilot Display Unit
 	// Red LEDs
 	leng_rpm_red_led1->visible_object = blackhawk_lamps.leng_rpm_red_led1;
 	leng_rpm_red_led2->visible_object = blackhawk_lamps.leng_rpm_red_led2;
@@ -1697,6 +2582,52 @@ void update_leng_rpm_display (void)
 	leng_rpm_green_led3->visible_object = blackhawk_lamps.leng_rpm_green_led3;
 	leng_rpm_green_led4->visible_object = blackhawk_lamps.leng_rpm_green_led4;
 	leng_rpm_green_led5->visible_object = blackhawk_lamps.leng_rpm_green_led5;
+
+	// Co-Pilot Display Unit
+	// Red LEDs
+	cp_leng_rpm_red_led1->visible_object = blackhawk_lamps.cp_leng_rpm_red_led1;
+	cp_leng_rpm_red_led2->visible_object = blackhawk_lamps.cp_leng_rpm_red_led2;
+	cp_leng_rpm_red_led3->visible_object = blackhawk_lamps.cp_leng_rpm_red_led3;
+	cp_leng_rpm_red_led4->visible_object = blackhawk_lamps.cp_leng_rpm_red_led4;
+	cp_leng_rpm_red_led5->visible_object = blackhawk_lamps.cp_leng_rpm_red_led5;
+	cp_leng_rpm_red_led6->visible_object = blackhawk_lamps.cp_leng_rpm_red_led6;
+	cp_leng_rpm_red_led7->visible_object = blackhawk_lamps.cp_leng_rpm_red_led7;
+	cp_leng_rpm_red_led8->visible_object = blackhawk_lamps.cp_leng_rpm_red_led8;
+	cp_leng_rpm_red_led9->visible_object = blackhawk_lamps.cp_leng_rpm_red_led9;
+	cp_leng_rpm_red_led10->visible_object = blackhawk_lamps.cp_leng_rpm_red_led10;
+	cp_leng_rpm_red_led11->visible_object = blackhawk_lamps.cp_leng_rpm_red_led11;
+	cp_leng_rpm_red_led12->visible_object = blackhawk_lamps.cp_leng_rpm_red_led12;
+	cp_leng_rpm_red_led13->visible_object = blackhawk_lamps.cp_leng_rpm_red_led13;
+	cp_leng_rpm_red_led14->visible_object = blackhawk_lamps.cp_leng_rpm_red_led14;
+	cp_leng_rpm_red_led15->visible_object = blackhawk_lamps.cp_leng_rpm_red_led15;
+	cp_leng_rpm_red_led16->visible_object = blackhawk_lamps.cp_leng_rpm_red_led16;
+	cp_leng_rpm_red_led17->visible_object = blackhawk_lamps.cp_leng_rpm_red_led17;
+	cp_leng_rpm_red_led18->visible_object = blackhawk_lamps.cp_leng_rpm_red_led18;
+	cp_leng_rpm_red_led19->visible_object = blackhawk_lamps.cp_leng_rpm_red_led19;
+	cp_leng_rpm_red_led20->visible_object = blackhawk_lamps.cp_leng_rpm_red_led20;
+	cp_leng_rpm_red_led21->visible_object = blackhawk_lamps.cp_leng_rpm_red_led21;
+	cp_leng_rpm_red_led22->visible_object = blackhawk_lamps.cp_leng_rpm_red_led22;
+	cp_leng_rpm_red_led23->visible_object = blackhawk_lamps.cp_leng_rpm_red_led23;
+	cp_leng_rpm_red_led24->visible_object = blackhawk_lamps.cp_leng_rpm_red_led24;
+	cp_leng_rpm_red_led25->visible_object = blackhawk_lamps.cp_leng_rpm_red_led25;
+	cp_leng_rpm_red_led26->visible_object = blackhawk_lamps.cp_leng_rpm_red_led26;
+	cp_leng_rpm_red_led27->visible_object = blackhawk_lamps.cp_leng_rpm_red_led27;
+	// Yellow LEDs
+	cp_leng_rpm_yellow_led1->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led1;
+	cp_leng_rpm_yellow_led2->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led2;
+	cp_leng_rpm_yellow_led3->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led3;
+	cp_leng_rpm_yellow_led4->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led4;
+	cp_leng_rpm_yellow_led5->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led5;
+	cp_leng_rpm_yellow_led6->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led6;
+	cp_leng_rpm_yellow_led7->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led7;
+	cp_leng_rpm_yellow_led8->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led8;
+	cp_leng_rpm_yellow_led9->visible_object = blackhawk_lamps.cp_leng_rpm_yellow_led9;
+	// Green LEDs
+	cp_leng_rpm_green_led1->visible_object = blackhawk_lamps.cp_leng_rpm_green_led1;
+	cp_leng_rpm_green_led2->visible_object = blackhawk_lamps.cp_leng_rpm_green_led2;
+	cp_leng_rpm_green_led3->visible_object = blackhawk_lamps.cp_leng_rpm_green_led3;
+	cp_leng_rpm_green_led4->visible_object = blackhawk_lamps.cp_leng_rpm_green_led4;
+	cp_leng_rpm_green_led5->visible_object = blackhawk_lamps.cp_leng_rpm_green_led5;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1705,6 +2636,7 @@ void update_leng_rpm_display (void)
 
 void update_reng_rpm_display (void)
 {
+	// Pilot Display Unit
 	// Red LEDs
 	reng_rpm_red_led1->visible_object = blackhawk_lamps.reng_rpm_red_led1;
 	reng_rpm_red_led2->visible_object = blackhawk_lamps.reng_rpm_red_led2;
@@ -1749,6 +2681,52 @@ void update_reng_rpm_display (void)
 	reng_rpm_green_led3->visible_object = blackhawk_lamps.reng_rpm_green_led3;
 	reng_rpm_green_led4->visible_object = blackhawk_lamps.reng_rpm_green_led4;
 	reng_rpm_green_led5->visible_object = blackhawk_lamps.reng_rpm_green_led5;
+
+	// Co-Pilot Display Unit
+	// Red LEDs
+	cp_reng_rpm_red_led1->visible_object = blackhawk_lamps.cp_reng_rpm_red_led1;
+	cp_reng_rpm_red_led2->visible_object = blackhawk_lamps.cp_reng_rpm_red_led2;
+	cp_reng_rpm_red_led3->visible_object = blackhawk_lamps.cp_reng_rpm_red_led3;
+	cp_reng_rpm_red_led4->visible_object = blackhawk_lamps.cp_reng_rpm_red_led4;
+	cp_reng_rpm_red_led5->visible_object = blackhawk_lamps.cp_reng_rpm_red_led5;
+	cp_reng_rpm_red_led6->visible_object = blackhawk_lamps.cp_reng_rpm_red_led6;
+	cp_reng_rpm_red_led7->visible_object = blackhawk_lamps.cp_reng_rpm_red_led7;
+	cp_reng_rpm_red_led8->visible_object = blackhawk_lamps.cp_reng_rpm_red_led8;
+	cp_reng_rpm_red_led9->visible_object = blackhawk_lamps.cp_reng_rpm_red_led9;
+	cp_reng_rpm_red_led10->visible_object = blackhawk_lamps.cp_reng_rpm_red_led10;
+	cp_reng_rpm_red_led11->visible_object = blackhawk_lamps.cp_reng_rpm_red_led11;
+	cp_reng_rpm_red_led12->visible_object = blackhawk_lamps.cp_reng_rpm_red_led12;
+	cp_reng_rpm_red_led13->visible_object = blackhawk_lamps.cp_reng_rpm_red_led13;
+	cp_reng_rpm_red_led14->visible_object = blackhawk_lamps.cp_reng_rpm_red_led14;
+	cp_reng_rpm_red_led15->visible_object = blackhawk_lamps.cp_reng_rpm_red_led15;
+	cp_reng_rpm_red_led16->visible_object = blackhawk_lamps.cp_reng_rpm_red_led16;
+	cp_reng_rpm_red_led17->visible_object = blackhawk_lamps.cp_reng_rpm_red_led17;
+	cp_reng_rpm_red_led18->visible_object = blackhawk_lamps.cp_reng_rpm_red_led18;
+	cp_reng_rpm_red_led19->visible_object = blackhawk_lamps.cp_reng_rpm_red_led19;
+	cp_reng_rpm_red_led20->visible_object = blackhawk_lamps.cp_reng_rpm_red_led20;
+	cp_reng_rpm_red_led21->visible_object = blackhawk_lamps.cp_reng_rpm_red_led21;
+	cp_reng_rpm_red_led22->visible_object = blackhawk_lamps.cp_reng_rpm_red_led22;
+	cp_reng_rpm_red_led23->visible_object = blackhawk_lamps.cp_reng_rpm_red_led23;
+	cp_reng_rpm_red_led24->visible_object = blackhawk_lamps.cp_reng_rpm_red_led24;
+	cp_reng_rpm_red_led25->visible_object = blackhawk_lamps.cp_reng_rpm_red_led25;
+	cp_reng_rpm_red_led26->visible_object = blackhawk_lamps.cp_reng_rpm_red_led26;
+	cp_reng_rpm_red_led27->visible_object = blackhawk_lamps.cp_reng_rpm_red_led27;
+	// Yellow LEDs
+	cp_reng_rpm_yellow_led1->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led1;
+	cp_reng_rpm_yellow_led2->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led2;
+	cp_reng_rpm_yellow_led3->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led3;
+	cp_reng_rpm_yellow_led4->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led4;
+	cp_reng_rpm_yellow_led5->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led5;
+	cp_reng_rpm_yellow_led6->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led6;
+	cp_reng_rpm_yellow_led7->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led7;
+	cp_reng_rpm_yellow_led8->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led8;
+	cp_reng_rpm_yellow_led9->visible_object = blackhawk_lamps.cp_reng_rpm_yellow_led9;
+	// Green LEDs
+	cp_reng_rpm_green_led1->visible_object = blackhawk_lamps.cp_reng_rpm_green_led1;
+	cp_reng_rpm_green_led2->visible_object = blackhawk_lamps.cp_reng_rpm_green_led2;
+	cp_reng_rpm_green_led3->visible_object = blackhawk_lamps.cp_reng_rpm_green_led3;
+	cp_reng_rpm_green_led4->visible_object = blackhawk_lamps.cp_reng_rpm_green_led4;
+	cp_reng_rpm_green_led5->visible_object = blackhawk_lamps.cp_reng_rpm_green_led5;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1757,6 +2735,7 @@ void update_reng_rpm_display (void)
 
 void update_leng_trq_display(void)
 {
+	// Pilot Display Unit
 	// Green LEDS
 	leng_trq_green_led1->visible_object = blackhawk_lamps.leng_trq_green_led1;
 	leng_trq_green_led2->visible_object = blackhawk_lamps.leng_trq_green_led2;
@@ -1790,6 +2769,41 @@ void update_leng_trq_display(void)
 	leng_trq_red_led2->visible_object = blackhawk_lamps.leng_trq_red_led2;
 	leng_trq_red_led3->visible_object = blackhawk_lamps.leng_trq_red_led3;
 	leng_trq_red_led4->visible_object = blackhawk_lamps.leng_trq_red_led4;
+
+	// Co-Pilot Display Unit
+	// Green LEDS
+	cp_leng_trq_green_led1->visible_object = blackhawk_lamps.cp_leng_trq_green_led1;
+	cp_leng_trq_green_led2->visible_object = blackhawk_lamps.cp_leng_trq_green_led2;
+	cp_leng_trq_green_led3->visible_object = blackhawk_lamps.cp_leng_trq_green_led3;
+	cp_leng_trq_green_led4->visible_object = blackhawk_lamps.cp_leng_trq_green_led4;
+	cp_leng_trq_green_led5->visible_object = blackhawk_lamps.cp_leng_trq_green_led5;
+	cp_leng_trq_green_led6->visible_object = blackhawk_lamps.cp_leng_trq_green_led6;
+	cp_leng_trq_green_led7->visible_object = blackhawk_lamps.cp_leng_trq_green_led7;
+	cp_leng_trq_green_led8->visible_object = blackhawk_lamps.cp_leng_trq_green_led8;
+	cp_leng_trq_green_led9->visible_object = blackhawk_lamps.cp_leng_trq_green_led9;
+	cp_leng_trq_green_led10->visible_object = blackhawk_lamps.cp_leng_trq_green_led10;
+	cp_leng_trq_green_led11->visible_object = blackhawk_lamps.cp_leng_trq_green_led11;
+	cp_leng_trq_green_led12->visible_object = blackhawk_lamps.cp_leng_trq_green_led12;
+	cp_leng_trq_green_led13->visible_object = blackhawk_lamps.cp_leng_trq_green_led13;
+	cp_leng_trq_green_led14->visible_object = blackhawk_lamps.cp_leng_trq_green_led14;
+	cp_leng_trq_green_led15->visible_object = blackhawk_lamps.cp_leng_trq_green_led15;
+	cp_leng_trq_green_led16->visible_object = blackhawk_lamps.cp_leng_trq_green_led16;
+	cp_leng_trq_green_led17->visible_object = blackhawk_lamps.cp_leng_trq_green_led17;
+	cp_leng_trq_green_led18->visible_object = blackhawk_lamps.cp_leng_trq_green_led18;
+	cp_leng_trq_green_led19->visible_object = blackhawk_lamps.cp_leng_trq_green_led19;
+	cp_leng_trq_green_led20->visible_object = blackhawk_lamps.cp_leng_trq_green_led20;
+	// Yellow LEDs
+	cp_leng_trq_yellow_led1->visible_object = blackhawk_lamps.cp_leng_trq_yellow_led1;
+	cp_leng_trq_yellow_led2->visible_object = blackhawk_lamps.cp_leng_trq_yellow_led2;
+	cp_leng_trq_yellow_led3->visible_object = blackhawk_lamps.cp_leng_trq_yellow_led3;
+	cp_leng_trq_yellow_led4->visible_object = blackhawk_lamps.cp_leng_trq_yellow_led4;
+	cp_leng_trq_yellow_led5->visible_object = blackhawk_lamps.cp_leng_trq_yellow_led5;
+	cp_leng_trq_yellow_led6->visible_object = blackhawk_lamps.cp_leng_trq_yellow_led6;
+	// Red LEDs
+	cp_leng_trq_red_led1->visible_object = blackhawk_lamps.cp_leng_trq_red_led1;
+	cp_leng_trq_red_led2->visible_object = blackhawk_lamps.cp_leng_trq_red_led2;
+	cp_leng_trq_red_led3->visible_object = blackhawk_lamps.cp_leng_trq_red_led3;
+	cp_leng_trq_red_led4->visible_object = blackhawk_lamps.cp_leng_trq_red_led4;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1798,6 +2812,7 @@ void update_leng_trq_display(void)
 
 void update_reng_trq_display(void)
 {
+	// Pilot Display Unit
 	// Green LEDS
 	reng_trq_green_led1->visible_object = blackhawk_lamps.reng_trq_green_led1;
 	reng_trq_green_led2->visible_object = blackhawk_lamps.reng_trq_green_led2;
@@ -1831,6 +2846,286 @@ void update_reng_trq_display(void)
 	reng_trq_red_led2->visible_object = blackhawk_lamps.reng_trq_red_led2;
 	reng_trq_red_led3->visible_object = blackhawk_lamps.reng_trq_red_led3;
 	reng_trq_red_led4->visible_object = blackhawk_lamps.reng_trq_red_led4;
+
+	// Co-Pilot Display Unit
+	// Green LEDS
+	cp_reng_trq_green_led1->visible_object = blackhawk_lamps.cp_reng_trq_green_led1;
+	cp_reng_trq_green_led2->visible_object = blackhawk_lamps.cp_reng_trq_green_led2;
+	cp_reng_trq_green_led3->visible_object = blackhawk_lamps.cp_reng_trq_green_led3;
+	cp_reng_trq_green_led4->visible_object = blackhawk_lamps.cp_reng_trq_green_led4;
+	cp_reng_trq_green_led5->visible_object = blackhawk_lamps.cp_reng_trq_green_led5;
+	cp_reng_trq_green_led6->visible_object = blackhawk_lamps.cp_reng_trq_green_led6;
+	cp_reng_trq_green_led7->visible_object = blackhawk_lamps.cp_reng_trq_green_led7;
+	cp_reng_trq_green_led8->visible_object = blackhawk_lamps.cp_reng_trq_green_led8;
+	cp_reng_trq_green_led9->visible_object = blackhawk_lamps.cp_reng_trq_green_led9;
+	cp_reng_trq_green_led10->visible_object = blackhawk_lamps.cp_reng_trq_green_led10;
+	cp_reng_trq_green_led11->visible_object = blackhawk_lamps.cp_reng_trq_green_led11;
+	cp_reng_trq_green_led12->visible_object = blackhawk_lamps.cp_reng_trq_green_led12;
+	cp_reng_trq_green_led13->visible_object = blackhawk_lamps.cp_reng_trq_green_led13;
+	cp_reng_trq_green_led14->visible_object = blackhawk_lamps.cp_reng_trq_green_led14;
+	cp_reng_trq_green_led15->visible_object = blackhawk_lamps.cp_reng_trq_green_led15;
+	cp_reng_trq_green_led16->visible_object = blackhawk_lamps.cp_reng_trq_green_led16;
+	cp_reng_trq_green_led17->visible_object = blackhawk_lamps.cp_reng_trq_green_led17;
+	cp_reng_trq_green_led18->visible_object = blackhawk_lamps.cp_reng_trq_green_led18;
+	cp_reng_trq_green_led19->visible_object = blackhawk_lamps.cp_reng_trq_green_led19;
+	cp_reng_trq_green_led20->visible_object = blackhawk_lamps.cp_reng_trq_green_led20;
+	// Yellow LEDs
+	cp_reng_trq_yellow_led1->visible_object = blackhawk_lamps.cp_reng_trq_yellow_led1;
+	cp_reng_trq_yellow_led2->visible_object = blackhawk_lamps.cp_reng_trq_yellow_led2;
+	cp_reng_trq_yellow_led3->visible_object = blackhawk_lamps.cp_reng_trq_yellow_led3;
+	cp_reng_trq_yellow_led4->visible_object = blackhawk_lamps.cp_reng_trq_yellow_led4;
+	cp_reng_trq_yellow_led5->visible_object = blackhawk_lamps.cp_reng_trq_yellow_led5;
+	cp_reng_trq_yellow_led6->visible_object = blackhawk_lamps.cp_reng_trq_yellow_led6;
+	// Red LEDs
+	cp_reng_trq_red_led1->visible_object = blackhawk_lamps.cp_reng_trq_red_led1;
+	cp_reng_trq_red_led2->visible_object = blackhawk_lamps.cp_reng_trq_red_led2;
+	cp_reng_trq_red_led3->visible_object = blackhawk_lamps.cp_reng_trq_red_led3;
+	cp_reng_trq_red_led4->visible_object = blackhawk_lamps.cp_reng_trq_red_led4;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_fuel_display (void)
+{
+	// Central Display Unit
+	// Left Tank
+	// Yellow LEDs
+	lfuel_tank_yellow1->visible_object = blackhawk_lamps.lfuel_tank_yellow1;
+	lfuel_tank_yellow2->visible_object = blackhawk_lamps.lfuel_tank_yellow2;
+	lfuel_tank_yellow3->visible_object = blackhawk_lamps.lfuel_tank_yellow3;
+	lfuel_tank_yellow4->visible_object = blackhawk_lamps.lfuel_tank_yellow4;
+	// Green LEDs
+	lfuel_tank_green1->visible_object = blackhawk_lamps.lfuel_tank_green1;
+	lfuel_tank_green2->visible_object = blackhawk_lamps.lfuel_tank_green2;
+	lfuel_tank_green3->visible_object = blackhawk_lamps.lfuel_tank_green3;
+	lfuel_tank_green4->visible_object = blackhawk_lamps.lfuel_tank_green4;
+	lfuel_tank_green5->visible_object = blackhawk_lamps.lfuel_tank_green5;
+	lfuel_tank_green6->visible_object = blackhawk_lamps.lfuel_tank_green6;
+	lfuel_tank_green7->visible_object = blackhawk_lamps.lfuel_tank_green7;
+	lfuel_tank_green8->visible_object = blackhawk_lamps.lfuel_tank_green8;
+	lfuel_tank_green9->visible_object = blackhawk_lamps.lfuel_tank_green9;
+	lfuel_tank_green10->visible_object = blackhawk_lamps.lfuel_tank_green10;
+	lfuel_tank_green11->visible_object = blackhawk_lamps.lfuel_tank_green11;
+	lfuel_tank_green12->visible_object = blackhawk_lamps.lfuel_tank_green12;
+	lfuel_tank_green13->visible_object = blackhawk_lamps.lfuel_tank_green13;
+	lfuel_tank_green14->visible_object = blackhawk_lamps.lfuel_tank_green14;
+	lfuel_tank_green15->visible_object = blackhawk_lamps.lfuel_tank_green15;
+	lfuel_tank_green16->visible_object = blackhawk_lamps.lfuel_tank_green16;
+	lfuel_tank_green17->visible_object = blackhawk_lamps.lfuel_tank_green17;
+	lfuel_tank_green18->visible_object = blackhawk_lamps.lfuel_tank_green18;
+	lfuel_tank_green19->visible_object = blackhawk_lamps.lfuel_tank_green19;
+	lfuel_tank_green20->visible_object = blackhawk_lamps.lfuel_tank_green20;
+	lfuel_tank_green21->visible_object = blackhawk_lamps.lfuel_tank_green21;
+	lfuel_tank_green22->visible_object = blackhawk_lamps.lfuel_tank_green22;
+	lfuel_tank_green23->visible_object = blackhawk_lamps.lfuel_tank_green23;
+	lfuel_tank_green24->visible_object = blackhawk_lamps.lfuel_tank_green24;
+	lfuel_tank_green25->visible_object = blackhawk_lamps.lfuel_tank_green25;
+	lfuel_tank_green26->visible_object = blackhawk_lamps.lfuel_tank_green26;
+
+	// Right Tank
+	// Yellow LEDs
+	rfuel_tank_yellow1->visible_object = blackhawk_lamps.rfuel_tank_yellow1;
+	rfuel_tank_yellow2->visible_object = blackhawk_lamps.rfuel_tank_yellow2;
+	rfuel_tank_yellow3->visible_object = blackhawk_lamps.rfuel_tank_yellow3;
+	rfuel_tank_yellow4->visible_object = blackhawk_lamps.rfuel_tank_yellow4;
+	// Green LEDs
+	rfuel_tank_green1->visible_object = blackhawk_lamps.rfuel_tank_green1;
+	rfuel_tank_green2->visible_object = blackhawk_lamps.rfuel_tank_green2;
+	rfuel_tank_green3->visible_object = blackhawk_lamps.rfuel_tank_green3;
+	rfuel_tank_green4->visible_object = blackhawk_lamps.rfuel_tank_green4;
+	rfuel_tank_green5->visible_object = blackhawk_lamps.rfuel_tank_green5;
+	rfuel_tank_green6->visible_object = blackhawk_lamps.rfuel_tank_green6;
+	rfuel_tank_green7->visible_object = blackhawk_lamps.rfuel_tank_green7;
+	rfuel_tank_green8->visible_object = blackhawk_lamps.rfuel_tank_green8;
+	rfuel_tank_green9->visible_object = blackhawk_lamps.rfuel_tank_green9;
+	rfuel_tank_green10->visible_object = blackhawk_lamps.rfuel_tank_green10;
+	rfuel_tank_green11->visible_object = blackhawk_lamps.rfuel_tank_green11;
+	rfuel_tank_green12->visible_object = blackhawk_lamps.rfuel_tank_green12;
+	rfuel_tank_green13->visible_object = blackhawk_lamps.rfuel_tank_green13;
+	rfuel_tank_green14->visible_object = blackhawk_lamps.rfuel_tank_green14;
+	rfuel_tank_green15->visible_object = blackhawk_lamps.rfuel_tank_green15;
+	rfuel_tank_green16->visible_object = blackhawk_lamps.rfuel_tank_green16;
+	rfuel_tank_green17->visible_object = blackhawk_lamps.rfuel_tank_green17;
+	rfuel_tank_green18->visible_object = blackhawk_lamps.rfuel_tank_green18;
+	rfuel_tank_green19->visible_object = blackhawk_lamps.rfuel_tank_green19;
+	rfuel_tank_green20->visible_object = blackhawk_lamps.rfuel_tank_green20;
+	rfuel_tank_green21->visible_object = blackhawk_lamps.rfuel_tank_green21;
+	rfuel_tank_green22->visible_object = blackhawk_lamps.rfuel_tank_green22;
+	rfuel_tank_green23->visible_object = blackhawk_lamps.rfuel_tank_green23;
+	rfuel_tank_green24->visible_object = blackhawk_lamps.rfuel_tank_green24;
+	rfuel_tank_green25->visible_object = blackhawk_lamps.rfuel_tank_green25;
+	rfuel_tank_green26->visible_object = blackhawk_lamps.rfuel_tank_green26;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_lng_speed_display(void)
+{
+	// NG Speed
+	// Left Engine
+	// Green LEDs
+	lng_spd_green1->visible_object = blackhawk_lamps.lng_spd_green1;
+	lng_spd_green2->visible_object = blackhawk_lamps.lng_spd_green2;
+	lng_spd_green3->visible_object = blackhawk_lamps.lng_spd_green3;
+	lng_spd_green4->visible_object = blackhawk_lamps.lng_spd_green4;
+	lng_spd_green5->visible_object = blackhawk_lamps.lng_spd_green5;
+	lng_spd_green6->visible_object = blackhawk_lamps.lng_spd_green6;
+	lng_spd_green7->visible_object = blackhawk_lamps.lng_spd_green7;
+	lng_spd_green8->visible_object = blackhawk_lamps.lng_spd_green8;
+	lng_spd_green9->visible_object = blackhawk_lamps.lng_spd_green9;
+	lng_spd_green10->visible_object = blackhawk_lamps.lng_spd_green10;
+	lng_spd_green11->visible_object = blackhawk_lamps.lng_spd_green11;
+	lng_spd_green12->visible_object = blackhawk_lamps.lng_spd_green12;
+	lng_spd_green13->visible_object = blackhawk_lamps.lng_spd_green13;
+	lng_spd_green14->visible_object = blackhawk_lamps.lng_spd_green14;
+	lng_spd_green15->visible_object = blackhawk_lamps.lng_spd_green15;
+	lng_spd_green16->visible_object = blackhawk_lamps.lng_spd_green16;
+	lng_spd_green17->visible_object = blackhawk_lamps.lng_spd_green17;
+	lng_spd_green18->visible_object = blackhawk_lamps.lng_spd_green18;
+	lng_spd_green19->visible_object = blackhawk_lamps.lng_spd_green19;
+	lng_spd_green20->visible_object = blackhawk_lamps.lng_spd_green20;
+	lng_spd_green21->visible_object = blackhawk_lamps.lng_spd_green21;
+	lng_spd_green22->visible_object = blackhawk_lamps.lng_spd_green22;
+	lng_spd_green23->visible_object = blackhawk_lamps.lng_spd_green23;
+	lng_spd_green24->visible_object = blackhawk_lamps.lng_spd_green24;
+	// Yellow LEDs
+	lng_spd_yellow1->visible_object = blackhawk_lamps.lng_spd_yellow1;
+	lng_spd_yellow2->visible_object = blackhawk_lamps.lng_spd_yellow2;
+	// Red LEDs
+	lng_spd_red1->visible_object = blackhawk_lamps.lng_spd_red1;
+	lng_spd_red2->visible_object = blackhawk_lamps.lng_spd_red2;
+	lng_spd_red3->visible_object = blackhawk_lamps.lng_spd_red3;
+	lng_spd_red4->visible_object = blackhawk_lamps.lng_spd_red4;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_rng_speed_display(void)
+{
+	// Right Engine
+	// Green LEDs
+	rng_spd_green1->visible_object = blackhawk_lamps.rng_spd_green1;
+	rng_spd_green2->visible_object = blackhawk_lamps.rng_spd_green2;
+	rng_spd_green3->visible_object = blackhawk_lamps.rng_spd_green3;
+	rng_spd_green4->visible_object = blackhawk_lamps.rng_spd_green4;
+	rng_spd_green5->visible_object = blackhawk_lamps.rng_spd_green5;
+	rng_spd_green6->visible_object = blackhawk_lamps.rng_spd_green6;
+	rng_spd_green7->visible_object = blackhawk_lamps.rng_spd_green7;
+	rng_spd_green8->visible_object = blackhawk_lamps.rng_spd_green8;
+	rng_spd_green9->visible_object = blackhawk_lamps.rng_spd_green9;
+	rng_spd_green10->visible_object = blackhawk_lamps.rng_spd_green10;
+	rng_spd_green11->visible_object = blackhawk_lamps.rng_spd_green11;
+	rng_spd_green12->visible_object = blackhawk_lamps.rng_spd_green12;
+	rng_spd_green13->visible_object = blackhawk_lamps.rng_spd_green13;
+	rng_spd_green14->visible_object = blackhawk_lamps.rng_spd_green14;
+	rng_spd_green15->visible_object = blackhawk_lamps.rng_spd_green15;
+	rng_spd_green16->visible_object = blackhawk_lamps.rng_spd_green16;
+	rng_spd_green17->visible_object = blackhawk_lamps.rng_spd_green17;
+	rng_spd_green18->visible_object = blackhawk_lamps.rng_spd_green18;
+	rng_spd_green19->visible_object = blackhawk_lamps.rng_spd_green19;
+	rng_spd_green20->visible_object = blackhawk_lamps.rng_spd_green20;
+	rng_spd_green21->visible_object = blackhawk_lamps.rng_spd_green21;
+	rng_spd_green22->visible_object = blackhawk_lamps.rng_spd_green22;
+	rng_spd_green23->visible_object = blackhawk_lamps.rng_spd_green23;
+	rng_spd_green24->visible_object = blackhawk_lamps.rng_spd_green24;
+	// Yellow LEDs
+	rng_spd_yellow1->visible_object = blackhawk_lamps.rng_spd_yellow1;
+	rng_spd_yellow2->visible_object = blackhawk_lamps.rng_spd_yellow2;
+	// Red LEDs
+	rng_spd_red1->visible_object = blackhawk_lamps.rng_spd_red1;
+	rng_spd_red2->visible_object = blackhawk_lamps.rng_spd_red2;
+	rng_spd_red3->visible_object = blackhawk_lamps.rng_spd_red3;
+	rng_spd_red4->visible_object = blackhawk_lamps.rng_spd_red4;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_ltgt_temp_display(void)
+{
+	// Left Engine
+	// Green LEDs
+	ltgt_tmp_green1->visible_object = blackhawk_lamps.ltgt_tmp_green1;
+	ltgt_tmp_green2->visible_object = blackhawk_lamps.ltgt_tmp_green2;
+	ltgt_tmp_green3->visible_object = blackhawk_lamps.ltgt_tmp_green3;
+	ltgt_tmp_green4->visible_object = blackhawk_lamps.ltgt_tmp_green4;
+	ltgt_tmp_green5->visible_object = blackhawk_lamps.ltgt_tmp_green5;
+	ltgt_tmp_green6->visible_object = blackhawk_lamps.ltgt_tmp_green6;
+	ltgt_tmp_green7->visible_object = blackhawk_lamps.ltgt_tmp_green7;
+	ltgt_tmp_green8->visible_object = blackhawk_lamps.ltgt_tmp_green8;
+	ltgt_tmp_green9->visible_object = blackhawk_lamps.ltgt_tmp_green9;
+	ltgt_tmp_green10->visible_object = blackhawk_lamps.ltgt_tmp_green10;
+	ltgt_tmp_green11->visible_object = blackhawk_lamps.ltgt_tmp_green11;
+	ltgt_tmp_green12->visible_object = blackhawk_lamps.ltgt_tmp_green12;
+	ltgt_tmp_green13->visible_object = blackhawk_lamps.ltgt_tmp_green13;
+	ltgt_tmp_green14->visible_object = blackhawk_lamps.ltgt_tmp_green14;
+	ltgt_tmp_green15->visible_object = blackhawk_lamps.ltgt_tmp_green15;
+	ltgt_tmp_green16->visible_object = blackhawk_lamps.ltgt_tmp_green16;
+	ltgt_tmp_green17->visible_object = blackhawk_lamps.ltgt_tmp_green17;
+	ltgt_tmp_green18->visible_object = blackhawk_lamps.ltgt_tmp_green18;
+	ltgt_tmp_green19->visible_object = blackhawk_lamps.ltgt_tmp_green19;
+	ltgt_tmp_green20->visible_object = blackhawk_lamps.ltgt_tmp_green20;
+	ltgt_tmp_green21->visible_object = blackhawk_lamps.ltgt_tmp_green21;
+	ltgt_tmp_green22->visible_object = blackhawk_lamps.ltgt_tmp_green22;
+	ltgt_tmp_green23->visible_object = blackhawk_lamps.ltgt_tmp_green23;
+	// Yellow LEDs
+	ltgt_tmp_yellow1->visible_object = blackhawk_lamps.ltgt_tmp_yellow1;
+	ltgt_tmp_yellow2->visible_object = blackhawk_lamps.ltgt_tmp_yellow2;
+	ltgt_tmp_yellow3->visible_object = blackhawk_lamps.ltgt_tmp_yellow3;
+	// Red LEDs
+	ltgt_tmp_red1->visible_object = blackhawk_lamps.ltgt_tmp_red1;
+	ltgt_tmp_red2->visible_object = blackhawk_lamps.ltgt_tmp_red2;
+	ltgt_tmp_red3->visible_object = blackhawk_lamps.ltgt_tmp_red3;
+	ltgt_tmp_red4->visible_object = blackhawk_lamps.ltgt_tmp_red4;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_rtgt_temp_display(void)
+{
+	// Right Engine
+	// Green LEDs
+	rtgt_tmp_green1->visible_object = blackhawk_lamps.rtgt_tmp_green1;
+	rtgt_tmp_green2->visible_object = blackhawk_lamps.rtgt_tmp_green2;
+	rtgt_tmp_green3->visible_object = blackhawk_lamps.rtgt_tmp_green3;
+	rtgt_tmp_green4->visible_object = blackhawk_lamps.rtgt_tmp_green4;
+	rtgt_tmp_green5->visible_object = blackhawk_lamps.rtgt_tmp_green5;
+	rtgt_tmp_green6->visible_object = blackhawk_lamps.rtgt_tmp_green6;
+	rtgt_tmp_green7->visible_object = blackhawk_lamps.rtgt_tmp_green7;
+	rtgt_tmp_green8->visible_object = blackhawk_lamps.rtgt_tmp_green8;
+	rtgt_tmp_green9->visible_object = blackhawk_lamps.rtgt_tmp_green9;
+	rtgt_tmp_green10->visible_object = blackhawk_lamps.rtgt_tmp_green10;
+	rtgt_tmp_green11->visible_object = blackhawk_lamps.rtgt_tmp_green11;
+	rtgt_tmp_green12->visible_object = blackhawk_lamps.rtgt_tmp_green12;
+	rtgt_tmp_green13->visible_object = blackhawk_lamps.rtgt_tmp_green13;
+	rtgt_tmp_green14->visible_object = blackhawk_lamps.rtgt_tmp_green14;
+	rtgt_tmp_green15->visible_object = blackhawk_lamps.rtgt_tmp_green15;
+	rtgt_tmp_green16->visible_object = blackhawk_lamps.rtgt_tmp_green16;
+	rtgt_tmp_green17->visible_object = blackhawk_lamps.rtgt_tmp_green17;
+	rtgt_tmp_green18->visible_object = blackhawk_lamps.rtgt_tmp_green18;
+	rtgt_tmp_green19->visible_object = blackhawk_lamps.rtgt_tmp_green19;
+	rtgt_tmp_green20->visible_object = blackhawk_lamps.rtgt_tmp_green20;
+	rtgt_tmp_green21->visible_object = blackhawk_lamps.rtgt_tmp_green21;
+	rtgt_tmp_green22->visible_object = blackhawk_lamps.rtgt_tmp_green22;
+	rtgt_tmp_green23->visible_object = blackhawk_lamps.rtgt_tmp_green23;
+	// Yellow LEDs
+	rtgt_tmp_yellow1->visible_object = blackhawk_lamps.rtgt_tmp_yellow1;
+	rtgt_tmp_yellow2->visible_object = blackhawk_lamps.rtgt_tmp_yellow2;
+	rtgt_tmp_yellow3->visible_object = blackhawk_lamps.rtgt_tmp_yellow3;
+	// Red LEDs
+	rtgt_tmp_red1->visible_object = blackhawk_lamps.rtgt_tmp_red1;
+	rtgt_tmp_red2->visible_object = blackhawk_lamps.rtgt_tmp_red2;
+	rtgt_tmp_red3->visible_object = blackhawk_lamps.rtgt_tmp_red3;
+	rtgt_tmp_red4->visible_object = blackhawk_lamps.rtgt_tmp_red4;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

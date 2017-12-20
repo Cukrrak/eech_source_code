@@ -73,7 +73,9 @@
 #define VIEWPORT_WIDTH		(84.0)
 #define VIEWPORT_HEIGHT		(40.0)
 
-#define MAX_STRING_LENGTH	(14)
+#define LINE_LENGTH  36
+
+#define MAX_STRING_LENGTH	(12)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,64 +86,161 @@ static rgb_colour
 	clear_colour;
 
 static screen
-	*texture_screen;
-
-static char
-	line1[MAX_STRING_LENGTH + 1],
-	line2[MAX_STRING_LENGTH + 1],
-	line3[MAX_STRING_LENGTH + 1],
-	line4[MAX_STRING_LENGTH + 1];
+	*left_ng_screen,
+	*right_ng_screen;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void display_messages (float x_org, float y_org)
+//static void display_messages (float x_org, float y_org)
+//{
+//	float y = 1.0;
+//	int i=0;
+//	char buffer[64];
+//
+//	set_mono_font_type(MONO_FONT_TYPE_6X10);
+//	set_mono_font_colour(text_colour);
+//
+//	for (i=0; i<5; i++)
+//	{
+//		snprintf(buffer, LINE_LENGTH+1, "%-11s|%-11s|%-12s",
+//			warnings[(last_warning + i) % 5], cautions[(last_caution + i) % 5], advisories[(last_advisory + i) % 5]);
+//
+//		set_mono_font_position(0.0, y);
+//		set_mono_font_rel_position(0.0, 0.0);
+//
+//		print_mono_font_string(buffer);
+//		y += 10;
+//	}
+//
+//	for (i=0; i<4; i++)
+//	{
+//		set_mono_font_position(0.0, y);
+//		set_mono_font_rel_position(0.0, 0.0);
+//
+//		print_mono_font_string(radio_freqs[i]);
+//		y += 10;
+//	}
+//
+//	{
+//		float hours, minutes, seconds;
+//		float time_of_day = get_local_entity_float_value (get_session_entity (), FLOAT_TYPE_TIME_OF_DAY);
+//		get_digital_clock_values (time_of_day, &hours, &minutes, &seconds);
+//
+//		snprintf(buffer, LINE_LENGTH+1, "%s %02d:%02d:%02d L", radio_freqs[4], (int) hours, (int) minutes, (int) seconds);
+//
+//		set_mono_font_position(0.0, y);
+//		set_mono_font_rel_position(0.0, 0.0);
+//
+//		print_mono_font_string(buffer);
+//	}
+//#if 0
+//	float
+//		x_min,
+//		y_min,
+//		x_max,
+//		y_max,
+//		y_line1,
+//		y_line2,
+//		y_line3,
+//		y_line4;
+//
+//	if (!electrical_system_active())
+//		return;
+//
+//	x_min = x_org;
+//	y_min = y_org;
+//	x_max = x_org + VIEWPORT_WIDTH;
+//	y_max = y_org + VIEWPORT_HEIGHT;
+//
+//	set_viewport (x_min, y_min, x_max, y_max);
+//
+//	y_line1 = y_org;
+//	y_line2 = y_org + 10.0;
+//	y_line3 = y_org + 20.0;
+//	y_line4 = y_org + 30.0;
+//
+//	set_mono_font_type (MONO_FONT_TYPE_5X9);
+//
+//	set_mono_font_colour (text_colour);
+//
+//	set_mono_font_position (x_min, y_line1);
+//
+//	print_mono_font_string (line1);
+//
+//	set_mono_font_position (x_min, y_line2);
+//
+//	print_mono_font_string (line2);
+//
+//	set_mono_font_position (x_min, y_line3);
+//
+//	print_mono_font_string (line3);
+//
+//	set_mono_font_position (x_min, y_line4);
+//
+//	print_mono_font_string (line4);
+//#endif
+//}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void display_left_ng (void)
 {
-	float
-		x_min,
-		y_min,
-		x_max,
-		y_max,
-		y_line1,
-		y_line2,
-		y_line3,
-		y_line4;
+	float y = 1.0;
+	char buffer[64];
 
-	if (!electrical_system_active())
-		return;
+	set_mono_font_type(MONO_FONT_TYPE_10X16);
+	set_mono_font_colour(text_colour);
 
-	x_min = x_org;
-	y_min = y_org;
-	x_max = x_org + VIEWPORT_WIDTH - 0.001;
-	y_max = y_org + VIEWPORT_HEIGHT - 0.001;
+	sprintf (buffer, "%03d%", (int) (bound(current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0)));
 
-	set_viewport (x_min, y_min, x_max, y_max);
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(3.0, 10.0);
 
-	y_line1 = y_org;
-	y_line2 = y_org + 10.0;
-	y_line3 = y_org + 20.0;
-	y_line4 = y_org + 30.0;
+	print_mono_font_string(buffer);
+}
 
-	set_mono_font_type (MONO_FONT_TYPE_5X9);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	set_mono_font_colour (text_colour);
+static void display_right_ng (void)
+{
+	float y = 1.0;
+	char buffer[64];
 
-	set_mono_font_position (x_min, y_line1);
+	set_mono_font_type(MONO_FONT_TYPE_10X16);
+	set_mono_font_colour(text_colour);
 
-	print_mono_font_string (line1);
+	sprintf (buffer, "%03d%", (int) (bound(current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0)));
 
-	set_mono_font_position (x_min, y_line2);
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(3.0, 10.0);
 
-	print_mono_font_string (line2);
+	print_mono_font_string(buffer);
+}
 
-	set_mono_font_position (x_min, y_line3);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	print_mono_font_string (line3);
+static void display_fuel (void)
+{
+	float y = 1.0;
+	char buffer[64];
 
-	set_mono_font_position (x_min, y_line4);
+	set_mono_font_type(MONO_FONT_TYPE_10X16);
+	set_mono_font_colour(text_colour);
 
-	print_mono_font_string (line4);
+	sprintf (buffer, "%04d", (int) (bound (kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 2500.0)));
+
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(3.0, 10.0);
+
+	print_mono_font_string(buffer);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,16 +249,13 @@ static void display_messages (float x_org, float y_org)
 
 void initialise_blackhawk_upfront_display (void)
 {
-	texture_screen = create_system_texture_screen (64, 64, TEXTURE_INDEX_AVCKPT_DISPLAY_UPFRONT, TEXTURE_TYPE_SINGLEALPHA);
+	left_ng_screen = create_system_texture_screen (35, 35, TEXTURE_INDEX_AVCKPT_DISPLAY_UPFRONT, TEXTURE_TYPE_SINGLEALPHA);
 
-	line1[0] = '\0';
-	line2[0] = '\0';
-	line3[0] = '\0';
-	line4[0] = '\0';
+	right_ng_screen = create_system_texture_screen (35, 35, TEXTURE_INDEX_BHCKPT_RIGHT_NG_DISPLAY, TEXTURE_TYPE_SINGLEALPHA);
 
-	set_rgb_colour (text_colour, 0, 255, 0, 255);
+	set_rgb_colour (text_colour, 65, 194, 130, 255);
 
-	set_rgb_colour (clear_colour, 0, 255, 0, 0);
+	set_rgb_colour (clear_colour,180, 240, 0, 0);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +264,9 @@ void initialise_blackhawk_upfront_display (void)
 
 void deinitialise_blackhawk_upfront_display (void)
 {
-	destroy_screen (texture_screen);
+	destroy_screen (left_ng_screen);
+
+	destroy_screen (right_ng_screen);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,16 +275,10 @@ void deinitialise_blackhawk_upfront_display (void)
 
 void update_blackhawk_upfront_display (void)
 {
-	char
-		s1[80],
-		s2[80];
 
-	float
-		time_of_day,
-		hours,
-		minutes,
-		seconds;
-
+//	if (!electrical_system_active())
+//		return;
+#if 0
 	time_of_day = get_local_entity_float_value (get_session_entity (), FLOAT_TYPE_TIME_OF_DAY);
 
 	get_digital_clock_values (time_of_day, &hours, &minutes, &seconds);
@@ -196,21 +288,22 @@ void update_blackhawk_upfront_display (void)
 	sprintf (s2, "FUEL %04d LBS", (int) (bound (kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 2500.0)));
 
 	set_blackhawk_upfront_display_text (NULL, NULL, s1, s2);
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_blackhawk_upfront_display_on_cockpit (float x_org, float y_org)
-{
-	if (lock_screen (active_screen))
-	{
-		display_messages (x_org, y_org);
-
-		unlock_screen (active_screen);
-	}
-}
+//void draw_blackhawk_upfront_display_on_cockpit (float x_org, float y_org)
+//{
+//	if (lock_screen (active_screen))
+//	{
+//		display_messages (x_org, y_org);
+//
+//		unlock_screen (active_screen);
+//	}
+//}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,15 +311,66 @@ void draw_blackhawk_upfront_display_on_cockpit (float x_org, float y_org)
 
 void draw_blackhawk_upfront_display_on_texture (void)
 {
-	set_active_screen (texture_screen);
+	draw_left_ng_display_on_texture();
+	draw_right_ng_display_on_texture();
+//	draw_fuel_display_on_texture();
+}
 
-	if (lock_screen (texture_screen))
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_left_ng_display_on_texture (void)
+{
+	set_active_screen (left_ng_screen);
+
+	if (lock_screen (left_ng_screen))
 	{
-		set_block (0, 0, 127, 127, clear_colour);
+		set_block (0, 0, 33, 33, clear_colour);
 
-		display_messages (0.0, 0.0);
+		display_left_ng ();
 
-		unlock_screen (texture_screen);
+		unlock_screen (left_ng_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_right_ng_display_on_texture (void)
+{
+	set_active_screen (right_ng_screen);
+
+	if (lock_screen (right_ng_screen))
+	{
+		set_block (0, 0, 33, 33, clear_colour);
+
+		display_right_ng ();
+
+		unlock_screen (right_ng_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_fuel_display_on_texture (void)
+{
+	set_active_screen (right_ng_screen);
+
+	if (lock_screen (right_ng_screen))
+	{
+		set_block (0, 0, 33, 33, clear_colour);
+
+		display_right_ng ();
+
+		unlock_screen (right_ng_screen);
 	}
 
 	set_active_screen (video_screen);
@@ -242,6 +386,7 @@ void draw_blackhawk_upfront_display_on_texture (void)
 
 void set_blackhawk_upfront_display_text (char *s1, char *s2, char *s3, char *s4)
 {
+#if 0
 	if (s1)
 	{
 		strncpy (line1, s1, MAX_STRING_LENGTH);
@@ -269,8 +414,17 @@ void set_blackhawk_upfront_display_text (char *s1, char *s2, char *s3, char *s4)
 
 		line4[MAX_STRING_LENGTH] = '\0';
 	}
+
+	if (command_line_shared_mem_export != 0)
+		update_upfront_display_shared_mem(s1, s2, s3, s4); // Retro 14Aug2006
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void clear_blackhawk_upfront_display(void)
+{
+
+}

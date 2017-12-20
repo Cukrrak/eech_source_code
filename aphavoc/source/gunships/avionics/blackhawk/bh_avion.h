@@ -72,7 +72,9 @@
 
 #include "bh_eo.h"
 
-#include "bh_chrono.h"
+#include "bh_front.h"
+
+//#include "bh_chrono.h"
 
 #include "bh_hms.h"
 
@@ -85,8 +87,6 @@
 #include "bh_tgt.h"
 
 #include "bh_thrt.h"
-
-#include "bh_front.h"
 
 // JB 030311 VC rename source files
 #include "bh_cowpn.h"
