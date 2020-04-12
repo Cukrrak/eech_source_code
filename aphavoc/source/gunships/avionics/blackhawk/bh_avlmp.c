@@ -2057,6 +2057,35 @@ static void update_rtgt_temp_leds(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void update_master_warning_panel (void)
+{
+//	entity
+//		*en;
+//
+//	en = get_gunship_entity ();
+
+	int
+		fire1,
+		fire2;
+
+	fire1 = get_dynamics_damage_type (DYNAMICS_DAMAGE_LEFT_ENGINE_FIRE);
+	fire2 = get_dynamics_damage_type (DYNAMICS_DAMAGE_RIGHT_ENGINE_FIRE);
+
+	if (fire1 == TRUE || fire2 == TRUE)
+	{
+		blackhawk_lamps.engine_fire = 1;
+	}
+
+	blackhawk_lamps.eng1_out = !get_dynamics_damage_type(DYNAMICS_DAMAGE_LEFT_ENGINE) && current_flight_dynamics->left_engine_rpm.value < 55.0;
+	blackhawk_lamps.eng2_out = !get_dynamics_damage_type(DYNAMICS_DAMAGE_RIGHT_ENGINE) && current_flight_dynamics->right_engine_rpm.value < 55.0;
+
+	blackhawk_lamps.rotor_rpm = get_current_flight_dynamics_low_rotor_rpm ();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Note that all lamps are extinguished in initialise_blackhawk_lamps ().
 //
@@ -2104,17 +2133,12 @@ void update_blackhawk_lamp_avionics(void) {
 
 	update_rtgt_temp_leds();
 
-	////////////////////////////////////////
+	update_master_warning_panel();
 
-	blackhawk_lamps.engine_ignition = !get_dynamics_damage_type(
-			DYNAMICS_DAMAGE_LEFT_ENGINE)
-			&& current_flight_dynamics->left_engine_rpm.value > 0.01;
+	////////////////////////////////////////
 
 	blackhawk_lamps.apu_ignition = current_flight_dynamics->apu_rpm.value
 			> 0.01;
-
-	blackhawk_lamps.engine_fire = get_dynamics_damage_type(
-			DYNAMICS_DAMAGE_LEFT_ENGINE_FIRE);
 
 	blackhawk_lamps.apu_fire = 0;
 
@@ -2130,9 +2154,6 @@ void update_blackhawk_lamp_avionics(void) {
 	blackhawk_lamps.oil_temperature = 0;
 
 	blackhawk_lamps.overtorque = get_current_flight_dynamics_overtorque ();
-
-	blackhawk_lamps.rotor_rpm =
-	get_current_flight_dynamics_low_rotor_rpm ();
 
 	blackhawk_lamps.fuel_low = current_flight_dynamics->fuel_weight.value
 			< (current_flight_dynamics->fuel_weight.max * 0.25);

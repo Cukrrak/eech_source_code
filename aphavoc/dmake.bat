@@ -1,5 +1,5 @@
 @echo off
-SET EECH_ROOTDIR=D:\blackhawk_1_16_1
+SET EECH_ROOTDIR=D:\blackhawk-1-16
 
 del project.exe
 

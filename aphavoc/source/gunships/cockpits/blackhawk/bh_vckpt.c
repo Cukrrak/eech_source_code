@@ -86,6 +86,12 @@ static object_3d_instance
 //	*virtual_cockpit_inst3d;
 
 static object_3d_sub_instance
+	// Master Warning Panel
+	*eng1_out_lamp,
+	*eng2_out_lamp,
+	*low_rtr_rpm_lamp,
+	*fire_lamp,
+	*master_caution_lamp,
 	// Pilot Display Unit
 	// Rotor RPM
 	// Red LEDs
@@ -735,6 +741,14 @@ void initialise_blackhawk_virtual_cockpit (void)
 	virtual_cockpit_inst3d = virtual_cockpit_inst3d_detail_level_normal_inst3d;
 
 //	virtual_cockpit_inst3d = construct_3d_object(OBJECT_3D_MH_60L_COCKPIT);
+
+	// Master Warning Panel
+
+	eng1_out_lamp = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_PL_ENG1_OUT_LAMP_ON);
+	eng2_out_lamp = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_PL_ENG2_OUT_LAMP_ON);
+	low_rtr_rpm_lamp = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_PL_LOW_RTR_RPM_LAMP_ON);
+	fire_lamp = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_PL_FIRE_LAMP_ON);
+	master_caution_lamp = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BH_PL_MSTR_CAUT_LAMP_ON);
 
 	// Pilot Display Unit
 	// Rotor RPM
@@ -1717,6 +1731,7 @@ void update_blackhawk_virtual_cockpit (void)
 
 	animate_mh60l_virtual_cockpit();
 
+	// Engine Displays
 	update_rtr_rpm_display();
 	update_leng_rpm_display();
 	update_reng_rpm_display();
@@ -1727,6 +1742,9 @@ void update_blackhawk_virtual_cockpit (void)
 	update_rng_speed_display();
 	update_ltgt_temp_display();
 	update_rtgt_temp_display();
+
+	// Master Warning Panel
+	update_master_warning_lamps();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2430,6 +2448,20 @@ void get_blackhawk_display_viewpoint (view_modes mode)
 	main_vp.x += position.x;
 	main_vp.y += position.y;
 	main_vp.z += position.z;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void update_master_warning_lamps (void)
+{
+	eng1_out_lamp->visible_object = blackhawk_lamps.eng1_out;
+	eng2_out_lamp->visible_object = blackhawk_lamps.eng2_out;
+	low_rtr_rpm_lamp->visible_object = blackhawk_lamps.rotor_rpm;
+	fire_lamp->visible_object = blackhawk_lamps.engine_fire;
+	master_caution_lamp->visible_object = blackhawk_lamps.master_caution;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

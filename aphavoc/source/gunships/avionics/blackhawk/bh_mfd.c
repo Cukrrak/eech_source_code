@@ -5524,13 +5524,14 @@ static void draw_engine_display_mfd (void)
 
 //									P9 O (+ve)
 //
-			//
+//
 //    P1    P2    P3    P4    P5    P6    P7
 //     O-----O-----O-----O-----O-----O-----O
 //     |
 //     |
 //     |
 // P8  O					 	   P10 O (-ve)
+
 #define PITCH_BAR_X1		((float) (+0.075) * pitch_bar_scale)
 #define PITCH_BAR_Y1		((float) (+0.000) * pitch_bar_scale)
 #define PITCH_BAR_X2		((float) (+0.140) * pitch_bar_scale)
@@ -5604,448 +5605,12 @@ static int limit_pitch (int pitch, int *step_direction)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static void draw_pitch_ladder (void)
-//{
-//	char
-//		s[20];
-//
-//	int
-//		int_pitch,
-//		step_direction,
-//		loop;
-//
-//	float
-//		y_adjust_above_line,
-//		y_adjust_below_line,
-//		x_centre,
-//		y_centre = 0.1,
-//		size,
-//		vsize,
-//		vp_size,
-//		pitch,
-//		mod_pitch,
-//		tan_mod_pitch,
-//		pitch_bar_scale,
-//		roll,
-//		u,
-//		v,
-//		x,
-//		y,
-//		left_edge,
-//		right_edge,
-//		upper_edge,
-//		lower_edge,
-//		x_scale,
-//		y_scale,
-//		x_horizon,
-//		y_horizon,
-//		x_10_deg_step,
-//		y_10_deg_step,
-//		x_adjust;
-//
-//	rgb_colour
-//		sky_colour,
-//		ground_colour;
-//
-//	if (command_line_colour_mfd)
-//	{
-//		sky_colour.red = 44;
-//		sky_colour.green = 13;
-//		sky_colour.blue = 116;
-//		sky_colour.alpha = 255;
-//
-//		ground_colour.red = 155;
-//		ground_colour.green = 131;
-//		ground_colour.blue = 107;
-//		ground_colour.alpha = 255;
-//	}
-//	else
-//	{
-//		sky_colour = MFD_COLOUR2;
-//		ground_colour = MFD_COLOUR5;
-//	}
-//
-//	if (draw_large_mfd)
-//	{
-//		set_mono_font_type (MONO_FONT_TYPE_5X9);
-//
-//		y_adjust_above_line = -3.0;
-//		y_adjust_below_line = -3.0;
-//	}
-//	else
-//	{
-//		set_mono_font_type (MONO_FONT_TYPE_3X6);
-//
-//		y_adjust_above_line = -3.0;
-//		y_adjust_below_line = -1.0;
-//	}
-//
-//	x_centre = 0.0;
-//
-//	size = 0.4;
-//	pitch_bar_scale = 0.6;
-//
-//	vsize = size * 1.5;
-//
-//	//
-//	//
-//
-//	get_2d_float_screen_coordinates (PITCH_DATUM_X, PITCH_DATUM_Y, &u, &v);
-//	roll = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_ROLL);
-//
-////	set_2d_instance_position (mfd_env, PITCH_DATUM_X, PITCH_DATUM_Y - size);
-//
-//	//
-//	// set 2D environment
-//	//
-//
-//	set_2d_window (mfd_env, MFD_WINDOW_X_MIN * size, MFD_WINDOW_Y_MIN * size, MFD_WINDOW_X_MAX * size, MFD_WINDOW_Y_MAX * size);
-//
-//	vp_size = mfd_viewport_size * size * 0.5;
-//	set_2d_viewport (mfd_env, u - (vp_size * 1.5), v - vp_size, u + (vp_size * 1.5), v + (2.0 * vp_size));
-//
-//	upper_edge = 0.5 * size;
-//	left_edge = -(size * 0.75);
-//	right_edge = (size * 0.75);
-//	lower_edge = -size;
-//
-////	set_2d_viewport (mfd_env, u + left_edge, v + upper_edge, u + right_edge, v + lower_edge);
-//
-//
-//	//
-//	// pitch
-//	//
-//
-//	{
-//		float
-//			x_horizon_abs,
-//			y_horizon_abs,
-//			tan_pitch;
-//
-//		int inverted = (roll < -rad(90)) || (roll > rad(90));
-//
-//		pitch = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_PITCH);
-//		tan_pitch = -tan(pitch);
-//		mod_pitch = fmod (pitch, rad (10.0f));
-//		tan_mod_pitch = -tan (mod_pitch);
-//		int_pitch = (int) (pitch * (1.0 / rad (10.0)));
-//
-//		//
-//		// get x and y scale factors
-//		//
-//
-//		x_scale = -sin (roll) * 1.5 * pitch_bar_scale;
-//		y_scale = cos (roll) * 1.5 * pitch_bar_scale;
-//
-//		x_horizon = tan_mod_pitch * x_scale;
-//		y_horizon = tan_mod_pitch * y_scale;
-//
-//		x_10_deg_step = tan (rad (10.0)) * x_scale;
-//		y_10_deg_step = tan (rad (10.0)) * y_scale;
-//
-//		x_horizon_abs = tan_pitch * x_scale;
-//		y_horizon_abs = tan_pitch * y_scale;
-//
-//		// draw horizon
-//		set_2d_pixel(x_horizon_abs, y_horizon_abs, MFD_COLOUR1);
-//		if (roll != -rad(90) && roll != rad(90))
-//		{
-//			float incline = tan(roll);
-//			float left_y, right_y;
-//			float start_x = -1.0, end_x = 1.0;
-//
-//			left_y = (x_horizon_abs - left_edge) * -incline;
-//			right_y = (right_edge - x_horizon_abs) * incline;
-//
-//			if (incline < 0.0)
-//			{
-//				// find where horizon intersects top and bottom
-//				start_x = x_horizon_abs + ((1 - y_horizon_abs) / incline);
-//				end_x = x_horizon_abs + ((-2 - y_horizon_abs) / incline);
-//			}
-//
-//			draw_2d_line(left_edge, left_y, right_edge, right_y, sys_col_red);
-//
-//			left_y = y_horizon_abs + (1.0 + x_horizon_abs) * -incline;
-//			right_y = y_horizon_abs + (1.0 - x_horizon_abs) * incline;
-//
-//			if (inverted)
-//			{
-//				rgb_colour tmp = sky_colour;
-//				sky_colour = ground_colour;
-//				ground_colour = tmp;
-//			}
-//
-//			draw_2d_filled_triangle(-1.0, left_y, -1.0, 1.0, 1.0, right_y, sky_colour);
-//			draw_2d_filled_triangle(start_x, 1.0, 1.0, 1.0, 1.0, right_y, sky_colour);
-//
-//			draw_2d_filled_triangle(-1.0, left_y, end_x, -2.0, -1.0, -2.0, ground_colour);
-//			draw_2d_filled_triangle(-1.0, left_y, 1.0, right_y, 1.0, -2.0, ground_colour);
-//		}
-//		else  // 90 degree bank
-//		{
-//			rgb_colour
-//				*left_colour,
-//				*right_colour;
-//
-//			if (roll == rad(90))
-//			{
-//				left_colour = &ground_colour;
-//				right_colour = &sky_colour;
-//			}
-//			else
-//			{
-//				left_colour = &sky_colour;
-//				right_colour = &ground_colour;
-//			}
-//
-//			draw_2d_filled_triangle(x_horizon_abs, 1.0, 1.0, 1.0, 1.0, -1.0, *right_colour);
-//			draw_2d_filled_triangle(1.0, -1.0, x_horizon_abs, -1.0, x_horizon_abs, 1.0, *right_colour);
-//
-//			draw_2d_filled_triangle(-1.0, 1.0, x_horizon_abs, 1.0, x_horizon_abs, -1.0, *left_colour);
-//			draw_2d_filled_triangle(x_horizon_abs, -1.0, -1.0, -1.0, -1.0, 1.0, *left_colour);
-//		}
-//
-//		////////////////////////////////////////
-//		//
-//		// draw pitch ladder
-//		//
-//		////////////////////////////////////////
-//
-//		step_direction = -1;
-//
-//		int_pitch = limit_pitch (int_pitch + 3, &step_direction);
-//
-//		x = x_horizon + x_10_deg_step * 3.0;
-//		y = y_horizon + y_10_deg_step * 3.0;
-//
-//		set_2d_instance_rotation (mfd_env, roll);
-//
-//		for (loop = 0; loop < 7; loop++)
-//		{
-//			set_2d_instance_position (mfd_env, x, y);
-//
-//			switch (int_pitch)
-//			{
-//				////////////////////////////////////////
-//				case 0:
-//				////////////////////////////////////////
-//				{
-//					draw_2d_line (-PITCH_BAR_X3, PITCH_BAR_Y3, PITCH_BAR_X3, -PITCH_BAR_Y3, MFD_COLOUR1);
-//
-//					break;
-//				}
-//				////////////////////////////////////////
-//				default:
-//				////////////////////////////////////////
-//				{
-//					draw_2d_line (-PITCH_BAR_X3, PITCH_BAR_Y3, PITCH_BAR_X3, -PITCH_BAR_Y3, MFD_COLOUR1);
-//
-//					sprintf (s, "%d0", int_pitch);
-//					x_adjust = get_mono_font_string_width (s) * -0.5;
-//
-//					set_2d_mono_font_position (+PITCH_BAR_X4, +PITCH_BAR_Y4);
-//					set_mono_font_rel_position (x_adjust, y_adjust_above_line);
-//					print_mono_font_string (s);
-//
-//					set_2d_mono_font_position (-PITCH_BAR_X4, +PITCH_BAR_Y4);
-//					set_mono_font_rel_position (x_adjust, y_adjust_above_line);
-//					print_mono_font_string (s);
-//
-//					break;
-//				}
-//				////////////////////////////////////////
-//				case 9:
-//				////////////////////////////////////////
-//				{
-//					draw_2d_line (+PITCH_BAR_X1, +PITCH_BAR_Y1, +PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
-//					draw_2d_line (-PITCH_BAR_X1, +PITCH_BAR_Y1, -PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
-//
-//					break;
-//				}
-//				////////////////////////////////////////
-//				case -9:
-//				////////////////////////////////////////
-//				{
-//					draw_2d_line (+PITCH_BAR_X1, +PITCH_BAR_Y1, +PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR1);
-//					draw_2d_line (-PITCH_BAR_X1, +PITCH_BAR_Y1, -PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR1);
-//
-//					draw_2d_line (+PITCH_BAR_X3, +PITCH_BAR_Y3, +PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR1);
-//					draw_2d_line (-PITCH_BAR_X3, +PITCH_BAR_Y3, -PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR1);
-//
-//					draw_2d_line (+PITCH_BAR_X5, +PITCH_BAR_Y5, +PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
-//					draw_2d_line (-PITCH_BAR_X5, +PITCH_BAR_Y5, -PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
-//
-//					break;
-//				}
-//			}
-//
-//			int_pitch = limit_pitch (int_pitch + step_direction, &step_direction);
-//
-//			x -= x_10_deg_step;
-//			y -= y_10_deg_step;
-//		}
-//	}
-//
-//	//
-//	// restore 2D environment
-//	//
-//
-//	reset_2d_instance (mfd_env);
-//
-//	set_2d_window (mfd_env, MFD_WINDOW_X_MIN, MFD_WINDOW_Y_MIN, MFD_WINDOW_X_MAX, MFD_WINDOW_Y_MAX);
-//
-//	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-//
-//	draw_2d_mono_sprite (main_horizon_mask, x_centre, 0.41 + PITCH_DATUM_Y, MFD_BACKGROUND_COLOUR);
-//
-//	// pitch scale
-//	{
-//		float
-//			current_y,
-//			y_fine_height = 0.24,    // -10 to 10 degrees
-//			y_coarse_height = 0.12,  // above 10 and below 10
-//			y_fine_step = y_fine_height / 4,
-//			y_coarse_step = y_coarse_height / 2,
-//			x_end = -0.41,
-//			x_half_tick = x_end - 0.02,
-//			x_tick = x_end - 0.04;
-//
-//		int i;
-//
-//		float x_adjust, y_adjust;
-//		char buffer[8];
-//
-//		set_mono_font_type (MONO_FONT_TYPE_5X7);
-//		y_adjust = -2.0;
-//
-//		current_y = y_centre + y_coarse_height + y_fine_height + y_coarse_step;
-//		for (i = 3; i >= 1; i--)
-//		{
-//			current_y -= y_coarse_step;
-//			draw_2d_line(x_tick, current_y, x_end, current_y, MFD_COLOUR1);
-//
-//			sprintf(buffer, "%d", i);
-//			x_adjust = get_mono_font_string_width(buffer) + 1;
-//
-//			set_2d_mono_font_position (x_tick, current_y);
-//			set_mono_font_rel_position (-x_adjust, y_adjust);
-//			print_mono_font_string(buffer);
-//		}
-//
-//		for (i = 0; i < 7; i++)
-//		{
-//			current_y -= y_fine_step;
-//			if ((i % 2) != 0)
-//				draw_2d_line(x_tick, current_y, x_end, current_y, MFD_COLOUR1);
-//			else
-//				draw_2d_line(x_half_tick, current_y, x_end, current_y, MFD_COLOUR1);
-//		}
-//
-//		sprintf(buffer, "%d", 0);
-//		x_adjust = get_mono_font_string_width(buffer) + 1;
-//
-//		set_2d_mono_font_position (x_tick, y_centre);
-//		set_mono_font_rel_position (-x_adjust, y_adjust);
-//		print_mono_font_string(buffer);
-//
-//		current_y -= y_fine_step;
-//		for (i = -1; i >= -3; i--)
-//		{
-//			draw_2d_line(x_tick, current_y, x_end, current_y, MFD_COLOUR1);
-//
-//			sprintf(buffer, "%d", i);
-//			x_adjust = get_mono_font_string_width(buffer) + 1;
-//
-//			set_2d_mono_font_position (x_tick, current_y);
-//			set_mono_font_rel_position (-x_adjust, y_adjust);
-//			print_mono_font_string(buffer);
-//			current_y -= y_coarse_step;
-//		}
-//
-//		// draw marker
-//
-//		{
-//			float
-//				pitch_y;
-//
-//			pitch_y = bound(deg(pitch), -10.0, 10.0) * y_fine_height * 0.1;
-//			if (pitch < rad(-10))
-//				pitch_y += bound(deg(pitch) + 10.0, -20.0, 0.0) * y_coarse_height * 0.05;
-//			else if (pitch > rad(10))
-//				pitch_y += bound(deg(pitch) - 10.0, 0.0, 20.0) * y_coarse_height * 0.05;
-//
-//			pitch_y += y_centre;
-//
-//			draw_2d_mono_sprite(large_right_carat, x_end, pitch_y, MFD_COLOUR1);
-//		}
-//	}
-//
-//
-//	//
-//	// roll
-//	//
-//
-//	{
-//		set_2d_instance_position (mfd_env, PITCH_DATUM_X, PITCH_DATUM_Y - size);
-//
-//		set_2d_instance_rotation (mfd_env, rad (0.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//
-//		set_2d_instance_rotation (mfd_env, rad (10.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
-//		set_2d_instance_rotation (mfd_env, rad (-10.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
-//
-//		set_2d_instance_rotation (mfd_env, rad (20.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
-//		set_2d_instance_rotation (mfd_env, rad (-20.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
-//
-//		set_2d_instance_rotation (mfd_env, rad (30.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//		set_2d_instance_rotation (mfd_env, rad (-30.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//
-//		set_2d_instance_rotation (mfd_env, rad (45.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//		set_2d_instance_rotation (mfd_env, rad (-45.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//
-//		set_2d_instance_rotation (mfd_env, rad (60.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//		set_2d_instance_rotation (mfd_env, rad (-60.0));
-//		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
-//
-//		set_2d_instance_rotation (mfd_env, bound (roll, rad(-60.0), rad(60.0)));
-//		draw_2d_filled_triangle(0.0, -size, -0.035, -size + 0.075, 0.035, -size + 0.075, MFD_COLOUR4);
-//	}
-//
-//	//
-//	// restore 2D environment
-//	//
-//
-//	reset_2d_instance (mfd_env);
-//	set_2d_window (mfd_env, MFD_WINDOW_X_MIN, MFD_WINDOW_Y_MIN, MFD_WINDOW_X_MAX, MFD_WINDOW_Y_MAX);
-//	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-//
-//	// datum
-//	draw_2d_line(x_centre, 0.0, x_centre + 0.05, -0.05, MFD_COLOUR6);
-//	draw_2d_line(x_centre, 0.0, x_centre - 0.05, -0.05, MFD_COLOUR6);
-//
-//	draw_2d_line(x_centre + 0.05, -0.05, x_centre + 0.10, 0.0, MFD_COLOUR6);
-//	draw_2d_line(x_centre - 0.05, -0.05, x_centre - 0.10, 0.0, MFD_COLOUR6);
-//
-//	draw_2d_line(x_centre + 0.10, 0.0, x_centre + 0.20, 0.0, MFD_COLOUR6);
-//	draw_2d_line(x_centre - 0.10, 0.0, x_centre - 0.20, 0.0, MFD_COLOUR6);
-//}
 static void draw_pitch_ladder (void)
 {
 	char
 		s[20];
 
 	int
-		int_roll,
 		int_pitch,
 		step_direction,
 		loop;
@@ -6054,10 +5619,10 @@ static void draw_pitch_ladder (void)
 		y_adjust_above_line,
 		y_adjust_below_line,
 		x_centre,
+		y_centre = 0.1,
 		size,
-		roll_size,
-		vp_u_size,
-		vp_v_size,
+		vsize,
+		vp_size,
 		pitch,
 		mod_pitch,
 		tan_mod_pitch,
@@ -6067,6 +5632,10 @@ static void draw_pitch_ladder (void)
 		v,
 		x,
 		y,
+		left_edge,
+		right_edge,
+		upper_edge,
+		lower_edge,
 		x_scale,
 		y_scale,
 		x_horizon,
@@ -6075,58 +5644,57 @@ static void draw_pitch_ladder (void)
 		y_10_deg_step,
 		x_adjust;
 
-			{
-		set_mono_font_type (MONO_FONT_TYPE_6X10);
+	rgb_colour
+		sky_colour,
+		ground_colour;
 
-		y_adjust_above_line = -6.0;
-		y_adjust_below_line = -6.0;
-				}
+	if (command_line_colour_mfd)
+	{
+		sky_colour.red = 44;
+		sky_colour.green = 13;
+		sky_colour.blue = 116;
+		sky_colour.alpha = 255;
 
-	x_centre = 0.0;
-	size = 0.6;
-	pitch_bar_scale = 0.6;
-
-	get_2d_float_screen_coordinates (PITCH_DATUM_X, PITCH_DATUM_Y, &u, &v);
-
-	//
-	// roll
-	//
-
-	roll = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_ROLL);
-
-	set_2d_instance_position (mfd_env, PITCH_DATUM_X, PITCH_DATUM_Y);
-	roll_size = size + 0.25;
-
-	set_2d_instance_rotation (mfd_env, rad (0.0));
-	draw_2d_half_thick_line (0.0, roll_size, 0.0, roll_size - 0.05, MFD_COLOUR_YELLOW);
-
-	for (int_roll = 10; int_roll <= 90; int_roll += 10)
-			{
-		if (int_roll <= 30)
-				{
-			set_2d_instance_rotation (mfd_env, rad (int_roll - 5));
-			draw_2d_line (0.0, roll_size, 0.0, roll_size - 0.025, MFD_COLOUR_YELLOW);
-			set_2d_instance_rotation (mfd_env, rad (-(int_roll - 5)));
-			draw_2d_line (0.0, roll_size, 0.0, roll_size - 0.025, MFD_COLOUR_YELLOW);
-				}
-
-		if (int_roll <= 30 || deg(roll) > 30.0)
-				{
-			set_2d_instance_rotation (mfd_env, rad (int_roll));
-			draw_2d_half_thick_line (0.0, roll_size, 0.0, roll_size - 0.05, MFD_COLOUR_YELLOW);
-				}
-
-		if (int_roll <= 30 || deg(roll) < -30.0)
-			{
-
-			set_2d_instance_rotation (mfd_env, rad (-int_roll));
-			draw_2d_half_thick_line (0.0, roll_size, 0.0, roll_size - 0.05, MFD_COLOUR_YELLOW);
-		}
+		ground_colour.red = 155;
+		ground_colour.green = 131;
+		ground_colour.blue = 107;
+		ground_colour.alpha = 255;
+	}
+	else
+	{
+		sky_colour = MFD_COLOUR2;
+		ground_colour = MFD_COLOUR5;
 	}
 
-	set_2d_instance_rotation (mfd_env, bound (roll, rad (-90.0), rad (90.0)));
-	draw_2d_half_thick_line (0.0, roll_size - 0.1, 0.0, roll_size, MFD_COLOUR_YELLOW);
+	if (draw_large_mfd)
+	{
+		set_mono_font_type (MONO_FONT_TYPE_5X9);
 
+		y_adjust_above_line = -3.0;
+		y_adjust_below_line = -3.0;
+	}
+	else
+	{
+		set_mono_font_type (MONO_FONT_TYPE_3X6);
+
+		y_adjust_above_line = -3.0;
+		y_adjust_below_line = -1.0;
+	}
+
+	x_centre = 0.0;
+
+	size = 0.4; //0.4 original
+	pitch_bar_scale = 0.6;
+
+//	vsize = size * 1.5;
+
+	//
+	//
+
+	get_2d_float_screen_coordinates (PITCH_DATUM_X, PITCH_DATUM_Y, &u, &v);
+	roll = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_ROLL);
+
+//	set_2d_instance_position (mfd_env, PITCH_DATUM_X, PITCH_DATUM_Y - size);
 
 	//
 	// set 2D environment
@@ -6134,272 +5702,344 @@ static void draw_pitch_ladder (void)
 
 	set_2d_window (mfd_env, MFD_WINDOW_X_MIN * size, MFD_WINDOW_Y_MIN * size, MFD_WINDOW_X_MAX * size, MFD_WINDOW_Y_MAX * size);
 
-	vp_u_size = mfd_viewport_size * size * 0.45;
-	vp_v_size = mfd_viewport_size * size * 0.4;
+	vp_size = mfd_viewport_size * size * 1.0; //orig 0.5
+	set_2d_viewport (mfd_env, u - (vp_size * 1.5), v - vp_size, u + (vp_size * 1.5), v + (2.0 * vp_size));
 
-	set_2d_viewport (mfd_env, u - vp_u_size, v - vp_v_size, u + vp_u_size, v + vp_v_size);
+//	upper_edge = 0.5 * size;
+	left_edge = -(size * 0.75);
+	right_edge = (size * 0.75);
+//	lower_edge = -size;
+
+//	set_2d_viewport (mfd_env, u + left_edge, v + upper_edge, u + right_edge, v + lower_edge);
+
 
 	//
 	// pitch
 	//
 
-	pitch = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_PITCH);
+	{
+		float
+			x_horizon_abs,
+			y_horizon_abs,
+			tan_pitch;
 
-	mod_pitch = fmod (pitch, rad (10.0));
+		int inverted = (roll < -rad(90)) || (roll > rad(90));
 
-	tan_mod_pitch = -tan (mod_pitch);
+		pitch = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_PITCH);
+		tan_pitch = -tan(pitch);
+		mod_pitch = fmod (pitch, rad (10.0f));
+		tan_mod_pitch = -tan (mod_pitch);
+		int_pitch = (int) (pitch * (1.0 / rad (10.0)));
 
-	int_pitch = (int) (pitch * (1.0 / rad (10.0)));
+		//
+		// get x and y scale factors
+		//
 
-	//
-	// get x and y scale factors
-	//
+		x_scale = -sin (roll) * 1.5 * pitch_bar_scale;
+		y_scale = cos (roll) * 1.5 * pitch_bar_scale;
 
-	x_scale = -sin (roll) * 2.0 * pitch_bar_scale;
+		x_horizon = tan_mod_pitch * x_scale;
+		y_horizon = tan_mod_pitch * y_scale;
 
-	y_scale = cos (roll) * 2.0 * pitch_bar_scale;
+		x_10_deg_step = tan (rad (10.0)) * x_scale;
+		y_10_deg_step = tan (rad (10.0)) * y_scale;
 
-	x_horizon = tan_mod_pitch * x_scale;
-	y_horizon = tan_mod_pitch * y_scale;
+		x_horizon_abs = tan_pitch * x_scale;
+		y_horizon_abs = tan_pitch * y_scale;
 
-	x_10_deg_step = tan (rad (10.0)) * x_scale;
-	y_10_deg_step = tan (rad (10.0)) * y_scale;
+		// draw horizon
+		set_2d_pixel(x_horizon_abs, y_horizon_abs, MFD_COLOUR1);
+		if (roll != -rad(90) && roll != rad(90))
+		{
+			float incline = tan(roll);
+			float left_y, right_y;
+			float start_x = -1.0, end_x = 1.0;
 
-			////////////////////////////////////////
-			//
-	// draw pitch ladder
-			//
-			////////////////////////////////////////
+			left_y = (x_horizon_abs - left_edge) * -incline;
+			right_y = (right_edge - x_horizon_abs) * incline;
 
-	step_direction = -1;
-
-	int_pitch = limit_pitch (int_pitch + 4, &step_direction);
-
-	x = x_horizon + x_10_deg_step * 4.0;
-	y = y_horizon + y_10_deg_step * 4.0;
-
-	set_2d_instance_rotation (mfd_env, roll);
-
-	for (loop = 0; loop < 9; loop++)
+			if (incline < 0.0)
 			{
-		float p_factor = 0.02 * abs(int_pitch);
+				// find where horizon intersects top and bottom
+				start_x = x_horizon_abs + ((1 - y_horizon_abs) / incline);
+				end_x = x_horizon_abs + ((-2 - y_horizon_abs) / incline);
+			}
 
-		set_2d_instance_position (mfd_env, x, y);
+			draw_2d_line(left_edge, left_y, right_edge, right_y, sys_col_red);
 
-		switch (int_pitch)
-					{
-			////////////////////////////////////////
-			case 0:
-			////////////////////////////////////////
-						{
-				set_mono_font_colour (MFD_COLOUR_RED);
-				draw_2d_half_thick_line (+PITCH_BAR_X7, +PITCH_BAR_Y7, -PITCH_BAR_X7, +PITCH_BAR_Y7, MFD_COLOUR_RED);
+			left_y = y_horizon_abs + (1.0 + x_horizon_abs) * -incline;
+			right_y = y_horizon_abs + (1.0 - x_horizon_abs) * incline;
+
+			if (inverted)
+			{
+				rgb_colour tmp = sky_colour;
+				sky_colour = ground_colour;
+				ground_colour = tmp;
+			}
+
+			draw_2d_filled_triangle(-1.0, left_y, -1.0, 1.0, 1.0, right_y, sky_colour);
+			draw_2d_filled_triangle(start_x, 1.0, 1.0, 1.0, 1.0, right_y, sky_colour);
+
+			draw_2d_filled_triangle(-1.0, left_y, end_x, -2.0, -1.0, -2.0, ground_colour);
+			draw_2d_filled_triangle(-1.0, left_y, 1.0, right_y, 1.0, -2.0, ground_colour);
+		}
+		else  // 90 degree bank
+		{
+			rgb_colour
+				*left_colour,
+				*right_colour;
+
+			if (roll == rad(90))
+			{
+				left_colour = &ground_colour;
+				right_colour = &sky_colour;
+			}
+			else
+			{
+				left_colour = &sky_colour;
+				right_colour = &ground_colour;
+			}
+
+			draw_2d_filled_triangle(x_horizon_abs, 1.0, 1.0, 1.0, 1.0, -1.0, *right_colour);
+			draw_2d_filled_triangle(1.0, -1.0, x_horizon_abs, -1.0, x_horizon_abs, 1.0, *right_colour);
+
+			draw_2d_filled_triangle(-1.0, 1.0, x_horizon_abs, 1.0, x_horizon_abs, -1.0, *left_colour);
+			draw_2d_filled_triangle(x_horizon_abs, -1.0, -1.0, -1.0, -1.0, 1.0, *left_colour);
+		}
+
+		////////////////////////////////////////
+		//
+		// draw pitch ladder
+		//
+		////////////////////////////////////////
+
+		step_direction = -1;
+
+		int_pitch = limit_pitch (int_pitch + 3, &step_direction);
+
+		x = x_horizon + x_10_deg_step * 3.0;
+		y = y_horizon + y_10_deg_step * 3.0;
+
+		set_2d_instance_rotation (mfd_env, roll);
+
+		for (loop = 0; loop < 7; loop++)
+		{
+			set_2d_instance_position (mfd_env, x, y);
+
+			switch (int_pitch)
+			{
+				////////////////////////////////////////
+				case 0:
+				////////////////////////////////////////
+				{
+					draw_2d_line (-PITCH_BAR_X3, PITCH_BAR_Y3, PITCH_BAR_X3, -PITCH_BAR_Y3, MFD_COLOUR1);
 
 					break;
 				}
-			////////////////////////////////////////
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			////////////////////////////////////////
+				////////////////////////////////////////
+				default:
+				////////////////////////////////////////
 				{
-				set_mono_font_colour (MFD_COLOUR_BLUE);
+					draw_2d_line (-PITCH_BAR_X3, PITCH_BAR_Y3, PITCH_BAR_X3, -PITCH_BAR_Y3, MFD_COLOUR1);
 
-				if (step_direction == -1)
-					{
-					draw_2d_half_thick_line (p_factor+PITCH_BAR_X1, +PITCH_BAR_Y1, p_factor+PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_BLUE);
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X1, +PITCH_BAR_Y1, -p_factor - PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_BLUE);
+					sprintf (s, "%d0", int_pitch);
+					x_adjust = get_mono_font_string_width (s) * -0.5;
 
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X6, +PITCH_BAR_Y6, p_factor + PITCH_BAR_X8, +PITCH_BAR_Y8, MFD_COLOUR_BLUE);
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X6, +PITCH_BAR_Y6, -p_factor - PITCH_BAR_X8, +PITCH_BAR_Y8, MFD_COLOUR_BLUE);
-						}
-						else
-						{
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X1, -PITCH_BAR_Y1, -p_factor - PITCH_BAR_X6, -PITCH_BAR_Y6, MFD_COLOUR_BLUE);
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X1, -PITCH_BAR_Y1, p_factor + PITCH_BAR_X6, -PITCH_BAR_Y6, MFD_COLOUR_BLUE);
+					set_2d_mono_font_position (+PITCH_BAR_X4, +PITCH_BAR_Y4);
+					set_mono_font_rel_position (x_adjust, y_adjust_above_line);
+					print_mono_font_string (s);
 
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X6, -PITCH_BAR_Y6, -p_factor - PITCH_BAR_X8, -PITCH_BAR_Y8, MFD_COLOUR_BLUE);
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X6, -PITCH_BAR_Y6, p_factor + PITCH_BAR_X8, -PITCH_BAR_Y8, MFD_COLOUR_BLUE);
-					}
+					set_2d_mono_font_position (-PITCH_BAR_X4, +PITCH_BAR_Y4);
+					set_mono_font_rel_position (x_adjust, y_adjust_above_line);
+					print_mono_font_string (s);
 
-				sprintf (s, "%d0", int_pitch);
-
-				x_adjust = get_mono_font_string_width (s) * -0.5;
-
-				set_2d_mono_font_position (p_factor + PITCH_BAR_X9, +PITCH_BAR_Y9);
-
-				set_mono_font_rel_position (x_adjust, y_adjust_above_line);
-
-				print_mono_font_string (s);
-
-				set_2d_mono_font_position (-p_factor - PITCH_BAR_X9, +PITCH_BAR_Y9);
-
-				set_mono_font_rel_position (x_adjust, y_adjust_above_line);
-
-				print_mono_font_string (s);
-
-						break;
-					}
-			////////////////////////////////////////
-			case 9:
-			////////////////////////////////////////
-					{
-				draw_2d_half_thick_line (p_factor + PITCH_BAR_X1, +PITCH_BAR_Y1, p_factor + PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_BLUE);
-				draw_2d_half_thick_line (-p_factor - PITCH_BAR_X1, +PITCH_BAR_Y1, -p_factor - PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_BLUE);
-
-						break;
-					}
-			////////////////////////////////////////
-			case -1:
-			case -2:
-			case -3:
-			case -4:
-			case -5:
-			case -6:
-			case -7:
-			case -8:
-			////////////////////////////////////////
-			{
-				set_mono_font_colour (MFD_COLOUR_RED);
-				if (step_direction == -1)
-				{
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X1, +PITCH_BAR_Y1, p_factor + PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X1, +PITCH_BAR_Y1, -p_factor - PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR_RED);
-
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X3, +PITCH_BAR_Y3, p_factor + PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X3, +PITCH_BAR_Y3, -p_factor - PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR_RED);
-
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X5, +PITCH_BAR_Y5, p_factor + PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X5, +PITCH_BAR_Y5, -p_factor - PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_RED);
-
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X6, +PITCH_BAR_Y6, p_factor + PITCH_BAR_X8, -PITCH_BAR_Y8, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X6, +PITCH_BAR_Y6, -p_factor - PITCH_BAR_X8, -PITCH_BAR_Y8, MFD_COLOUR_RED);
-						}
-						else
-						{
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X1, -PITCH_BAR_Y1, -p_factor - PITCH_BAR_X2, -PITCH_BAR_Y2, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X1, -PITCH_BAR_Y1, p_factor + PITCH_BAR_X2, -PITCH_BAR_Y2, MFD_COLOUR_RED);
-
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X3, -PITCH_BAR_Y3, -p_factor - PITCH_BAR_X4, -PITCH_BAR_Y4, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X3, -PITCH_BAR_Y3, p_factor + PITCH_BAR_X4, -PITCH_BAR_Y4, MFD_COLOUR_RED);
-
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X5, -PITCH_BAR_Y5, -p_factor - PITCH_BAR_X6, -PITCH_BAR_Y6, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X5, -PITCH_BAR_Y5, p_factor + PITCH_BAR_X6, -PITCH_BAR_Y6, MFD_COLOUR_RED);
-
-					draw_2d_half_thick_line (-p_factor - PITCH_BAR_X6, -PITCH_BAR_Y6, -p_factor - PITCH_BAR_X8, +PITCH_BAR_Y8, MFD_COLOUR_RED);
-					draw_2d_half_thick_line (p_factor + PITCH_BAR_X6, -PITCH_BAR_Y6, p_factor + PITCH_BAR_X8, +PITCH_BAR_Y8, MFD_COLOUR_RED);
-					}
-
-				sprintf (s, "%d0", abs(int_pitch));
-
-				x_adjust = get_mono_font_string_width (s) * -0.5;
-
-				set_2d_mono_font_position (p_factor + PITCH_BAR_X10, +PITCH_BAR_Y10);
-
-				set_mono_font_rel_position (x_adjust, y_adjust_below_line);
-
-				print_mono_font_string (s);
-
-				set_2d_mono_font_position (-p_factor - PITCH_BAR_X10, +PITCH_BAR_Y10);
-
-				set_mono_font_rel_position (x_adjust, y_adjust_below_line);
-
-				print_mono_font_string (s);
-
-						break;
-					}
-			////////////////////////////////////////
-			case -9:
-			////////////////////////////////////////
-					{
-				draw_2d_half_thick_line (p_factor + PITCH_BAR_X1, +PITCH_BAR_Y1, p_factor + PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR_RED);
-				draw_2d_half_thick_line (-p_factor - PITCH_BAR_X1, +PITCH_BAR_Y1, -p_factor - PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR_RED);
-
-				draw_2d_half_thick_line (p_factor + PITCH_BAR_X3, +PITCH_BAR_Y3, p_factor + PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR_RED);
-				draw_2d_half_thick_line (-p_factor - PITCH_BAR_X3, +PITCH_BAR_Y3, -p_factor - PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR_RED);
-
-				draw_2d_half_thick_line (p_factor + PITCH_BAR_X5, +PITCH_BAR_Y5, p_factor + PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_RED);
-				draw_2d_half_thick_line (-p_factor - PITCH_BAR_X5, +PITCH_BAR_Y5, -p_factor - PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR_RED);
-
-						break;
-					}
+					break;
 				}
+				////////////////////////////////////////
+				case 9:
+				////////////////////////////////////////
+				{
+					draw_2d_line (+PITCH_BAR_X1, +PITCH_BAR_Y1, +PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
+					draw_2d_line (-PITCH_BAR_X1, +PITCH_BAR_Y1, -PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
 
-		int_pitch = limit_pitch (int_pitch + step_direction, &step_direction);
+					break;
+				}
+				////////////////////////////////////////
+				case -9:
+				////////////////////////////////////////
+				{
+					draw_2d_line (+PITCH_BAR_X1, +PITCH_BAR_Y1, +PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR1);
+					draw_2d_line (-PITCH_BAR_X1, +PITCH_BAR_Y1, -PITCH_BAR_X2, +PITCH_BAR_Y2, MFD_COLOUR1);
 
-		x -= x_10_deg_step;
-		y -= y_10_deg_step;
+					draw_2d_line (+PITCH_BAR_X3, +PITCH_BAR_Y3, +PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR1);
+					draw_2d_line (-PITCH_BAR_X3, +PITCH_BAR_Y3, -PITCH_BAR_X4, +PITCH_BAR_Y4, MFD_COLOUR1);
+
+					draw_2d_line (+PITCH_BAR_X5, +PITCH_BAR_Y5, +PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
+					draw_2d_line (-PITCH_BAR_X5, +PITCH_BAR_Y5, -PITCH_BAR_X6, +PITCH_BAR_Y6, MFD_COLOUR1);
+
+					break;
+				}
+			}
+
+			int_pitch = limit_pitch (int_pitch + step_direction, &step_direction);
+
+			x -= x_10_deg_step;
+			y -= y_10_deg_step;
+		}
 	}
 
 	//
 	// restore 2D environment
 	//
 
-	set_mono_font_colour (MFD_COLOUR1);
-
 	reset_2d_instance (mfd_env);
-
-	// centre datum
-
-	draw_2d_half_thick_line (-0.25, pitch_ladder_datum_position, -0.08, pitch_ladder_datum_position, MFD_COLOUR_YELLOW);
-	draw_2d_half_thick_line ( 0.25, pitch_ladder_datum_position,  0.08, pitch_ladder_datum_position, MFD_COLOUR_YELLOW);
-
-	draw_2d_half_thick_line (-0.08, pitch_ladder_datum_position, -0.04, pitch_ladder_datum_position - 0.08, MFD_COLOUR_YELLOW);
-	draw_2d_half_thick_line ( 0.08, pitch_ladder_datum_position,  0.04, pitch_ladder_datum_position - 0.08, MFD_COLOUR_YELLOW);
-
-	draw_2d_half_thick_line (0.0, pitch_ladder_datum_position, -0.04, pitch_ladder_datum_position - 0.08, MFD_COLOUR_YELLOW);
-	draw_2d_half_thick_line (0.0, pitch_ladder_datum_position,  0.04, pitch_ladder_datum_position - 0.08, MFD_COLOUR_YELLOW);
 
 	set_2d_window (mfd_env, MFD_WINDOW_X_MIN, MFD_WINDOW_Y_MIN, MFD_WINDOW_X_MAX, MFD_WINDOW_Y_MAX);
 
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-			}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void draw_sideslip(void)
-			{
-	static float last_turn_rate = 0.0;
-	const float slip_line_pos = -0.95;
-	const float scale = 0.28;
-	const float slot_scale = 0.035;
-	const float turn_rate_scale_bottom = -0.85;
-	const float turn_rate_scale_top = turn_rate_scale_bottom + 0.07;
+//	draw_2d_mono_sprite (main_horizon_mask, x_centre, 0.41 + PITCH_DATUM_Y, MFD_BACKGROUND_COLOUR);
 
-	float slip = bound(current_flight_dynamics->velocity_x.value, -20.0, 20.0) / 20.0;
-	float turn_rate = bound(deg(current_flight_dynamics->angular_heading_velocity.value) / 30.0, -1.0, 1.0);
-	float use_turn_rate = 0.1 * turn_rate + 0.9 * last_turn_rate;
-	last_turn_rate = turn_rate;
+	// pitch scale
+	{
+		float
+			current_y,
+			y_fine_height = 0.24,    // -10 to 10 degrees
+			y_coarse_height = 0.12,  // above 10 and below 10
+			y_fine_step = y_fine_height / 4,
+			y_coarse_step = y_coarse_height / 2,
+			x_end = -0.41,
+			x_half_tick = x_end - 0.02,
+			x_tick = x_end - 0.04;
 
-	// slip ball
-	draw_2d_half_thick_line(-scale, slip_line_pos, scale, slip_line_pos, MFD_COLOUR1);
-	draw_2d_half_thick_line(-slot_scale, slip_line_pos, -slot_scale, slip_line_pos + 2 * slot_scale, MFD_COLOUR1);
-	draw_2d_half_thick_line( slot_scale, slip_line_pos,  slot_scale, slip_line_pos + 2 * slot_scale, MFD_COLOUR1);
+		int i;
 
-	draw_2d_mono_sprite(large_tsd_waypoint_marker, slip * scale, slip_line_pos + slot_scale, MFD_COLOUR1);
+		float x_adjust, y_adjust;
+		char buffer[8];
 
-	// turn rate
-	draw_2d_line(- scale, turn_rate_scale_bottom, -scale, turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line(-(scale * 5.0 / 7.0), turn_rate_scale_bottom, -(scale * 5.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line(-(scale * 3.0 / 7.0), turn_rate_scale_bottom, -(scale * 3.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line(-(scale * 1.0 / 7.0), turn_rate_scale_bottom, -(scale * 1.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line(  scale, turn_rate_scale_bottom,  scale, turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line( (scale * 5.0 / 7.0), turn_rate_scale_bottom,  (scale * 5.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line( (scale * 3.0 / 7.0), turn_rate_scale_bottom,  (scale * 3.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_line( (scale * 1.0 / 7.0), turn_rate_scale_bottom,  (scale * 1.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
+		set_mono_font_type (MONO_FONT_TYPE_5X7);
+		y_adjust = -2.0;
 
-	draw_2d_mono_sprite(large_tsd_waypoint_marker, -use_turn_rate * scale, turn_rate_scale_bottom + 0.025, MFD_COLOUR1);
+		current_y = y_centre + y_coarse_height + y_fine_height + y_coarse_step;
+		for (i = 3; i >= 1; i--)
+		{
+			current_y -= y_coarse_step;
+			draw_2d_line(x_tick, current_y, x_end, current_y, MFD_COLOUR1);
 
-	draw_2d_mono_sprite(turn_rate_hat, 0, turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_mono_sprite(turn_rate_hat, (scale * 4.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-	draw_2d_mono_sprite(turn_rate_hat, (scale * -4.0 / 7.0), turn_rate_scale_top, MFD_COLOUR1);
-			}
+			sprintf(buffer, "%d", i);
+			x_adjust = get_mono_font_string_width(buffer) + 1;
+
+			set_2d_mono_font_position (x_tick, current_y);
+			set_mono_font_rel_position (-x_adjust, y_adjust);
+			print_mono_font_string(buffer);
+		}
+
+		for (i = 0; i < 7; i++)
+		{
+			current_y -= y_fine_step;
+			if ((i % 2) != 0)
+				draw_2d_line(x_tick, current_y, x_end, current_y, MFD_COLOUR1);
+			else
+				draw_2d_line(x_half_tick, current_y, x_end, current_y, MFD_COLOUR1);
+		}
+
+		sprintf(buffer, "%d", 0);
+		x_adjust = get_mono_font_string_width(buffer) + 1;
+
+		set_2d_mono_font_position (x_tick, y_centre);
+		set_mono_font_rel_position (-x_adjust, y_adjust);
+		print_mono_font_string(buffer);
+
+		current_y -= y_fine_step;
+		for (i = -1; i >= -3; i--)
+		{
+			draw_2d_line(x_tick, current_y, x_end, current_y, MFD_COLOUR1);
+
+			sprintf(buffer, "%d", i);
+			x_adjust = get_mono_font_string_width(buffer) + 1;
+
+			set_2d_mono_font_position (x_tick, current_y);
+			set_mono_font_rel_position (-x_adjust, y_adjust);
+			print_mono_font_string(buffer);
+			current_y -= y_coarse_step;
+		}
+
+		// draw marker
+
+		{
+			float
+				pitch_y;
+
+			pitch_y = bound(deg(pitch), -10.0, 10.0) * y_fine_height * 0.1;
+			if (pitch < rad(-10))
+				pitch_y += bound(deg(pitch) + 10.0, -20.0, 0.0) * y_coarse_height * 0.05;
+			else if (pitch > rad(10))
+				pitch_y += bound(deg(pitch) - 10.0, 0.0, 20.0) * y_coarse_height * 0.05;
+
+			pitch_y += y_centre;
+
+			draw_2d_mono_sprite(large_right_carat, x_end, pitch_y, MFD_COLOUR1);
+		}
+	}
+
+
+	//
+	// roll
+	//
+
+	{
+		set_2d_instance_position (mfd_env, PITCH_DATUM_X, PITCH_DATUM_Y - size);
+
+		set_2d_instance_rotation (mfd_env, rad (0.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+
+		set_2d_instance_rotation (mfd_env, rad (10.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
+		set_2d_instance_rotation (mfd_env, rad (-10.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
+
+		set_2d_instance_rotation (mfd_env, rad (20.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
+		set_2d_instance_rotation (mfd_env, rad (-20.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.025, MFD_COLOUR1);
+
+		set_2d_instance_rotation (mfd_env, rad (30.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+		set_2d_instance_rotation (mfd_env, rad (-30.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+
+		set_2d_instance_rotation (mfd_env, rad (45.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+		set_2d_instance_rotation (mfd_env, rad (-45.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+
+		set_2d_instance_rotation (mfd_env, rad (60.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+		set_2d_instance_rotation (mfd_env, rad (-60.0));
+		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
+
+		set_2d_instance_rotation (mfd_env, bound (roll, rad(-60.0), rad(60.0)));
+		draw_2d_filled_triangle(0.0, -size, -0.035, -size + 0.075, 0.035, -size + 0.075, MFD_COLOUR4);
+	}
+
+	//
+	// restore 2D environment
+	//
+
+	reset_2d_instance (mfd_env);
+	set_2d_window (mfd_env, MFD_WINDOW_X_MIN, MFD_WINDOW_Y_MIN, MFD_WINDOW_X_MAX, MFD_WINDOW_Y_MAX);
+	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
+
+	// datum
+	draw_2d_line(x_centre, 0.0, x_centre + 0.05, -0.05, MFD_COLOUR6);
+	draw_2d_line(x_centre, 0.0, x_centre - 0.05, -0.05, MFD_COLOUR6);
+
+	draw_2d_line(x_centre + 0.05, -0.05, x_centre + 0.10, 0.0, MFD_COLOUR6);
+	draw_2d_line(x_centre - 0.05, -0.05, x_centre - 0.10, 0.0, MFD_COLOUR6);
+
+	draw_2d_line(x_centre + 0.10, 0.0, x_centre + 0.20, 0.0, MFD_COLOUR6);
+	draw_2d_line(x_centre - 0.10, 0.0, x_centre - 0.20, 0.0, MFD_COLOUR6);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6411,7 +6051,6 @@ static void draw_flight_display_mfd (void)
 
 	draw_pitch_ladder ();
 
-	draw_sideslip();
 
 //	draw_heading_scale (get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_HEADING), TRUE);
 
@@ -6429,8 +6068,6 @@ static void draw_flight_display_small_mfd (void)
 
 	draw_pitch_ladder ();
 
-	draw_sideslip();
-
 //	draw_heading_scale (get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_HEADING), TRUE);
 
 //	draw_airspeed_scale();
@@ -6445,11 +6082,8 @@ static void draw_flight_display_small_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-// COMPASS
+	// COMPASS
 	//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void draw_compass(float centre_y, float scale)
 	{
