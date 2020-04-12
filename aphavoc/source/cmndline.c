@@ -161,7 +161,10 @@ int
 	command_line_max_smoke_time								= 30,
 	command_line_smoke_optimization							= 1,
 	command_line_cloud_puffs								= 1, // Casm 20MAY2012
-	command_line_no_mission_complete_music					= FALSE,
+	command_line_mission_complete_music					= TRUE,
+	command_line_intro_music							= TRUE,
+	command_line_ingame_music							= TRUE,
+	command_line_action_music							= TRUE,
 	command_line_mouse_look										= MOUSELOOK_OFF,	// Retro 030317, 27Nov2004
 	command_line_mouse_look_speed								= 15,		// Retro 030317
 	command_line_min_fov											= 20,		// Retro 030318
@@ -234,6 +237,7 @@ int
 	command_line_reverse_pedal						= 0,	// Retro 17Jul2004
 	command_line_reverse_cyclic_x					= 0,	// /thealx/
 	command_line_reverse_cyclic_y					= 0,	// /thealx/
+	command_line_unbind_jbuttons					= 0,	// /thealx/
 	command_line_forcefeedback						= FALSE,	// /thealx/
 	command_line_external_trackir					= 0,	// Retro 31Oct2004
 	command_line_external_trackir_direction	= 0,	// Retro 31Jan2005
@@ -241,6 +245,7 @@ int
 	command_line_high_lod_hack						= 0,	// Retro 31Oct2004
 	command_line_eo_quality							= 2,	// /thealx/
 	command_line_TIR_6DOF							= 0,	// Retro 6Feb2005
+	command_line_TIR_idle							= 0,
 	command_line_mouse_tsd_target_select            = TRUE,
 	command_line_3d_cockpit							= 0,	// VJ 050101 3d cockpit mod
 	command_line_shared_mem_export					= 0,	// Retro 14Aug2006
@@ -292,6 +297,7 @@ float
 	command_line_dynamics_tail_rotor_drag					= 1.0,
 	command_line_dynamics_cyclic_dead_zone					= 0.0,
 	command_line_dynamics_yaw_altitude_loss 				= 5.0,
+	command_line_dynamics_air_density						= 1.0,
 	command_line_collective_zone_1_limit					= 0.3,		// arneh 2007-01-14
 	command_line_collective_zone_2_limit					= 0.7,		// arneh 2007-01-14
 	command_line_collective_percentage_at_zone1					= 60.0,		// GCsDriver  08-12-2007
@@ -302,7 +308,7 @@ float
 	command_line_comms_resend_timeout						= 2.0,
 	command_line_comms_packet_resend_timer 				= 5.0,
 	command_line_city_block_approximation_range 			= 500.0,
-	command_line_user_invulnerable_time						= 1.0,
+	command_line_user_invulnerable_time						= 5.0,
 	command_line_object_lod_factor							= 1.0,
 	command_line_fog_of_war_maximum_value 					= DEFAULT_FOG_OF_WAR_MAXIMUM_VALUE,
 	command_line_chaff_effectiveness							= 0.5,
@@ -324,8 +330,8 @@ char
 	command_line_game_initialisation_phase_filename [128]		= "\0",
 	command_line_debug_log_name[100]									= "DEBUG.LOG",
 	command_line_ip_address[128]										= "\0",
-	command_line_primary_server_setting[128]						= "eech.dsl-komi.ru",  //VJ for werewolf 030403, default value changed 141107
-	command_line_secondary_server_setting[128]					= "",  //VJ for werewolf 030403, default value changed 141107
+	command_line_primary_server_setting[128]						= "eech.online",
+	command_line_secondary_server_setting[128]					= "",
 	command_line_server_log_filename [128]			= "\0";	// Jabberwock 031119 Server log
 
 

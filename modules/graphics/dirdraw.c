@@ -550,8 +550,6 @@ static void ddraw_flip_surface_export ( void )
 		case GUNSHIP_TYPE_HAVOC:
 		case GUNSHIP_TYPE_KA50:
 		case GUNSHIP_TYPE_HIND:
-			draw_one_mfd ( device, &d3d_export_mfd[0], command_line_export_mfd_single_pos[0], command_line_export_mfd_single_pos[1], command_line_export_mfd_single_pos[2], command_line_export_mfd_single_pos[3] );
-			break;
 		case GUNSHIP_TYPE_COMANCHE:
 		case GUNSHIP_TYPE_HOKUM:
 		case GUNSHIP_TYPE_APACHE:
@@ -623,13 +621,15 @@ static void set_window_size ( HWND hwnd, int width, int height, int d3d )
 	rc.right = width;
 	rc.bottom = height;
 
+	debug_log("Window size %d, %d, %d, %d", rc.left, rc.top, rc.right, rc.bottom);
 	AdjustWindowRectEx ( &rc, GetWindowStyle ( hwnd ), GetMenu ( hwnd ) != NULL, GetWindowExStyle ( hwnd ) );
 
 	rc.right += d3d_data.x[d3d] - rc.left;
-	rc.bottom += d3d_data.x[d3d] - rc.top;
+	rc.bottom += d3d_data.y[d3d] - rc.top;
 	rc.left = d3d_data.x[d3d];
 	rc.top = d3d_data.y[d3d];
 
+	debug_log("Window position %d, %d, %d, %d", rc.left, rc.top, rc.right, rc.bottom);
 	SetWindowPos ( hwnd, NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOACTIVATE );
 
 	if ( hwnd == application_window )

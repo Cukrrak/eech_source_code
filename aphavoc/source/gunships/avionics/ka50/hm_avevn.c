@@ -79,6 +79,15 @@ static void select_target_acquisition_system_off_event (event *ev)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+static void select_target_acquisition_system_flir_event (event *ev)			//  Javelin  7/19
+{
+	select_ka50_target_acquisition_system (TARGET_ACQUISITION_SYSTEM_FLIR);		
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 static void select_target_acquisition_system_llltv_event (event *ev)
 {
 	select_ka50_target_acquisition_system (TARGET_ACQUISITION_SYSTEM_LLLTV);
@@ -228,30 +237,6 @@ static void toggle_night_vision_system_event (event *ev)
 	else
 	{
 		play_client_server_cpg_message (get_gunship_entity (), 0.5, 1.0, SPEECH_CATEGORY_CPG_SYSTEMS, 1.0, SPEECH_CPG_NIGHT_VISION_GOGGLES_DAMAGED);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void virtual_cockpit_track_target_event (event *ev)
-{
-	ASSERT (ev);
-
-	if ((ev->key == DIK_1) || (get_view_mode () != VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET))
-	{
-		if (set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET))
-		{
-			set_ka50_lock_target (TRUE);
-		}
-	}
-	else
-	{
-		if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET)
-		{
-			select_padlock_view_event (PADLOCK_MODE_NONE);
-		}
 	}
 }
 
@@ -547,9 +532,11 @@ void set_ka50_avionics_events (void)
 
 	set_event (DIK_DELETE, MODIFIER_LEFT_SHIFT, KEY_STATE_DOWN, select_target_acquisition_system_off_event);
 
-	set_event (DIK_DELETE, MODIFIER_NONE, KEY_STATE_DOWN, select_target_acquisition_system_llltv_event);
+	set_event (DIK_DELETE, MODIFIER_NONE, KEY_STATE_DOWN, select_target_acquisition_system_flir_event); //  Javelin  7/19
 
-	set_event (DIK_PRIOR, MODIFIER_NONE, KEY_STATE_DOWN, select_target_acquisition_system_hms_event);
+	set_event (DIK_END,    MODIFIER_NONE, KEY_STATE_DOWN, select_target_acquisition_system_llltv_event); //  Javelin  7/19
+
+	set_event (DIK_PRIOR,  MODIFIER_NONE, KEY_STATE_DOWN, select_target_acquisition_system_hms_event);
 
 	//
 	// repeated for programmable joysticks ...
@@ -557,7 +544,9 @@ void set_ka50_avionics_events (void)
 
 	set_event (DIK_3, MODIFIER_LEFT_SHIFT, KEY_STATE_DOWN, select_target_acquisition_system_hms_event);
 
-	set_event (DIK_4, MODIFIER_LEFT_SHIFT, KEY_STATE_DOWN, select_target_acquisition_system_llltv_event);
+	set_event (DIK_4, MODIFIER_LEFT_SHIFT, KEY_STATE_DOWN, select_target_acquisition_system_flir_event); //  Javelin  7/19
+
+	set_event (DIK_5, MODIFIER_LEFT_SHIFT, KEY_STATE_DOWN, select_target_acquisition_system_llltv_event); //  Javelin  7/19
 
 	//
 	// target acquisition system control
@@ -650,15 +639,6 @@ void set_ka50_avionics_events (void)
 	set_event (DIK_0, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_mission_mfd_event);
 
 	set_event (DIK_C, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, toggle_ka50_canopy_doors);
-
-	////////////////////////////////////////
-	//
-	// JOYSTICK EVENTS
-	//
-	////////////////////////////////////////
-
-	set_event ((JOYSTICK_BUTTON + 4), MODIFIER_NONE, KEY_STATE_DOWN, virtual_cockpit_track_target_event);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -68,6 +68,7 @@ enum KA50_MFD_MODES
 {
 	KA50_MFD_MODE_OFF,
 	KA50_MFD_MODE_DAMAGED,
+	KA50_MFD_MODE_FLIR,			//  Javelin 7/19
 	KA50_MFD_MODE_LLLTV,
 	KA50_MFD_MODE_TSD,
 	KA50_MFD_MODE_ASE,
@@ -108,7 +109,19 @@ extern void deinitialise_ka50_mfd (void);
 
 extern void draw_ka50_mfd (void);
 
-extern void set_ka50_text_display_text (char *s1, char *s2, char *s3);
+extern void update_ka50_ekran_display (void);
+
+extern void set_ka50_text_display_text (char *s1, char *s2, char *s3, char *s4, char *s5);
+
+extern void update_ka50_cannon_rounds_display (void);
+
+extern void set_ka50_cannon_rounds_display_text (char *c1);
+
+extern void update_ka50_weapon_rounds_display (void);
+
+extern void set_ka50_weapon_rounds_display_text (char *w1);
+
+extern void update_ka50_weapon_name_display (void);
 
 extern void draw_ka50_full_screen_display (void);
 
@@ -136,7 +149,7 @@ extern void toggle_ka50_ase_auto_page (void);
 
 extern void auto_page_ka50_ase_mfd (void);
 
-extern void select_ka50_eo_mfd (void);
+extern void select_ka50_eo_mfd (target_acquisition_systems system);	//  Javelin  7/19
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

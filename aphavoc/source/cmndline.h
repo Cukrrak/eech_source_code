@@ -137,7 +137,10 @@ extern int
 	command_line_max_smoke_time,								// arneh 2007-07-10 // updated /thealx/
 	command_line_smoke_optimization,
 	command_line_cloud_puffs,								// Casm 20MAY2012
-	command_line_no_mission_complete_music,
+	command_line_mission_complete_music,
+	command_line_intro_music,
+	command_line_ingame_music,
+	command_line_action_music,
 	command_line_mouse_look,									// Retro 030317
 	command_line_mouse_look_speed,							// Retro 030317
 	command_line_min_fov,										// Retro 030318
@@ -210,6 +213,7 @@ extern int
 	command_line_reverse_pedal,									// Retro 17Jul2004
 	command_line_reverse_cyclic_x,								// /thealx/
 	command_line_reverse_cyclic_y,								// /thealx/
+	command_line_unbind_jbuttons,								// /thealx/
 	command_line_forcefeedback,									// /thealx/
 	command_line_external_trackir,								// Retro 31Oct2004
 	command_line_external_trackir_direction,					// Retro 31Jan2005 (spooky, eh ?)
@@ -217,6 +221,7 @@ extern int
 	command_line_high_lod_hack,									// Retro 31Oct2004
 	command_line_eo_quality,									// /thealx/
 	command_line_TIR_6DOF,										// Retro 6Feb2005
+	command_line_TIR_idle,
 	command_line_mouse_tsd_target_select,                       // arneh, feb 2008
 	command_line_3d_cockpit,								//VJ 050101 3d cpckpit mod
 	command_line_shared_mem_export,								// Retro 14Aug2006
@@ -270,6 +275,7 @@ extern float
 	command_line_dynamics_tail_rotor_drag,
 	command_line_dynamics_cyclic_dead_zone,
 	command_line_dynamics_yaw_altitude_loss,
+	command_line_dynamics_air_density,
 	command_line_ffb_dynamics,								// /thealx/
 	command_line_ffb_vibrations,							// /thealx/
 	command_line_ffb_recoil,								// /thealx/

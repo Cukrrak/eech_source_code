@@ -117,7 +117,7 @@ static void update_air_density_dynamics (void);
 
 static void update_acceleration_dynamics (void);
 
-static void update_power_dynamics (void);
+//  static void update_power_dynamics (void);	Duplicate Statement Javelin 6/18
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,12 +390,12 @@ void set_dynamics_defaults (entity *en)
 
 	// main rotor characteristics
 
-	current_flight_dynamics->main_rotor_diameter.value = 10.0;
+	current_flight_dynamics->main_rotor_diameter.value = 14.63;
 	current_flight_dynamics->main_rotor_area.value = PI * pow ((current_flight_dynamics->main_rotor_diameter.value / 2.0), 2);
 
 	current_flight_dynamics->main_rotor_induced_air.value = 0.0;
 	current_flight_dynamics->main_rotor_induced_air.min = 0.0;
-	current_flight_dynamics->main_rotor_induced_air.max = 56.0;
+	current_flight_dynamics->main_rotor_induced_air.max = 26.0;
 
 	current_flight_dynamics->main_rotor_induced_vortex_air_flow.min = knots_to_metres_per_second (10.0); // actually used for the max velocity for vortex ring to occur
 
@@ -430,7 +430,7 @@ void set_dynamics_defaults (entity *en)
 
 	// tail rotor characteristics
 
-	current_flight_dynamics->tail_rotor_diameter.value = 1.45;
+	current_flight_dynamics->tail_rotor_diameter.value = 2.79;
 
 	current_flight_dynamics->tail_rotor_rpm.value = 0.0;
 	current_flight_dynamics->tail_rotor_rpm.min = 0.0;
@@ -519,12 +519,12 @@ void set_dynamics_defaults (entity *en)
 	// mass
 
 	current_flight_dynamics->mass.value = 0.0;
-	current_flight_dynamics->mass.min = 1218.0;
+	current_flight_dynamics->mass.min = 4218.0;
 	current_flight_dynamics->mass.max = 0.0;
 
-	current_flight_dynamics->fuel_weight.value = 321.0;
+	current_flight_dynamics->fuel_weight.value = 822.0;
 	current_flight_dynamics->fuel_weight.min = 0.0;
-	current_flight_dynamics->fuel_weight.max = 321.0;
+	current_flight_dynamics->fuel_weight.max = 822.0;
 	current_flight_dynamics->fuel_weight.delta = 0.0950; // kg/s
 
 	// cog
@@ -628,7 +628,7 @@ void update_kiowa_advanced_dynamics (void)
 	update_main_rotor_thrust_dynamics ();
 	update_tail_rotor_thrust_dynamics ();
 
-	update_power_dynamics ();
+	//  update_power_dynamics ();	Duplicate Statement Javelin 6/18
 
 	update_air_density_dynamics ();
 
@@ -1175,7 +1175,7 @@ void update_main_rotor_thrust_dynamics (void)
 			(x - x_min) / (x_max - x_min));
 
 		current_flight_dynamics->main_rotor_induced_air.value *=
-			pow(current_flight_dynamics->air_density.value, current_flight_dynamics->air_density.modifier);
+			pow(current_flight_dynamics->air_density.value, current_flight_dynamics->air_density.modifier * command_line_dynamics_air_density);
 	}
 
 	current_flight_dynamics->main_rotor_thrust.value =
@@ -1340,7 +1340,8 @@ void update_attitude_dynamics (void)
 	//////////////////////////////////////////////////////////
 	// safey check
 	//////////////////////////////////////////////////////////
-	if (motion_vector_magnitude > 1000 || current_flight_dynamics->angular_pitch_velocity.value > 50 || current_flight_dynamics->angular_roll_velocity.value > 50 || current_flight_dynamics->angular_heading_velocity.value > 50)	{
+	if (motion_vector_magnitude > 1000 || current_flight_dynamics->angular_pitch_velocity.value > 50 || current_flight_dynamics->angular_roll_velocity.value > 50 || current_flight_dynamics->angular_heading_velocity.value > 50)
+	{
 
 		debug_log ("DYNAMICS: UNSTABLE motion magnitude %f", motion_vector_magnitude);
 
@@ -2756,8 +2757,8 @@ void update_power_dynamics (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void update_air_density_dynamics (void)
-{
-	current_flight_dynamics->air_density.value = get_air_density(current_flight_dynamics->altitude.value) / 1.3;
+{			//  Altered from /1.3 to /1.0 by Javelin 5/18
+	current_flight_dynamics->air_density.value = get_air_density(current_flight_dynamics->altitude.value) / 1.0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2774,7 +2775,7 @@ void update_acceleration_dynamics (void)
 
 	// calculate total lift provided by main rotor
 
-	current_flight_dynamics->lift.value = current_flight_dynamics->power_surplus.value * 50;
+	current_flight_dynamics->lift.value = current_flight_dynamics->power_surplus.value * 50;  
 
 	current_flight_dynamics->lift.value /= current_flight_dynamics->mass.value;
 

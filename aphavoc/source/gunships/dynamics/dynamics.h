@@ -568,6 +568,8 @@ extern int get_current_flight_dynamics_auto_pilot (void);
 
 extern void flight_dynamics_toggle_auto_pilot (event *ev);
 
+extern void flight_dynamics_toggle_bobup (event *ev);   //  Added by Javelin 5/18
+
 extern void set_current_flight_dynamics_rotor_brake (int flag);
 
 extern void set_current_flight_dynamics_wheel_brake (int flag);
@@ -600,6 +602,8 @@ extern void flight_dynamics_decrease_altitude_lock (event *ev);
 
 extern void flight_dynamics_increase_altitude_lock (event *ev);
 
+extern void flight_dynamics_toggle_autopilot_heading (event *ev);
+
 extern void create_rotor_vibration(float force);
 extern void create_advanced_rotor_vibration(float force, int damaged);
 
@@ -621,7 +625,9 @@ extern void debug_dynamics_event4(event* ev);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern int
-	flight_dynamics_lock_position_flag;
+	flight_dynamics_lock_position_flag,
+	flight_dynamics_autopilot_heading,
+	flight_dynamics_autopilot_heading_active;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -651,6 +657,8 @@ typedef enum DYNAMICS_HOVER_HOLD_TYPES dynamics_hover_hold_types;
 
 #define set_current_flight_dynamics_lock_position(FLAG) (flight_dynamics_lock_position_flag = (FLAG))
 
+#define toggle_flight_dynamics_autopilot_heading() (flight_dynamics_autopilot_heading = !flight_dynamics_autopilot_heading)
+
 #define get_current_flight_dynamics_wheel_brake() (current_flight_dynamics->wheel_brake)
 
 #define get_current_flight_dynamics_rotor_brake() (current_flight_dynamics->rotor_brake)
@@ -662,6 +670,10 @@ typedef enum DYNAMICS_HOVER_HOLD_TYPES dynamics_hover_hold_types;
 #define get_current_flight_dynamics_altitude_lock() ((current_flight_dynamics->auto_hover == HOVER_HOLD_ALTITUDE_LOCK) ? TRUE : FALSE)
 
 #define get_current_flight_dynamics_overtorque() ((!get_current_flight_dynamics_auto_pilot ()) && (current_flight_dynamics->left_overtorque | current_flight_dynamics->right_overtorque))
+
+#define get_current_flight_dynamics_leng_overtorque() ((!get_current_flight_dynamics_auto_pilot ()) && (current_flight_dynamics->left_overtorque))
+
+#define get_current_flight_dynamics_reng_overtorque() ((!get_current_flight_dynamics_auto_pilot ()) && (current_flight_dynamics->right_overtorque))
 
 #define get_current_flight_dynamics_low_rotor_rpm() (((!get_current_flight_dynamics_auto_pilot ()) && (current_flight_dynamics->main_rotor_rpm.value < 90.0)) ? TRUE : FALSE)
 

@@ -346,7 +346,7 @@ void set_dynamics_defaults (entity *en)
 	current_flight_dynamics->position.y = position.y;
 	current_flight_dynamics->position.z = position.z;
 
-	// attitutde
+	// attitude
 
 	get_identity_matrix3x3 (current_flight_dynamics->attitude);
 
@@ -523,9 +523,9 @@ void set_dynamics_defaults (entity *en)
 	current_flight_dynamics->mass.min = 7480.0;
 	current_flight_dynamics->mass.max = 0.0;
 
-	current_flight_dynamics->fuel_weight.value = 1484.0;
+	current_flight_dynamics->fuel_weight.value = 1450.0;
 	current_flight_dynamics->fuel_weight.min = 0.0;
-	current_flight_dynamics->fuel_weight.max = 1484.0;
+	current_flight_dynamics->fuel_weight.max = 1450.0;
 	current_flight_dynamics->fuel_weight.delta = 0.1136; // kg/s
 
 	// cog
@@ -1182,7 +1182,7 @@ void update_main_rotor_thrust_dynamics (void)
 			(x - x_min) / (x_max - x_min));
 
 		current_flight_dynamics->main_rotor_induced_air.value *=
-			pow(current_flight_dynamics->air_density.value, current_flight_dynamics->air_density.modifier);
+			pow(current_flight_dynamics->air_density.value, current_flight_dynamics->air_density.modifier * command_line_dynamics_air_density);
 	}
 
 	current_flight_dynamics->main_rotor_thrust.value =
@@ -2623,8 +2623,8 @@ void update_power_dynamics (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void update_air_density_dynamics (void)
-{
-	current_flight_dynamics->air_density.value = get_air_density(current_flight_dynamics->altitude.value) / 1.3;
+{			//  Altered from /1.3 to /1.0 by Javelin 5/18
+	current_flight_dynamics->air_density.value = get_air_density(current_flight_dynamics->altitude.value) / 1.0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -215,7 +215,7 @@ void set_dynamics_defaults (entity *en)
 	current_flight_dynamics->right_engine_rpm.modifier = 1.0;
 	current_flight_dynamics->right_engine_torque.modifier = 1.0;
 	current_flight_dynamics->right_engine_temp.modifier = 1.0;
-	current_flight_dynamics->main_rotor_number_of_blades.modifier = 1.0;
+	current_flight_dynamics->main_rotor_number_of_blades.modifier = 1.5;
 	current_flight_dynamics->main_rotor_induced_air.modifier = 0.7;
 	current_flight_dynamics->main_rotor_induced_vortex_air_flow.modifier = 0.3;
 	current_flight_dynamics->main_rotor_diameter.modifier = 1.0;
@@ -391,7 +391,7 @@ void set_dynamics_defaults (entity *en)
 
 	// main rotor characteristics
 
-	current_flight_dynamics->main_rotor_diameter.value = 14.63;
+	current_flight_dynamics->main_rotor_diameter.value = 14.50;
 	current_flight_dynamics->main_rotor_area.value = PI * pow ((current_flight_dynamics->main_rotor_diameter.value / 2.0), 2);
 
 	current_flight_dynamics->main_rotor_induced_air.value = 0.0;
@@ -457,7 +457,7 @@ void set_dynamics_defaults (entity *en)
 	current_flight_dynamics->tail_rotor_induced_air.min = -1.0;
 	current_flight_dynamics->tail_rotor_induced_air.max = 1.0;
 
-	current_flight_dynamics->tail_boom_length.value = 10.59; // actually the wheelbase (but close enough)
+	current_flight_dynamics->tail_boom_length.value = 9.17; 
 
 	current_flight_dynamics->cross_coupling_effect.value = 0.0;
 
@@ -482,7 +482,7 @@ void set_dynamics_defaults (entity *en)
 	current_flight_dynamics->velocity_z.max = knots_to_metres_per_second (197);
 
 	current_flight_dynamics->power_avaliable.min = 0.0;
-	current_flight_dynamics->power_avaliable.max = 2230.0;
+	current_flight_dynamics->power_avaliable.max = 2400.0;
 
 	current_flight_dynamics->lift.min = -10.0;
 	current_flight_dynamics->lift.max = 20.0;
@@ -513,14 +513,14 @@ void set_dynamics_defaults (entity *en)
 
 	// inertia
 
-	current_flight_dynamics->heading_inertia.value = 5.0;
-	current_flight_dynamics->pitch_inertia.value = 40.0;
-	current_flight_dynamics->roll_inertia.value = 30.0;
+	current_flight_dynamics->heading_inertia.value = 31.7;
+	current_flight_dynamics->pitch_inertia.value = 63.4;
+	current_flight_dynamics->roll_inertia.value = 44.3;
 
 	// mass
 
 	current_flight_dynamics->mass.value = 0.0;
-	current_flight_dynamics->mass.min = 7480.0;
+	current_flight_dynamics->mass.min = 7700.0;
 	current_flight_dynamics->mass.max = 0.0;
 
 	current_flight_dynamics->fuel_weight.value = 1484.0;
@@ -1183,7 +1183,7 @@ void update_main_rotor_thrust_dynamics (void)
 			(x - x_min) / (x_max - x_min));
 
 		current_flight_dynamics->main_rotor_induced_air.value *=
-			pow(current_flight_dynamics->air_density.value, current_flight_dynamics->air_density.modifier);
+			pow(current_flight_dynamics->air_density.value, current_flight_dynamics->air_density.modifier * command_line_dynamics_air_density);
 	}
 
 	current_flight_dynamics->main_rotor_thrust.value =
@@ -2621,8 +2621,8 @@ void update_power_dynamics (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void update_air_density_dynamics (void)
-{
-	current_flight_dynamics->air_density.value = get_air_density(current_flight_dynamics->altitude.value) / 1.3;
+{			//  Altered from /1.3 to /1.0 by Javelin 5/18
+	current_flight_dynamics->air_density.value = get_air_density(current_flight_dynamics->altitude.value) / 1.0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

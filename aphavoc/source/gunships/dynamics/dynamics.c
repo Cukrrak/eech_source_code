@@ -1,3 +1,4 @@
+
 // 	 Enemy Engaged RAH-66 Comanche Versus KA-52 Hokum
 // 	 Copyright (C) 2000 Empire Interactive (Europe) Ltd,
 // 	 677 High Road, North Finchley, London N12 0DA
@@ -95,7 +96,12 @@ dynamics_type
 	*current_flight_dynamics;
 
 int
-	flight_dynamics_lock_position_flag;
+	flight_dynamics_lock_position_flag,
+	flight_dynamics_autopilot_heading,
+	flight_dynamics_autopilot_heading_active;
+
+static int
+	bobup_status = 1.0;					//   Added by Javelin 5/18
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +184,6 @@ static void update_throttle_dynamics_inputs ();
 
 void initialise_flight_dynamics (entity *en)
 {
-
 	ASSERT (en);
 
 	#if DEBUG_DYNAMICS
@@ -194,6 +199,8 @@ void initialise_flight_dynamics (entity *en)
 	}
 
 	flight_dynamics_lock_position_flag = FALSE;
+
+	flight_dynamics_autopilot_heading = FALSE;
 
 	if (get_global_dynamics_model () == DYNAMICS_MODEL_NONE)
 	{
@@ -224,64 +231,50 @@ void initialise_flight_dynamics (entity *en)
 					initialise_apache_advanced_dynamics (en);
 				else
 					initialise_advanced_dynamics (en);
-
 				break;
             }
 
             case GUNSHIP_TYPE_COMANCHE:
             {
-
                initialise_comanche_advanced_dynamics (en);
-
                break;
             }
 
             case GUNSHIP_TYPE_HAVOC:
             {
-
                initialise_havoc_advanced_dynamics (en);
-
                break;
             }
 
             case GUNSHIP_TYPE_HOKUM:
             {
-
                initialise_hokum_advanced_dynamics (en);
-
                break;
             }
 ////Moje 030518 Start
             case GUNSHIP_TYPE_BLACKHAWK:
             {
-
                initialise_blackhawk_advanced_dynamics (en);
-
                break;
             }
 ////Moje 030518 End
 ////Moje 030612 Start
             case GUNSHIP_TYPE_HIND:
             {
-
                initialise_hind_advanced_dynamics (en);
-
                break;
             }
 ////Moje 020612 End
 ////Moje 030816 Start
             case GUNSHIP_TYPE_AH64A:
             {
-
                initialise_ah64a_advanced_dynamics (en);
-
                break;
             }
 
             case GUNSHIP_TYPE_KA50:
             {
                initialise_ka50_advanced_dynamics (en);
-
                break;
             }
 ////Moje 020816 End
@@ -289,14 +282,12 @@ void initialise_flight_dynamics (entity *en)
             case GUNSHIP_TYPE_VIPER:
             {
                initialise_viper_advanced_dynamics (en);
-
                break;
             }
 
             case GUNSHIP_TYPE_KIOWA:
             {
                initialise_kiowa_advanced_dynamics (en);
-
                break;
             }
          }
@@ -337,6 +328,8 @@ void initialise_flight_dynamics (entity *en)
 			set_client_server_entity_int_value (get_gunship_entity (), INT_TYPE_AUTO_PILOT, TRUE);
 
 			set_current_flight_dynamics_auto_hover (HOVER_HOLD_NONE);
+
+			bobup_status = 1.0;  //  Added by Javelin 5/18
 
 			add_flight_path_action (current_flight_dynamics->position.x, current_flight_dynamics->position.z, FLIGHT_PATH_ACTION_AUTOPILOT_NAVIGATING);
 
@@ -472,13 +465,12 @@ void initialise_flight_dynamics (entity *en)
 	debug_watch ("barometric altitude 				= %f", MT_FLOAT, &current_flight_dynamics->barometric_altitude.value);
 	debug_watch ("air_density       					= %f", MT_FLOAT, &current_flight_dynamics->air_density.value);
 
-	debug_watch ("power avaliable  		 		= %f", MT_FLOAT, &current_flight_dynamics->power_avaliable.value);
+	debug_watch ("power available  		 		= %f", MT_FLOAT, &current_flight_dynamics->power_avaliable.value);
 	debug_watch ("power required    				= %f", MT_FLOAT, &current_flight_dynamics->power_required.value);
 	debug_watch ("power induced     				= %f", MT_FLOAT, &current_flight_dynamics->power_induced.value);
 	debug_watch ("power profile     				= %f", MT_FLOAT, &current_flight_dynamics->power_profile.value);
 	debug_watch ("power parasite    				= %f", MT_FLOAT, &current_flight_dynamics->power_parasite.value);
 	debug_watch ("power surplus     				= %f", MT_FLOAT, &current_flight_dynamics->power_surplus.value);
-
 #endif
 }
 
@@ -829,9 +821,6 @@ void set_dynamics_entity_values (entity *en)
 	float
 		air_density;
 
-	int
-		no_right_engine;
-
 	ASSERT (current_flight_dynamics);
 
 	if (!en)
@@ -855,8 +844,6 @@ void set_dynamics_entity_values (entity *en)
 	current_flight_dynamics->main_rotor_idle_rpm = 70.0;
 	current_flight_dynamics->main_rotor_max_rpm = 100.0;
 	current_flight_dynamics->engine_start_timer = 0.0;
-
-	no_right_engine = get_global_gunship_type() == GUNSHIP_TYPE_KIOWA;
 
 	if (get_global_gunship_type() == GUNSHIP_TYPE_HIND)
 	{
@@ -887,7 +874,7 @@ void set_dynamics_entity_values (entity *en)
 		current_flight_dynamics->left_engine_torque.value = 0.0;
 		current_flight_dynamics->right_engine_torque.value = 0.0;
 		current_flight_dynamics->left_engine_torque.max = 120.0;
-		current_flight_dynamics->right_engine_torque.max = no_right_engine ? 0.0 : 120.0;
+		current_flight_dynamics->right_engine_torque.max = 120.0;
 		current_flight_dynamics->combined_engine_torque.value = 0.0;
 
 		current_flight_dynamics->apu_rpm.value = 0.0;
@@ -904,22 +891,22 @@ void set_dynamics_entity_values (entity *en)
 		else  // start with engines running
 		{
 			current_flight_dynamics->left_engine_n1_rpm.value = current_flight_dynamics->engine_idle_rpm;
-			current_flight_dynamics->right_engine_n1_rpm.value = no_right_engine ? 0.0 : current_flight_dynamics->engine_idle_rpm;
+			current_flight_dynamics->right_engine_n1_rpm.value = current_flight_dynamics->engine_idle_rpm;
 			current_flight_dynamics->left_engine_n1_rpm.max = 110.0;
-			current_flight_dynamics->right_engine_n1_rpm.max = no_right_engine ? 0.0 : 110.0;
+			current_flight_dynamics->right_engine_n1_rpm.max = 110.0;
 		}
 
 		current_flight_dynamics->left_engine_rpm.value = 0.0;
 		current_flight_dynamics->right_engine_rpm.value = 0.0;
 		current_flight_dynamics->left_engine_rpm.max = 100.0;
-		current_flight_dynamics->right_engine_rpm.max = no_right_engine ? 0.0 : 100.0;
+		current_flight_dynamics->right_engine_rpm.max = 100.0;
 		current_flight_dynamics->main_rotor_rpm.value = 0.0;
 		current_flight_dynamics->tail_rotor_rpm.value = 0.0;
 
 		current_flight_dynamics->left_engine_temp.value = 35.0;
-		current_flight_dynamics->right_engine_temp.value = no_right_engine ? 0.0 : 35.0;
+		current_flight_dynamics->right_engine_temp.value = 35.0;
 		current_flight_dynamics->left_engine_temp.min = 100.0;
-		current_flight_dynamics->right_engine_temp.min = no_right_engine ? 0.0 : 100.0;
+		current_flight_dynamics->right_engine_temp.min = 100.0;
 
 		current_flight_dynamics->input_data.collective.value = 0.0;
 
@@ -931,27 +918,27 @@ void set_dynamics_entity_values (entity *en)
 		// not landed
 
 		current_flight_dynamics->left_engine_torque.value = get_local_entity_float_value (en, FLOAT_TYPE_MAIN_ROTOR_RPM);
-		current_flight_dynamics->right_engine_torque.value = no_right_engine ? 0.0 : get_local_entity_float_value (en, FLOAT_TYPE_MAIN_ROTOR_RPM);
+		current_flight_dynamics->right_engine_torque.value = get_local_entity_float_value (en, FLOAT_TYPE_MAIN_ROTOR_RPM);
 		current_flight_dynamics->combined_engine_torque.value = get_local_entity_float_value (en, FLOAT_TYPE_MAIN_ROTOR_RPM);
 		current_flight_dynamics->left_engine_torque.max = 120.0;
-		current_flight_dynamics->right_engine_torque.max = no_right_engine ? 0.0 : 120.0;
+		current_flight_dynamics->right_engine_torque.max = 120.0;
 
 		current_flight_dynamics->apu_rpm.value = 0.0;  // APU only used during start up
 		current_flight_dynamics->left_engine_rpm.value = 100.0;
-		current_flight_dynamics->right_engine_rpm.value = no_right_engine ? 0.0 : 100.0;
+		current_flight_dynamics->right_engine_rpm.value = 100.0;
 		current_flight_dynamics->left_engine_rpm.max = 100.0;
-		current_flight_dynamics->right_engine_rpm.max = no_right_engine ? 0.0 : 100.0;
+		current_flight_dynamics->right_engine_rpm.max = 100.0;
 		current_flight_dynamics->left_engine_n1_rpm.value = 80.0;
-		current_flight_dynamics->right_engine_n1_rpm.value = no_right_engine ? 0.0 : 80.0;
+		current_flight_dynamics->right_engine_n1_rpm.value = 80.0;
 		current_flight_dynamics->main_rotor_rpm.value = 100.0;
 		current_flight_dynamics->tail_rotor_rpm.value = 100.0;
 
 		current_flight_dynamics->input_data.collective.value = 0.0;
 
 		current_flight_dynamics->left_engine_temp.value = 750.0;
-		current_flight_dynamics->right_engine_temp.value = no_right_engine ? 0.0 : 750.0;
+		current_flight_dynamics->right_engine_temp.value = 750.0;
 		current_flight_dynamics->left_engine_temp.min = 700.0;
-		current_flight_dynamics->right_engine_temp.min = no_right_engine ? 0.0 : 700.0;
+		current_flight_dynamics->right_engine_temp.min = 700.0;
 
 		if (get_local_entity_float_value (en, FLOAT_TYPE_MAIN_ROTOR_RPM) != 0.0)
 		{
@@ -1216,6 +1203,10 @@ void update_gunship_dynamics (void)
 	ASSERT(raw);
 	if (!raw)
 		return;
+
+//  debug_log ("ThorZ DYNAMICS: Max Power = %f  Power Setting = %f", current_flight_dynamics->power_avaliable.max, current_flight_dynamics->power_avaliable.value);
+
+
 
 	current_flight_dynamics->model_iterations = (int) (get_delta_time () * MODEL_FRAME_RATE + 1.0);
 
@@ -1601,6 +1592,8 @@ void update_dynamics_external_values (void)
 
 		if (get_terrain_type_class (get_3d_terrain_point_data_type (&raw->ac.terrain_info)) == TERRAIN_CLASS_LAND)
 			current_flight_dynamics->position.y = bound (current_flight_dynamics->position.y, 0.0, MAX_MAP_Y);
+
+		if (current_flight_dynamics->auto_hover == HOVER_HOLD_NONE) bobup_status = 1;  //  Added by Javelin  6/18
 	}
 }
 
@@ -1700,7 +1693,6 @@ void move_cog (void *ev)
 
 void save_dynamics_model (event *ev)
 {
-
 	FILE
 		*file_ptr;
 
@@ -1806,7 +1798,6 @@ void save_dynamics_model (event *ev)
 
 void load_dynamics_model (event *ev)
 {
-
 	int
 		version_number;
 
@@ -1825,12 +1816,10 @@ void load_dynamics_model (event *ev)
 
 	if (file_ptr)
 	{
-
 		fscanf (file_ptr, "Comanche Hokum version = %d\n", &version_number);
 
 		if (version_number != global_options.version_number)
 		{
-
 			if (command_line_dynamics_flight_model == 2)
 			{
 				ASSERT (!"DYNAMICS: Can't load dynamics file... wrong version. Reset to default FM");
@@ -1846,7 +1835,6 @@ void load_dynamics_model (event *ev)
 
 				save_dynamics_model (NULL);
 			}				
-
 			return;
 		}
 
@@ -1939,6 +1927,7 @@ void load_dynamics_model (event *ev)
 		current_flight_dynamics->fuel_weight.value = current_flight_dynamics->fuel_weight.max = aircraft_database[current_flight_dynamics->sub_type].fuel_default_weight;
 		fscanf (file_ptr, "centre_of_gravity_x = %f, centre_of_gravity_y = %f, centre_of_gravity_z = %f\n", &current_flight_dynamics->centre_of_gravity.x, &current_flight_dynamics->centre_of_gravity.y, &current_flight_dynamics->centre_of_gravity.z);
 		fclose (file_ptr);
+
 	}
 	else
 	{
@@ -1951,7 +1940,6 @@ void load_dynamics_model (event *ev)
 		{
 			debug_fatal("Dynamics file is missing for this helicopter! DO NOT USE DYN FILES FROM DEFAULT FLIGHT MODEL! ");
 		}
-		
 		save_dynamics_model (NULL);
 	}
 }
@@ -1962,15 +1950,12 @@ void load_dynamics_model (event *ev)
 
 void flight_dynamics_toggle_rotor_brake (event *ev)
 {
-
 	if (current_flight_dynamics->rotor_brake)
 	{
-
 		set_current_flight_dynamics_rotor_brake (FALSE);
 	}
 	else
 	{
-
 		set_current_flight_dynamics_rotor_brake (TRUE);
 	}
 }
@@ -1988,7 +1973,6 @@ void set_current_flight_dynamics_rotor_brake (int flag)
 
 	if (flag)
 	{
-
 		#if DYNAMICS_DEBUG
 
 		debug_log ("DYNAMICS: rotor brake engaged");
@@ -2005,7 +1989,6 @@ void set_current_flight_dynamics_rotor_brake (int flag)
 
 		if (!get_local_entity_int_value (get_gunship_entity (), INT_TYPE_AIRBORNE_AIRCRAFT))
 		{
-
 			set_current_flight_dynamics_wheel_brake (TRUE);
 
 			group = get_local_entity_parent (get_gunship_entity (), LIST_TYPE_MEMBER);
@@ -2025,20 +2008,16 @@ void set_current_flight_dynamics_rotor_brake (int flag)
 
 				if (landed_wp)
 				{
-
 					landing_task = get_local_entity_parent (landed_wp, LIST_TYPE_WAYPOINT);
 
 					if (landing_task)
 					{
-
 						if (get_local_entity_int_value (landing_task, INT_TYPE_ENTITY_SUB_TYPE) == ENTITY_SUB_TYPE_TASK_LANDING)
 						{
-
 							landing_en = get_local_entity_landing_entity (get_keysite_currently_landed_at (), ENTITY_SUB_TYPE_LANDING_HELICOPTER);
 
 							if ((landing_en) && (!check_landing_route_lock_clear (landing_en, get_gunship_entity ())))
 							{
-
 								notify_local_entity (ENTITY_MESSAGE_TASK_TERMINATED, landing_en, get_gunship_entity (), TASK_TERMINATED_WAYPOINT_ROUTE_COMPLETE);
 							}
 						}
@@ -2053,7 +2032,6 @@ void set_current_flight_dynamics_rotor_brake (int flag)
 			}
 			else if (get_keysite_currently_landed_at ())
 			{
-
 				//
 				// landed at BASE go to weapon screen
 				//
@@ -2064,7 +2042,6 @@ void set_current_flight_dynamics_rotor_brake (int flag)
 	}
 	else
 	{
-
 		#if DYNAMICS_DEBUG
 
 		debug_log ("DYNAMICS: WARNING : rotor brake disengaged");
@@ -2079,15 +2056,12 @@ void set_current_flight_dynamics_rotor_brake (int flag)
 
 void flight_dynamics_toggle_wheel_brake (event *ev)
 {
-
 	if (current_flight_dynamics->wheel_brake)
 	{
-
 		set_current_flight_dynamics_wheel_brake (FALSE);
 	}
 	else
 	{
-
 		set_current_flight_dynamics_wheel_brake (TRUE);
 	}
 }
@@ -2187,10 +2161,19 @@ void flight_dynamics_toggle_auto_hover (event *ev)
 	if (valid_dynamics_autos_on (type))
 	{
 		set_current_flight_dynamics_auto_hover (type);
+
+		current_flight_dynamics->altitude.max = current_flight_dynamics->altitude.value - current_flight_dynamics->altitude.min;
+		debug_log ("DYNAMICS: hover_hold ON at %f meters", current_flight_dynamics->altitude.max);
 	}
 	else
 	{
 		set_current_flight_dynamics_auto_hover (HOVER_HOLD_NONE);
+
+		bobup_status = 1.0;  //  Added by Javelin 5/18
+
+		debug_log ("DYNAMICS: hover_hold OFF");
+
+		clear_trim_control (NULL);
 	}
 }
 
@@ -2200,11 +2183,6 @@ void flight_dynamics_toggle_auto_hover (event *ev)
 
 void set_current_flight_dynamics_auto_pilot (int flag)
 {
-	int
-		no_right_engine;
-
-	no_right_engine = get_global_gunship_type() == GUNSHIP_TYPE_KIOWA;
-
 /*
 	unsigned int
 		damage;
@@ -2380,43 +2358,32 @@ void set_current_flight_dynamics_auto_pilot (int flag)
 
 		if (cwp)
 		{
-
 			task = get_local_entity_parent (cwp, LIST_TYPE_WAYPOINT);
 
 			if (task)
 			{
-
 				switch (get_local_entity_int_value (task, INT_TYPE_ENTITY_SUB_TYPE))
 				{
-
 					case ENTITY_SUB_TYPE_TASK_LANDING:
 					{
-
 						set_client_server_entity_int_value (get_gunship_entity (), INT_TYPE_OPERATIONAL_STATE, OPERATIONAL_STATE_LANDING);
-
 						break;
 					}
 
 					case ENTITY_SUB_TYPE_TASK_LANDING_HOLDING:
 					{
-
 						set_client_server_entity_int_value (get_gunship_entity (), INT_TYPE_OPERATIONAL_STATE, OPERATIONAL_STATE_LANDING_HOLDING);
-
 						break;
 					}
 
 					case ENTITY_SUB_TYPE_TASK_TAKEOFF:
 					{
-
 						set_client_server_entity_int_value (get_gunship_entity (), INT_TYPE_OPERATIONAL_STATE, OPERATIONAL_STATE_TAKEOFF);
-
 						break;
 					}
 					case ENTITY_SUB_TYPE_TASK_TAKEOFF_HOLDING:
 					{
-
 						set_client_server_entity_int_value (get_gunship_entity (), INT_TYPE_OPERATIONAL_STATE, OPERATIONAL_STATE_TAKEOFF_HOLDING);
-
 						break;
 					}
 				}
@@ -2433,7 +2400,6 @@ void set_current_flight_dynamics_auto_pilot (int flag)
 	}
 	else
 	{
-
 		current_flight_dynamics->valid_last_frame_moving_collision_points = FALSE;
 
 		current_flight_dynamics->valid_last_frame_fixed_collision_points = FALSE;
@@ -2444,9 +2410,9 @@ void set_current_flight_dynamics_auto_pilot (int flag)
 			current_flight_dynamics->left_engine_n1_rpm.max = 110.0;
 			current_flight_dynamics->left_engine_torque.max = 120.0;
 
-			current_flight_dynamics->right_engine_rpm.max = no_right_engine ? 0.0 : 100.0;
-			current_flight_dynamics->right_engine_n1_rpm.max = no_right_engine ? 0.0 : 110.0;
-			current_flight_dynamics->right_engine_torque.max = no_right_engine ? 0.0 : 120.0;
+			current_flight_dynamics->right_engine_rpm.max = 100.0;
+			current_flight_dynamics->right_engine_n1_rpm.max = 110.0;
+			current_flight_dynamics->right_engine_torque.max = 120.0;
 		}
 
 		add_flight_path_action (current_flight_dynamics->position.x, current_flight_dynamics->position.z, FLIGHT_PATH_ACTION_USER_NAVIGATING);
@@ -2470,7 +2436,6 @@ void set_current_flight_dynamics_auto_pilot (int flag)
 
 int get_current_flight_dynamics_auto_pilot (void)
 {
-
 	int
 		flag;
 
@@ -2491,12 +2456,10 @@ void flight_dynamics_toggle_auto_pilot (event *ev)
 	//if (get_current_flight_dynamics_auto_pilot ())
 	if (valid_dynamics_autos_on (HOVER_HOLD_AUTO_PILOT))
 	{
-
 		set_current_flight_dynamics_auto_pilot (TRUE);
 	}
 	else
 	{
-
 		set_current_flight_dynamics_auto_pilot (FALSE);
 	}
 }
@@ -2542,19 +2505,27 @@ void flight_dynamics_toggle_altitude_lock (event *ev)
 
 	if (valid_dynamics_autos_on (HOVER_HOLD_ALTITUDE_LOCK))
 	{
-
-		current_flight_dynamics->altitude.max = current_flight_dynamics->altitude.value - current_flight_dynamics->altitude.min;
-
-		debug_log ("DYNAMICS: altitude_lock on at %f ft", current_flight_dynamics->altitude.max);
+			// Added in by Javelin 5/18, auto_hover now targets a specific altitude, not a vertical velocity
+		
+			if (current_flight_dynamics->radar_altitude.value < 200)  //  Use the radar altitude for Nap-of-the-Earth
+			{
+				current_flight_dynamics->altitude.max = current_flight_dynamics->radar_altitude.value;
+			}
+			else	//  Use the barometric altitude instead	
+			{
+				current_flight_dynamics->altitude.max = current_flight_dynamics->barometric_altitude.value;
+			}
+			debug_log ("DYNAMICS: altitude_lock on at %f meters", current_flight_dynamics->altitude.max);
 
 		set_current_flight_dynamics_auto_hover (HOVER_HOLD_ALTITUDE_LOCK);
 	}
 	else
 	{
-
 		debug_log ("DYNAMICS: altitude_lock off");
 
 		set_current_flight_dynamics_auto_hover (HOVER_HOLD_NONE);
+
+		bobup_status = 1.0;  //  Added by Javelin 6/18
 	}
 }
 
@@ -2564,23 +2535,22 @@ void flight_dynamics_toggle_altitude_lock (event *ev)
 
 void flight_dynamics_decrease_altitude_lock (event *ev)
 {
-
-	if (current_flight_dynamics->auto_hover == HOVER_HOLD_ALTITUDE_LOCK)
+	if ((current_flight_dynamics->auto_hover == HOVER_HOLD_ALTITUDE_LOCK) || 
+		(current_flight_dynamics->auto_hover == HOVER_HOLD_NORMAL) ||			//  Added by Javelin 5/18
+		(current_flight_dynamics->auto_hover == HOVER_HOLD_STABLE))
 	{
 
 		if (get_global_gunship_side () == ENTITY_SIDE_BLUE_FORCE)
 		{
+			current_flight_dynamics->altitude.max -= 10 * ONE_FOOT;  //  Changed by Javelin 5/18
 
-			current_flight_dynamics->altitude.max -= ONE_FOOT;
-
-			debug_log ("DYNAMICS: altitude_lock on at %f ft", feet (current_flight_dynamics->altitude.max));
+			debug_log ("DYNAMICS: hover height lowered to %f m", current_flight_dynamics->altitude.max);
 		}
 		else
 		{
+			current_flight_dynamics->altitude.max -= 5 * METRE;	//  Changed by Javelin 5/18
 
-			current_flight_dynamics->altitude.max -= METRE;
-
-			debug_log ("DYNAMICS: altitude_lock on at %f m", current_flight_dynamics->altitude.max);
+			debug_log ("DYNAMICS: hover height lowered to %f m", current_flight_dynamics->altitude.max);
 		}
 	}
 }
@@ -2592,24 +2562,71 @@ void flight_dynamics_decrease_altitude_lock (event *ev)
 void flight_dynamics_increase_altitude_lock (event *ev)
 {
 
-	if (current_flight_dynamics->auto_hover == HOVER_HOLD_ALTITUDE_LOCK)
+	if ((current_flight_dynamics->auto_hover == HOVER_HOLD_ALTITUDE_LOCK) || 
+		(current_flight_dynamics->auto_hover == HOVER_HOLD_NORMAL) ||			//  Added by Javelin 5/18
+		(current_flight_dynamics->auto_hover == HOVER_HOLD_STABLE))
 	{
 
 		if (get_global_gunship_side () == ENTITY_SIDE_BLUE_FORCE)
 		{
 
-			current_flight_dynamics->altitude.max += ONE_FOOT;
-
-			debug_log ("DYNAMICS: altitude_lock on at %f ft", feet (current_flight_dynamics->altitude.max));
+			current_flight_dynamics->altitude.max += 10 * ONE_FOOT;		//  Increased by Javelin 5/18
+																		//  feet (current_flight_dynamics->altitude.max)
+			debug_log ("DYNAMICS: hover height raised to %f m", current_flight_dynamics->altitude.max);
 		}
 		else
 		{
 
-			current_flight_dynamics->altitude.max += METRE;
+			current_flight_dynamics->altitude.max += 5 * METRE;		//  Increased by Javelin 5/18
 
-			debug_log ("DYNAMICS: altitude_lock on at %f m", current_flight_dynamics->altitude.max);
+			debug_log ("DYNAMICS: hover height lowered to %f m", current_flight_dynamics->altitude.max);
 		}
 	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void flight_dynamics_toggle_bobup (event *ev)			//   Added by Javelin 5/18, uses the R-SHFT-"P" key
+{
+	 //  debug_log ("DYNAMICS: Bob-Up Command Attempted...");
+
+	if ((current_flight_dynamics->auto_hover == HOVER_HOLD_NORMAL) || (current_flight_dynamics->auto_hover == HOVER_HOLD_STABLE))
+	{
+		switch (bobup_status)
+		{
+			case 0:
+				{ bobup_status =1 ;  //  Turn BobUp ON if it's ever off
+				 debug_log ("DYNAMICS: Bob-Up ON at %f m", current_flight_dynamics->altitude.max);
+				break;
+				}
+			case 1:
+				{ bobup_status = 2;  //  Bob Up 20 meters
+				current_flight_dynamics->altitude.max += 20.0;
+				 debug_log ("DYNAMICS: Bob-Up setting = %f m", current_flight_dynamics->altitude.max);
+				break;
+				}
+			case 2:
+				{ bobup_status =1;   //  Drop Back Down 20 meters
+				current_flight_dynamics->altitude.max -= 20.0;
+
+				if (current_flight_dynamics->altitude.max < 5)
+					current_flight_dynamics->altitude.max = 5;  //  Don't hit the ground
+
+				 debug_log ("DYNAMICS: Bob-Down setting = %f m", current_flight_dynamics->altitude.max);
+				break;
+				}
+		}
+	}
+}							
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void flight_dynamics_toggle_autopilot_heading (event *ev)
+{
+	toggle_flight_dynamics_autopilot_heading();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2634,6 +2651,8 @@ void dynamics_takeoff (void)
 	set_client_server_entity_float_value (get_gunship_entity (), FLOAT_TYPE_MAIN_ROTOR_SPIN_UP_TIMER, 0.0);
 
 	transmit_entity_comms_message (ENTITY_COMMS_MOBILE_TAKEOFF, get_gunship_entity ());
+	
+	play_music (MUSIC_TYPE_INGAME, FALSE);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2642,7 +2661,6 @@ void dynamics_takeoff (void)
 
 void dynamics_land (void)
 {
-
 	float
 		xmin,
 		xmax,
@@ -2670,7 +2688,6 @@ void dynamics_land (void)
 
 	if (!get_local_entity_int_value (get_gunship_entity (), INT_TYPE_ALIVE))
 	{
-
 		return;
 	}
 
@@ -2690,7 +2707,6 @@ void dynamics_land (void)
 
 	if (keysite)
 	{
-
 		object_3d_instance
 			*inst3d;
 
@@ -2710,7 +2726,6 @@ void dynamics_land (void)
 
 			case ENTITY_SUB_TYPE_KEYSITE_ANCHORAGE:
 			{
-
 				float
 					heading = 0.0;
 
@@ -2745,7 +2760,6 @@ void dynamics_land (void)
 			}
 			case ENTITY_SUB_TYPE_KEYSITE_FARP:
 			{
-
 				keysite_pos = get_local_entity_vec3d_ptr (keysite, VEC3D_TYPE_POSITION);
 
 				model_position.x = current_flight_dynamics->position.x - keysite_pos->x;
@@ -2763,7 +2777,6 @@ void dynamics_land (void)
 			}
 			default:
 			{
-
 				keysite_pos = get_local_entity_vec3d_ptr (keysite, VEC3D_TYPE_POSITION);
 
 				model_position.x = current_flight_dynamics->position.x - keysite_pos->x;
@@ -2837,7 +2850,6 @@ void update_vector_flight_model (void)
 
 	if (check_key (DIK_RSHIFT))
 	{
-
 		accelerator = 10.0;
 	}
 
@@ -2845,13 +2857,11 @@ void update_vector_flight_model (void)
 
 	if (check_key (DIK_Q))
 	{
-
 		velocity_z += velocity_amount * accelerator;
 	}
 
 	if (check_key (DIK_A))
 	{
-
 		velocity_z -= velocity_amount * accelerator;
 	}
 
@@ -2859,13 +2869,11 @@ void update_vector_flight_model (void)
 
 	if (check_key (DIK_W))
 	{
-
 		current_flight_dynamics->position.y += y_amount * accelerator;
 	}
 
 	if (check_key (DIK_S))
 	{
-
 		current_flight_dynamics->position.y -= y_amount * accelerator;
 	}
 
@@ -2873,13 +2881,11 @@ void update_vector_flight_model (void)
 
 	if (check_key (DIK_Z))
 	{
-
 		heading = -heading_amount * accelerator;
 	}
 
 	if (check_key (DIK_X))
 	{
-
 		heading = heading_amount * accelerator;
 	}
 
@@ -2887,13 +2893,11 @@ void update_vector_flight_model (void)
 
 	if (check_key (DIK_UP))
 	{
-
 		pitch = -pitch_amount * accelerator;
 	}
 
 	if (check_key (DIK_DOWN))
 	{
-
 		pitch = pitch_amount * accelerator;
 	}
 
@@ -2901,13 +2905,11 @@ void update_vector_flight_model (void)
 
 	if (check_key (DIK_LEFT))
 	{
-
 		roll = -roll_amount * accelerator;
 	}
 
 	if (check_key (DIK_RIGHT))
 	{
-
 		roll = roll_amount * accelerator;
 	}
 
@@ -2940,7 +2942,6 @@ void update_vector_flight_model (void)
 
 float get_dynamics_normalised_fuel_value (void)
 {
-
 	return (current_flight_dynamics->fuel_weight.value / current_flight_dynamics->fuel_weight.max);
 }
 
@@ -2950,10 +2951,8 @@ float get_dynamics_normalised_fuel_value (void)
 
 void flight_dynamics_lock_position (void)
 {
-
 	if (flight_dynamics_lock_position_flag)
 	{
-
 		current_flight_dynamics->position = current_flight_dynamics->old_position;
 	}
 }
@@ -2964,10 +2963,8 @@ void flight_dynamics_lock_position (void)
 
 entity *get_keysite_currently_landed_at (void)
 {
-
 	if (current_flight_dynamics_landed_at_keysite)
 	{
-
 		return current_flight_dynamics_landed_at_keysite;
 	}
 
@@ -2980,7 +2977,6 @@ entity *get_keysite_currently_landed_at (void)
 
 void set_keysite_currently_landed_at (entity *en)
 {
-
 	ASSERT (en);
 
 	current_flight_dynamics_landed_at_keysite = en;
@@ -2992,7 +2988,6 @@ void set_keysite_currently_landed_at (entity *en)
 
 float set_flight_dynamics_mass (void)
 {
-
 	current_flight_dynamics->mass.value = current_flight_dynamics->mass.min +
 														(current_flight_dynamics->fuel_weight.value /* * current_flight_dynamics->fuel_weight.modifier */) +
 														(current_flight_dynamics->weapon_mass.modifier * get_local_entity_weapon_load_weight (get_gunship_entity ()));
@@ -3009,7 +3004,6 @@ void update_current_flight_dynamics_fuel_weight (void)
 
 	if (!current_flight_dynamics)
 	{
-
 		return;
 	}
 
@@ -3024,12 +3018,10 @@ void update_current_flight_dynamics_fuel_weight (void)
 
 		if (current_flight_dynamics->fuel_weight.value <= 0.0)
 		{
-
 			set_current_flight_dynamics_auto_pilot (FALSE);
 		}
 		else if (current_flight_dynamics->fuel_weight.value <= 100.0)
 		{
-
 			static float
 				time = 0.0;
 
@@ -3037,7 +3029,6 @@ void update_current_flight_dynamics_fuel_weight (void)
 
 			if (time <= 0.0)
 			{
-
 				play_client_server_warning_message (get_gunship_entity (), SPEECH_SYSTEM_FUEL_LOW);
 
 				time = DYNAMICS_LOW_FUEL_SPEECH_TIME;
@@ -3065,7 +3056,6 @@ void update_current_flight_dynamics_flight_time (void)
 	if ((!current_flight_dynamics) ||
 		(!get_local_entity_int_value (get_gunship_entity (), INT_TYPE_AIRBORNE_AIRCRAFT)))
 	{
-
 		return;
 	}
 
@@ -3141,15 +3131,12 @@ void update_flight_path (void)
 
 	if (current_flight_dynamics)
 	{
-
 		if (get_current_flight_dynamics_auto_pilot ())
 		{
-
 			action = FLIGHT_PATH_ACTION_AUTOPILOT_NAVIGATING;
 		}
 		else
 		{
-
 			action = FLIGHT_PATH_ACTION_USER_NAVIGATING;
 		}
 
@@ -3189,19 +3176,16 @@ int valid_dynamics_autos_on (dynamics_hover_hold_types type)
 
 	if (damage)
 	{
-
 		flag = FALSE;
 	}
 
 	if (!get_local_entity_int_value (get_gunship_entity (), INT_TYPE_AIRBORNE_AIRCRAFT))
 	{
-
 		flag = FALSE;
 	}
 
 	if (current_flight_dynamics->fuel_weight.value <= 0.0)
 	{
-
 		flag = FALSE;
 	}
 
@@ -3227,27 +3211,28 @@ int valid_dynamics_autos_on (dynamics_hover_hold_types type)
 
 				if (get_local_entity_int_value (get_gunship_entity (), INT_TYPE_AUTO_PILOT))
 				{
-
 					set_client_server_entity_int_value (get_gunship_entity (), INT_TYPE_AUTO_PILOT, FALSE);
 				}
-				else if (get_global_avionics_realism_level () > AVIONICS_REALISM_LEVEL_SIMPLE && current_flight_dynamics->velocity_z.value > knots_to_metres_per_second (20.0))
+				// else if (get_global_simple_avionics ())
+				// {
+				// }
+				//  else if (get_global_avionics_realism_level () > AVIONICS_REALISM_LEVEL_SIMPLE && current_flight_dynamics->velocity_z.value > knots_to_metres_per_second (40.0))
+
+				//  Altered to allow Hover to engage at up to 40 m/s (it was 20) by Javelin 5/18
+				else if (get_global_avionics_realism_level () > AVIONICS_REALISM_LEVEL_SIMPLE && current_flight_dynamics->velocity_z.value > knots_to_metres_per_second (40.0))
 				{
 
-					if (!speech)
+					if (!speech)   
 					{
-
 						if (sfrand1 () < 0.0)
 						{
-
 							play_client_server_cpg_message (get_gunship_entity (), 0.5, 1.0, SPEECH_CATEGORY_CPG_SYSTEMS, 1.0, SPEECH_CPG_HOVER_HOLD_TOO_FAST1);
 						}
 						else
 						{
-
 							play_client_server_cpg_message (get_gunship_entity (), 0.5, 1.0, SPEECH_CATEGORY_CPG_SYSTEMS, 1.0, SPEECH_CPG_HOVER_HOLD_TOO_FAST2);
 						}
 					}
-
 					speech = TRUE;
 
 					flag = FALSE;
@@ -3275,8 +3260,9 @@ int valid_dynamics_autos_on (dynamics_hover_hold_types type)
 					joystick_y_pos = get_joystick_axis (command_line_cyclic_joystick_index, command_line_cyclic_joystick_y_axis);
 				}
 
-				if (((float) fabs (200.0 * joystick_x_pos) / (JOYSTICK_AXIS_MAXIMUM - JOYSTICK_AXIS_MINIMUM) > 10.0) ||
-					((float) fabs (200.0 * joystick_y_pos) / (JOYSTICK_AXIS_MAXIMUM - JOYSTICK_AXIS_MINIMUM) > 10.0))
+						//  Altered to increase the minimum above 10 by Javelin 5/18
+				if (((float) fabs (200.0 * joystick_x_pos) / (JOYSTICK_AXIS_MAXIMUM - JOYSTICK_AXIS_MINIMUM) > 40.0) ||
+					((float) fabs (200.0 * joystick_y_pos) / (JOYSTICK_AXIS_MAXIMUM - JOYSTICK_AXIS_MINIMUM) > 40.0))
 				{
 
 					flag = FALSE;
@@ -3483,9 +3469,9 @@ void flight_dynamics_start_engine (int engine_number)
 
 	ASSERT (engine_number >= 1 && engine_number <= 2);
 
-	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA)
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA && engine_number == 2)
 	{
-		engine_number = 1;
+		return;
 	}
 
 	if (engine_number == 1)
@@ -3532,9 +3518,9 @@ void flight_dynamics_throttle_engine (int engine_number, int rpm_delta)
 
 	ASSERT (engine_number == 1 || engine_number == 2);
 
-	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA)
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA && engine_number == 2)
 	{
-		engine_number = 1;
+		return;
 	}
 
 	if (engine_number == 1)
@@ -3608,6 +3594,11 @@ void flight_dynamics_throttle_engine (int engine_number, int rpm_delta)
 		return;
 
 	engine_rpm->max = bound(engine_rpm->max + rpm_delta, current_flight_dynamics->engine_idle_rpm, 110.0);
+	
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA) {
+		current_flight_dynamics->right_engine_n1_rpm = *engine_rpm;
+		current_flight_dynamics->right_engine_temp = *engine_temp;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3648,14 +3639,14 @@ void update_apu_rpm_dynamics (void)
 // arneh, july 06 - modelling of engine temperature added
 void update_engine_temperature_dynamics (int engine_number)
 {
-	unsigned int engine_fire;
+	unsigned int engine_fire, engine_damage;
 	dynamics_float_variable *n1_rpm, *n2_rpm, *engine_torque, *engine_temp;
 
 	ASSERT(engine_number == 1 || engine_number == 2);
 
-	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA)
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA && engine_number == 2)
 	{
-		engine_number = 1;
+		return;
 	}
 
 	if (engine_number == 1)
@@ -3664,6 +3655,7 @@ void update_engine_temperature_dynamics (int engine_number)
 		engine_temp = &current_flight_dynamics->left_engine_temp;
 		n2_rpm = &current_flight_dynamics->left_engine_rpm;
 		engine_fire = DYNAMICS_DAMAGE_LEFT_ENGINE_FIRE;
+		engine_damage = DYNAMICS_DAMAGE_LEFT_ENGINE;
 		engine_torque = &current_flight_dynamics->left_engine_torque;
 	}
 	else if (engine_number == 2)
@@ -3672,6 +3664,7 @@ void update_engine_temperature_dynamics (int engine_number)
 		engine_temp = &current_flight_dynamics->right_engine_temp;
 		n2_rpm = &current_flight_dynamics->right_engine_rpm;
 		engine_fire = DYNAMICS_DAMAGE_RIGHT_ENGINE_FIRE;
+		engine_damage = DYNAMICS_DAMAGE_RIGHT_ENGINE;
 		engine_torque = &current_flight_dynamics->right_engine_torque;
 	}
 	else
@@ -3711,26 +3704,41 @@ void update_engine_temperature_dynamics (int engine_number)
 
 		engine_temp->min = (1.0 - (0.5 * get_model_delta_time())) * engine_temp->min + 0.5 * get_model_delta_time() * rpm_factor;
 
-		engine_temp->delta = bound((engine_temp->min - engine_temp->value) * 0.5, -20.0, 1000.0);
-
 		// increase temp extra if engine on fire
 		if (current_flight_dynamics->dynamics_damage & engine_fire)
-			engine_temp->delta += 20.0;
+			engine_temp->min += 200.0 * get_model_delta_time();
+
+		engine_temp->delta = bound((engine_temp->min - engine_temp->value) * 0.5, -20.0, 1000.0);
 	}
 
 	engine_temp->value += engine_temp->delta * get_model_delta_time();
 
-	if (current_flight_dynamics->dynamics_options.dynamics_options_over_torque)
+	if (current_flight_dynamics->dynamics_options.dynamics_options_over_torque) {
 		engine_temp->value = bound(engine_temp->value, 0.0, 1500.0);
+
+		// if temp above 810 degrees, randomly damage engine. probability depending on temperature
+		if (engine_temp->value > 0.81 * engine_temp->max)
+		{
+			float probability = (engine_temp->value / engine_temp->max - 0.81) * get_model_delta_time() / 5.0 * (n2_rpm->delta > 0 ? 1.0 + n2_rpm->delta : 1.0);
+
+			#if DEBUG_DYNAMICS >= 3
+			debug_log("Engine damage probability %f", probability);
+			#endif
+
+			if ((frand1() < probability / 4.0))
+				dynamics_damage_model (engine_damage, FALSE);
+			else if ((frand1() < probability))
+				dynamics_damage_model (engine_fire, FALSE);
+		}
+	}
 	else
 		engine_temp->value = bound(engine_temp->value, 0.0, 800.0);
-
-	// if temp above 820 degrees, randomly damage engine. probability depending on temperature
-	if (engine_temp->value > 820.0 && current_flight_dynamics->dynamics_options.dynamics_options_over_torque)
-	{
-		int probability = 5.0 * (int)(bound(1020.0 - engine_temp->value, 1.0, 200.0) / get_model_delta_time());
-		if ((rand16() % (int)probability) == 0)
-			dynamics_damage_model (engine_fire, FALSE);
+	
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA) {
+		current_flight_dynamics->right_engine_n1_rpm = *n1_rpm;
+		//current_flight_dynamics->right_engine_temp = *engine_temp;
+		current_flight_dynamics->right_engine_rpm = *n2_rpm;
+		current_flight_dynamics->right_engine_torque = *engine_torque;	
 	}
 }
 
@@ -3761,10 +3769,10 @@ void update_engine_rpm_dynamics (int engine_number)
 	 * Ok, here's how the engine dynamics works now.  N1 (or NG) is the gas
 	 * turbine which controls the amount of air/fuel which is combusted in the
 	 * engine, and hence how much power it makes.  N2 (or NP, or in the code
-	 * simply refered to as engine_rpm) is the power turbine which converts
+	 * simply referred to as engine_rpm) is the power turbine which converts
 	 * the combustion energy into shaft rotation.
 	 *
-	 * The N2 tubine is directly connected to the rotor (through a gearbox which
+	 * The N2 turbine is directly connected to the rotor (through a gearbox which
 	 * reduces the real RPM from somewhere around 20,000 RPM to rotor RPM
 	 * of around 300 RPM.  Left to itself the rotor and N2 RPM will drop under load
 	 * and increase with less load.  The engine tries to keep N2 RPM constant at
@@ -3772,17 +3780,17 @@ void update_engine_rpm_dynamics (int engine_number)
 	 * engine).  However, changing turbine speed is not instant, and even
 	 * when N1 speed has changed it might take a little longer before the extra
 	 * energy reaches the N2 turbine and is converted into shaft power.  Hence
-	 * it might not be able to keep N2 speed at exactly 100% at all times, especally
+	 * it might not be able to keep N2 speed at exactly 100% at all times, especially
 	 * initially after sudden changes of rotor drag (i.e. by changing rotor pitch
 	 * suddenly (fast pulling collective), or by sudden heavy rotor load (increase
-	 * in g-force by hard manouvering).
+	 * in g-force by hard manoeuvring).
 	 *
 	 * The values are used as follow:
 	 * *engine_rpm.value : actual RPM
 	 * *engine_n1_rpm.max : max allowed rpm of N1 engine.  Is directly controlled
 	 *    by pilot by use of throttle
 	 * *engine_n1_rpm.min : RPM engine control system has demanded.  Always less then max.
-	 * *rpm_delta : change of RPM in percent per second.  Controled by engine control system
+	 * *rpm_delta : change of RPM in percent per second.  Controlled by engine control system
 	 * apu_rpm.max : APU RPM commanded by pilot (100% when APU on, 0% when off)
 	 */
 
@@ -3794,9 +3802,9 @@ void update_engine_rpm_dynamics (int engine_number)
 
 	ASSERT(engine_number == 1 || engine_number == 2);
 
-	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA)
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA && engine_number == 2)
 	{
-		engine_number = 1;
+		return;
 	}
 
 	collect = (current_flight_dynamics->input_data.collective.value / 120.0);
@@ -3921,6 +3929,12 @@ void update_engine_rpm_dynamics (int engine_number)
 		current_flight_dynamics->left_engine_starter_active = starter_active;
 	else
 		current_flight_dynamics->right_engine_starter_active = starter_active;
+	
+	if (get_global_gunship_type() == GUNSHIP_TYPE_KIOWA) {
+		current_flight_dynamics->right_engine_n1_rpm = *n1_rpm;
+		current_flight_dynamics->right_engine_rpm = *n2_rpm;
+		current_flight_dynamics->right_engine_torque = *engine_torque;
+	}
 }
 
 // arneh, july 2006 - create vibration effect on rotor

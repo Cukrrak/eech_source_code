@@ -68,6 +68,8 @@
 
 #define OLD_EO
 
+#define DEBUG_MODULE 0
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -273,7 +275,8 @@ static entity
 static char
 	text_display_line1[TEXT_DISPLAY_MAX_STRING_LENGTH + 1],
 	text_display_line2[TEXT_DISPLAY_MAX_STRING_LENGTH + 1],
-	text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH + 1];
+	text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH + 1],
+	text_display_line4[TEXT_DISPLAY_MAX_STRING_LENGTH + 1];		//  Javelin  7/19
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3480,25 +3483,8 @@ static void draw_2d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 	// draw an indication if ground stablisation is enabled
 	//
 
-	if (eo_ground_stabilised)
-	{
-		if (draw_large_mfd) // Jabberwock 031107 Designated targets - moved the stab indicator one line up, sorry!
-		{
-			y_adjust = -38.0;
-		}
-		else
-		{
-			y_adjust = -19.0;
-		}
+	draw_mfd_automatics_marks(draw_large_mfd, eo_ground_stabilised);
 
-		width = get_mono_font_string_width ("S");
-
-		set_2d_mono_font_position (1.0, -1.0);
-
-		set_mono_font_rel_position (-width, y_adjust);
-
-		print_mono_font_string ("S");
-	}
 	////////////////////////////////////////
 	//
 	// line graphics
@@ -3795,13 +3781,19 @@ static void draw_adv_2d_eo_display (eo_params_dynamic_move *eo, target_acquisiti
 
 	// gyro stabilization
 
+	draw_2d_box(0.96, -0.83, 0.76, -0.89, TRUE, FALSE, MFD_COLOUR_LGREY);
+
 	if (eo_ground_stabilised)
 	{
 		set_2d_mono_font_position (0.78, -0.84);
 		set_mono_font_rel_position (0.0, 0.0);
-		draw_2d_box(0.96, -0.83, 0.76, -0.89, TRUE, FALSE, MFD_COLOUR_LGREY);
-
 		print_mono_font_string ("GS");
+	}
+
+	if (flight_dynamics_autopilot_heading && flight_dynamics_autopilot_heading_active) {
+		set_2d_mono_font_position (0.92, -0.84);
+		set_mono_font_rel_position (0.0, 0.0);
+		print_mono_font_string ("H");
 	}
 
 	// static markers
@@ -7735,7 +7727,9 @@ static void draw_airspeed_scale (void)
 	mfd_vp_y_min = v - (0.5 * mfd_viewport_size * (scale_top - scale_bottom) * 0.5);
 	mfd_vp_y_max = v + (0.5 * mfd_viewport_size * (scale_top - scale_bottom) * 0.5);
 
-	debug_log("min: %.02f, max: %.02f", mfd_vp_y_min, mfd_vp_y_max);
+	#if DEBUG_MODULE
+		debug_log("min: %.02f, max: %.02f", mfd_vp_y_min, mfd_vp_y_max);
+	#endif
 
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_vp_y_min, mfd_viewport_x_max, mfd_vp_y_max);
 
@@ -8857,6 +8851,9 @@ static void draw_text_display (screen *text_screen)
 			print_mono_font_string (text_display_line3);
 		}
 
+		if (command_line_shared_mem_export != 0)		//  Javelin  7/19
+			update_ekran_shared_mem (text_display_line1, text_display_line2, text_display_line3, text_display_line4);
+
 		unlock_screen (text_screen);
 	}
 
@@ -9477,11 +9474,16 @@ void set_hokum_text_display_text (char *s1, char *s2, char *s3)
 
 	strncpy (text_display_line3, s3, TEXT_DISPLAY_MAX_STRING_LENGTH);
 
+	strncpy (text_display_line4, "          ", TEXT_DISPLAY_MAX_STRING_LENGTH);
+
 	text_display_line1[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
 
 	text_display_line2[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
 
 	text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+
+	text_display_line4[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+
 #endif
 }
 

@@ -215,6 +215,110 @@ static void update_master_caution (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+static void update_weapon_status_lamps (void)
+{
+	entity
+		*en;
+
+	entity_sub_types
+		selected_weapon,
+		weapon_sub_type;
+
+	int
+		number,
+		damaged;
+
+	ka50_lamps.lo_wep_light			= 0;
+	ka50_lamps.li_wep_light			= 0;
+	ka50_lamps.ri_wep_light			= 0;
+	ka50_lamps.ro_wep_light			= 0;
+	ka50_lamps.lo_wep_store_light	= 0;
+	ka50_lamps.li_wep_store_light	= 0;
+	ka50_lamps.ri_wep_store_light	= 0;
+	ka50_lamps.ro_wep_store_light	= 0;
+
+	////////////////////////////////////////
+
+	en = get_gunship_entity ();
+
+	selected_weapon = get_local_entity_int_value (en, INT_TYPE_SELECTED_WEAPON);
+
+	if (get_local_entity_weapon_hardpoint_info (en, KA50_LHS_OUTER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &weapon_sub_type, &number, &damaged))
+	{
+		if (number > 0)
+		{
+			ka50_lamps.lo_wep_store_light = 1;
+
+			if (weapon_sub_type == selected_weapon)
+			{
+				ka50_lamps.lo_wep_light = 1;
+			}
+		} else {
+			ka50_lamps.lo_wep_store_light = 0;
+			ka50_lamps.lo_wep_light = 0;
+		}
+	}
+
+	////////////////////////////////////////
+
+	if (get_local_entity_weapon_hardpoint_info (en, KA50_LHS_INNER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &weapon_sub_type, &number, &damaged))
+	{
+		if (number > 0)
+		{
+			ka50_lamps.li_wep_store_light = 1;
+
+			if (weapon_sub_type == selected_weapon)
+			{
+				ka50_lamps.li_wep_light = 1;
+			}
+		} else {
+			ka50_lamps.li_wep_store_light = 0;
+			ka50_lamps.li_wep_light = 0;
+		}
+	}
+
+	////////////////////////////////////////
+
+	if (get_local_entity_weapon_hardpoint_info (en, KA50_RHS_INNER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &weapon_sub_type, &number, &damaged))
+	{
+		if (number > 0)
+		{
+			ka50_lamps.ri_wep_store_light = 1;
+
+			if (weapon_sub_type == selected_weapon)
+			{
+				ka50_lamps.ri_wep_light = 1;
+			}
+		} else {
+			ka50_lamps.ri_wep_store_light = 0;
+			ka50_lamps.ri_wep_light = 0;
+		}
+	}
+
+	////////////////////////////////////////
+
+	if (get_local_entity_weapon_hardpoint_info (en, KA50_RHS_OUTER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &weapon_sub_type, &number, &damaged))
+	{
+		if (number > 0)
+		{
+			ka50_lamps.ro_wep_store_light = 1;
+
+			if (weapon_sub_type == selected_weapon)
+			{
+				ka50_lamps.ro_wep_light = 1;
+			}
+		} else {
+			ka50_lamps.ro_wep_store_light = 0;
+			ka50_lamps.ro_wep_light = 0;
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //
 // Note that all lamps are extinguished in initialise_ka50_lamps ().
 //
@@ -270,9 +374,9 @@ void update_ka50_lamp_avionics (void)
 
 	ka50_lamps.left_engine_fire = get_dynamics_damage_type (DYNAMICS_DAMAGE_LEFT_ENGINE_FIRE);
 
-	ka50_lamps.apu_fire = 0;
-
 	ka50_lamps.right_engine_fire = get_dynamics_damage_type (DYNAMICS_DAMAGE_RIGHT_ENGINE_FIRE);
+
+	ka50_lamps.fire = (get_dynamics_damage_type (DYNAMICS_DAMAGE_LEFT_ENGINE_FIRE) || get_dynamics_damage_type (DYNAMICS_DAMAGE_RIGHT_ENGINE_FIRE));
 
 	ka50_lamps.fire_extinguiser = fire_extinguisher_used;
 
@@ -282,7 +386,9 @@ void update_ka50_lamp_avionics (void)
 
 	ka50_lamps.oil_temperature = 0;
 
-	ka50_lamps.overtorque = get_current_flight_dynamics_overtorque ();
+	ka50_lamps.leng_max_n2_rpm = current_flight_dynamics->left_engine_temp.value > (current_flight_dynamics->left_engine_temp.max * 0.80); //current_flight_dynamics->left_engine_rpm.value > 100.0;
+
+	ka50_lamps.reng_max_n2_rpm = current_flight_dynamics->right_engine_temp.value > (current_flight_dynamics->right_engine_temp.max * 0.80); //current_flight_dynamics->right_engine_rpm.value > 100.0;
 
 	ka50_lamps.rotor_rpm = get_current_flight_dynamics_low_rotor_rpm ();
 
@@ -311,6 +417,10 @@ void update_ka50_lamp_avionics (void)
 	ka50_lamps.ase_auto_page = get_global_ase_auto_page ();
 
 	ka50_lamps.gear_damaged = get_dynamics_damage_type (DYNAMICS_DAMAGE_UNDERCARRIAGE);
+
+	ka50_lamps.max_g = current_flight_dynamics->g_force.value >= 3.5;
+
+	ka50_lamps.max_isa_light = kilometres_per_hour(current_flight_dynamics->indicated_airspeed.value) > 350.0;
 
 	switch (gear_state)
 	{
@@ -355,6 +465,8 @@ void update_ka50_lamp_avionics (void)
 			break;
 		}
 	}
+
+	update_weapon_status_lamps ();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

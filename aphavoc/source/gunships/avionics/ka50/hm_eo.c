@@ -73,9 +73,11 @@
 
 #ifdef OLD_EO
 eo_params
+	ka50_flir,		//  Javelin  7/19
 	ka50_llltv;
 #else
 eo_params_dynamic_move
+	ka50_flir,		//  Javelin  7/19
 	ka50_llltv;
 #endif
 
@@ -83,30 +85,37 @@ eo_params_dynamic_move
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void initialise_ka50_eo (void)
+void initialise_ka50_eo (void)		//  Javelin  7/19
 {
-	eo_sensor									= TARGET_ACQUISITION_SYSTEM_LLLTV;
+	eo_sensor					= TARGET_ACQUISITION_SYSTEM_LLLTV;
 
-	eo_azimuth									= rad (0.0);
-	eo_min_azimuth								= rad (-35.0);
-	eo_max_azimuth								= rad (35.0);
-	eo_elevation								= rad (0.0);
-	eo_min_elevation							= rad (-80.0);
-	eo_max_elevation							= rad (15.0);
-	eo_max_visual_range						= 5000.0,
-	eo_ground_stabilised					= 0;
+	eo_azimuth					= rad (0.0);
+	eo_min_azimuth				= rad (-35.0);
+	eo_max_azimuth				= rad (35.0);
+	eo_elevation				= rad (0.0);
+	eo_min_elevation			= rad (-80.0);
+	eo_max_elevation			= rad (15.0);
+	eo_max_visual_range			= 5000.0,
+	eo_ground_stabilised		= 0;
 
 #ifdef OLD_EO
+	ka50_flir.field_of_view					= EO_FOV_MEDIUM;
+	ka50_flir.min_field_of_view				= EO_FOV_NARROW;
+	ka50_flir.max_field_of_view				= EO_FOV_WIDE;
+
 	ka50_llltv.field_of_view				= EO_FOV_MEDIUM;
 	ka50_llltv.min_field_of_view			= EO_FOV_NARROW;
-	ka50_llltv.max_field_of_view			= EO_FOV_MEDIUM;
+	ka50_llltv.max_field_of_view			= EO_FOV_WIDE;
 #else
-	ka50_llltv.zoom							= 1/7.0;
-	ka50_llltv.min_zoom						= 1/7.0;
-	ka50_llltv.max_zoom						= 1/23.0;
+	ka50_flir.zoom							= 1.0 / 7.0;
+	ka50_flir.min_zoom						= 1.0 / 7.0;
+	ka50_flir.max_zoom						= 1.0 / 23.0;
+
+	ka50_llltv.zoom							= 1.0 / 7.0;
+	ka50_llltv.min_zoom						= 1.0 / 7.0;
+	ka50_llltv.max_zoom						= 1.0 / 23.0;
 #endif
 };
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -446,7 +455,7 @@ void update_ka50_eo (eo_params_dynamic_move *eo)
 		default:
 		////////////////////////////////////////
 		{
-			debug_fatal ("Invalid field of view = %d", eo->field_of_view);
+			debug_fatal ("Invalid hm_eo.c field of view = %d", eo->field_of_view);
 
 			break;
 		}
@@ -555,6 +564,20 @@ void centre_ka50_eo (void)
 
 void animate_ka50_eo (object_3d_instance *inst3d)
 {
+/*	object_3d_sub_object_search_data
+		search;
+
+	ASSERT (inst3d);
+
+	search.search_depth = 0;
+	search.search_object = inst3d;
+	search.sub_object_index = OBJECT_3D_SUB_OBJECT_KA50_OPTICS;
+
+	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+	{
+		search.result_sub_object->relative_heading = eo_azimuth;
+		search.result_sub_object->relative_pitch = -eo_elevation;
+	}*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -573,6 +596,9 @@ void inc_ka50_eo_zoom(void)
 {
 	switch (eo_sensor)
 	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:
+			dec_eo_field_of_view(&ka50_flir);
+			break;
 		case TARGET_ACQUISITION_SYSTEM_LLLTV:
 			dec_eo_field_of_view(&ka50_llltv);
 			break;
@@ -585,11 +611,45 @@ void dec_ka50_eo_zoom(void)
 {
 	switch (eo_sensor)
 	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:
+			inc_eo_field_of_view(&ka50_flir);
+			break;
 		case TARGET_ACQUISITION_SYSTEM_LLLTV:
 			inc_eo_field_of_view(&ka50_llltv);
 			break;
 		default:
 			break;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void toggle_ka50_eo_system(void)			//  Javelin  7/19
+{
+	switch (eo_sensor)
+	{
+	case TARGET_ACQUISITION_SYSTEM_FLIR:
+		eo_sensor = TARGET_ACQUISITION_SYSTEM_LLLTV;
+
+#ifndef OLD_EO
+		copy_eo_zoom(&ka50_flir, &ka50_llltv);
+#endif
+		if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_FLIR)
+			target_acquisition_system = TARGET_ACQUISITION_SYSTEM_LLLTV;
+		break;
+
+
+	case TARGET_ACQUISITION_SYSTEM_LLLTV:
+		eo_sensor = TARGET_ACQUISITION_SYSTEM_FLIR;
+
+#ifndef OLD_EO
+		copy_eo_zoom(&ka50_llltv, &ka50_flir);
+#endif
+		if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_LLLTV)
+			target_acquisition_system = TARGET_ACQUISITION_SYSTEM_FLIR;
+		break;
 	}
 }
 
@@ -606,6 +666,16 @@ void slave_ka50_eo_to_current_target (void)
 	{
 		switch (eo_sensor)
 		{
+			case TARGET_ACQUISITION_SYSTEM_FLIR:		//  Javelin  7/19
+			{
+#ifdef OLD_EO
+				ka50_flir.field_of_view = ka50_flir.max_field_of_view;
+#else
+				ka50_flir.zoom = 1.0;
+#endif
+
+				break;
+			}
 			case TARGET_ACQUISITION_SYSTEM_LLLTV:
 			{
 #ifdef OLD_EO
@@ -621,6 +691,16 @@ void slave_ka50_eo_to_current_target (void)
 	{
 		switch (eo_sensor)
 		{
+			case TARGET_ACQUISITION_SYSTEM_FLIR:		//  Javelin  7/19
+			{
+#ifdef OLD_EO
+				ka50_flir.field_of_view = ka50_flir.max_field_of_view;
+#else
+				ka50_flir.zoom = 1.0;
+#endif
+
+				break;
+			}
 			case TARGET_ACQUISITION_SYSTEM_LLLTV:
 			{
 #ifdef OLD_EO

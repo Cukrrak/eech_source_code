@@ -65,6 +65,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "project.h"
+#include "../../dynamics/common/co_undercarriage.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +82,36 @@ static object_3d_instance
 	*virtual_cockpit_inst3d_detail_level_medium_inst3d,
 	*virtual_cockpit_inst3d_detail_level_low_inst3d,
 	*virtual_cockpit_inst3d_detail_level_glass_inst3d;
+
+static object_3d_sub_instance
+	*left_temperature,
+	*left_temperature_small,
+	*right_temperature,
+	*right_temperature_small,
+
+	// lamps
+	*left_wheel_down_light,
+	*right_wheel_down_light,
+	*nose_wheel_down_light,
+	*wheels_up_light,
+	*rotor_rpm_light,
+	*leng_rpm_light,
+	*reng_rpm_light,
+	*gmax_light,
+	*max_isa_light,
+	*fire_light,
+	*leng_fire_light,
+	*reng_fire_light,
+//	*apu_fire_light,
+	*master_alarm,
+	*left_outer_wep_light,
+	*left_inner_wep_light,
+	*right_inner_wep_light,
+	*right_outer_wep_light,
+	*left_outer_wep_store_light,
+	*left_inner_wep_store_light,
+	*right_inner_wep_store_light,
+	*right_outer_wep_store_light;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +134,42 @@ void initialise_ka50_virtual_cockpit (void)
 	virtual_cockpit_inst3d = virtual_cockpit_inst3d_detail_level_high_inst3d;
 
 	pilot_head_pitch_datum = get_ka50_pilot_head_pitch_datum ();
+
+	left_temperature = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_ENG1_TEMP_LRG);
+	left_temperature_small = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_ENG1_TEMP_SML);
+	right_temperature = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_ENG2_TEMP_LRG);
+	right_temperature_small = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_ENG2_TEMP_SML);
+
+	//
+	// Lamps
+	//
+
+	left_wheel_down_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_LEFT_WHEEL_DOWN_LIGHT);
+	right_wheel_down_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_RIGHT_WHEEL_DOWN_LIGHT);
+	nose_wheel_down_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_NOSE_WHEEL_DOWN_LIGHT);
+	wheels_up_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_WHEELS_UP_LIGHT);
+	leng_rpm_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_LENG_RPM_LAMP);
+	reng_rpm_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_RENG_RPM_LAMP);
+	rotor_rpm_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_ROTOR_RPM_LAMP);
+	gmax_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_G_LIMIT_LAMP);
+	max_isa_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_MAX_ISA_LAMP);
+	fire_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_FIRE_LAMP);
+	leng_fire_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_LENG_FIRE_LAMP);
+	reng_fire_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_RENG_FIRE_LAMP);
+//	apu_fire_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_APU_FIRE_LAMP);
+	master_alarm = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_MASTER_ALARM_LAMP);
+
+	left_outer_wep_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_LO_WEP_LAMP);
+	left_inner_wep_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_LI_WEP_LAMP);
+	right_inner_wep_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_RI_WEP_LAMP);
+	right_outer_wep_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_RO_WEP_LAMP);
+	left_outer_wep_store_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_LO_WEP_STORE_LAMP);
+	left_inner_wep_store_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_LI_WEP_STORE_LAMP);
+	right_inner_wep_store_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_RI_WEP_STORE_LAMP);
+	right_outer_wep_store_light = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_RO_WEP_STORE_LAMP);
+
+//	// Gear lever
+//	gear_lever = find_sub_object(virtual_cockpit_inst3d, OBJECT_3D_SUB_OBJECT_BLACKSHARK_GEAR_LEVER);
 
 	//
 	// wipers and rain
@@ -204,6 +271,10 @@ void update_ka50_virtual_cockpit (void)
 	object_3d_sub_object_search_data
 		search;
 
+	update_gear_lamps();
+	update_blackshark_warning_lamps();
+	update_blackshark_weapon_panel_lamps();
+
 	////////////////////////////////////////
 	//
 	// sort out what to draw
@@ -224,8 +295,6 @@ void update_ka50_virtual_cockpit (void)
 		}
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
 		{
 			cockpit_detail_level = COCKPIT_DETAIL_LEVEL_HIGH;
 
@@ -423,42 +492,6 @@ void update_ka50_virtual_cockpit (void)
 		search.result_sub_object->visible_object = draw_controls;
 	}
 
-	search.search_depth = 0;
-	search.search_object = virtual_cockpit_inst3d;
-	search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_JOYSTICK;
-
-	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
-		search.result_sub_object->visible_object = draw_controls;
-	}
-
-	search.search_depth = 0;
-	search.search_object = virtual_cockpit_inst3d;
-	search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_COLLECTIVE;
-
-	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
-		search.result_sub_object->visible_object = draw_controls;
-	}
-
-	search.search_depth = 0;
-	search.search_object = virtual_cockpit_inst3d;
-	search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_PEDAL;
-
-	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
-		search.result_sub_object->visible_object = draw_controls;
-	}
-
-	search.search_depth = 1;
-	search.search_object = virtual_cockpit_inst3d;
-	search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_PEDAL;
-
-	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
-		search.result_sub_object->visible_object = draw_controls;
-	}
-
 	////////////////////////////////////////
 	//
 	// update animations
@@ -493,15 +526,6 @@ void update_ka50_virtual_cockpit (void)
 		{
 			search.result_sub_object->visible_object = FALSE;
 		}
-
-		search.search_depth = 0;
-		search.search_object = virtual_cockpit_inst3d;
-		search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_HAND_STATIC;
-
-		if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-		{
-			search.result_sub_object->visible_object = FALSE;
-		}
 	}
 }
 
@@ -517,8 +541,6 @@ void pre_render_ka50_virtual_cockpit_displays (void)
 		case VIEW_MODE_VIRTUAL_COCKPIT_HUD:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
 		{
 			break;
 		}
@@ -559,8 +581,6 @@ void draw_ka50_virtual_cockpit (void)
 		case VIEW_MODE_VIRTUAL_COCKPIT_HUD:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
 		{
 			break;
 		}
@@ -577,13 +597,10 @@ void draw_ka50_virtual_cockpit (void)
 		}
 	}
 
-	//
-	// lamps and instruments
-	//
-
-	draw_ka50_virtual_cockpit_lamps ();
-
 	draw_ka50_virtual_cockpit_instruments ();
+
+	get_ka50_temperature_needle_values(current_flight_dynamics->left_engine_temp.value, &left_temperature->relative_roll, &left_temperature_small->relative_roll);
+	get_ka50_temperature_needle_values(current_flight_dynamics->right_engine_temp.value, &right_temperature->relative_roll, &right_temperature_small->relative_roll);
 
 	//
 	// crew animation
@@ -983,3 +1000,77 @@ void get_ka50_display_viewpoint (view_modes mode)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_gear_lamps(void) {
+	// Gear lamps
+
+	if (get_local_entity_undercarriage_state(get_gunship_entity()) == AIRCRAFT_UNDERCARRIAGE_DOWN)
+	{
+		wheels_up_light->visible_object = FALSE;
+
+		left_wheel_down_light->visible_object = left_main_wheel_locked_down();
+		right_wheel_down_light->visible_object = right_main_wheel_locked_down();
+		nose_wheel_down_light->visible_object = nose_wheel_locked_down();
+	}
+	else
+	{
+		wheels_up_light->visible_object = get_local_entity_undercarriage_state(get_gunship_entity()) == AIRCRAFT_UNDERCARRIAGE_UP;
+		left_wheel_down_light->visible_object = FALSE;
+		right_wheel_down_light->visible_object = FALSE;
+		nose_wheel_down_light->visible_object = FALSE;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_blackshark_warning_lamps(void) {
+	// Engine RPM warning lamps
+
+		leng_rpm_light->visible_object = ka50_lamps.leng_max_n2_rpm;
+		reng_rpm_light->visible_object = ka50_lamps.reng_max_n2_rpm;
+
+	// Rotor RPM lamp
+
+		rotor_rpm_light->visible_object = ka50_lamps.rotor_rpm;
+
+	// Max G Warning lamp
+		gmax_light->visible_object = ka50_lamps.max_g;
+
+	// Fire lamp
+
+		fire_light->visible_object = ka50_lamps.fire;
+
+		leng_fire_light->visible_object = ka50_lamps.left_engine_fire;
+
+		reng_fire_light->visible_object = ka50_lamps.right_engine_fire;
+
+//		apu_fire_light->visible_object = ka50_lamps.apu_fire;
+
+	// Max ISA exceeded lamp
+
+		max_isa_light->visible_object = ka50_lamps.max_isa_light;
+
+	// Landing Gear Warning lamp
+
+	// TODO if Landing gear is not down and locked, Low level flight with descent, and IAS < 30.0 km/h
+
+	// Master Alarm
+
+		master_alarm->visible_object = ka50_lamps.master_caution;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_blackshark_weapon_panel_lamps(void) {
+		// Weapon selected lamps
+		left_outer_wep_light->visible_object = ka50_lamps.lo_wep_light;
+		left_inner_wep_light->visible_object = ka50_lamps.li_wep_light;
+		right_inner_wep_light->visible_object = ka50_lamps.ri_wep_light;
+		right_outer_wep_light->visible_object = ka50_lamps.ro_wep_light;
+
+		// Weapon store lamps
+		left_outer_wep_store_light->visible_object = ka50_lamps.lo_wep_store_light;
+		left_inner_wep_store_light->visible_object = ka50_lamps.li_wep_store_light;
+		right_inner_wep_store_light->visible_object = ka50_lamps.ri_wep_store_light;
+		right_outer_wep_store_light->visible_object = ka50_lamps.ro_wep_store_light;
+}

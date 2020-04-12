@@ -68,6 +68,8 @@
 
 #define OLD_EO
 
+#define DEBUG_MODULE 0
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,6 +84,7 @@ static char
 	{
 		"KA50_MFD_MODE_OFF",
 		"KA50_MFD_MODE_DAMAGED",
+		"KA50_MFD_MODE_FLIR",		//  Javelin 7/19
 		"KA50_MFD_MODE_LLLTV",
 		"KA50_MFD_MODE_TSD",
 		"KA50_MFD_MODE_ASE",
@@ -124,9 +127,9 @@ static ka50_mfd_modes
 static rgb_colour
 	mfd_colours[20];
 
-#define MFD_COLOUR1 		  		(mfd_colours[0])
-#define MFD_COLOUR2 		  		(mfd_colours[1])
-#define MFD_COLOUR3 		  		(mfd_colours[2])
+#define MFD_COLOUR1 		  	(mfd_colours[0])
+#define MFD_COLOUR2 		  	(mfd_colours[1])
+#define MFD_COLOUR3 		  	(mfd_colours[2])
 #define MFD_COLOUR4	  	  		(mfd_colours[3])
 #define MFD_COLOUR5				(mfd_colours[4])
 #define MFD_COLOUR6				(mfd_colours[5])
@@ -154,7 +157,7 @@ static rgb_colour
 static rgb_colour
 	text_display_colours[2];
 
-#define TEXT_COLOUR1					(text_display_colours[0])
+#define TEXT_COLOUR1			(text_display_colours[0])
 #define TEXT_BACKGROUND_COLOUR	(text_display_colours[1])
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,12 +204,18 @@ static screen
 	*shkval_mfd_texture_screen,
 	*abris_mfd_texture_screen,
 	*ekran_display_texture_screen,
+	*cannon_rounds_display_screen,
+	*weapon_rounds_display_screen,
+	*weapon_name_display_screen,
 	*large_shkval_mfd_texture_screen,
 	*large_abris_mfd_texture_screen,
 	*large_ekran_display_texture_screen,
 	*small_shkval_mfd_texture_screen,
 	*small_abris_mfd_texture_screen,
 	*small_ekran_display_texture_screen,
+	*cannon_rounds_display_texture_screen,
+	*weapon_rounds_display_texture_screen,
+	*weapon_name_display_texture_screen,
 	*eo_3d_texture_screen,
 	*eo_3d_texture_screen_over,
 	*full_mfd_texture_screen;
@@ -215,12 +224,20 @@ static screen
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define TEXT_DISPLAY_MAX_STRING_LENGTH	(10)
+#define TEXT_DISPLAY_MAX_STRING_LENGTH	 (10)
+#define CANNON_DISPLAY_MAX_STRING_LENGTH (3)
+#define WEAPON_DISPLAY_MAX_STRING_LENGTH (3)
 
 static char
 	text_display_line1[TEXT_DISPLAY_MAX_STRING_LENGTH + 1],
 	text_display_line2[TEXT_DISPLAY_MAX_STRING_LENGTH + 1],
-	text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH + 1];
+	text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH + 1],
+	text_display_line4[TEXT_DISPLAY_MAX_STRING_LENGTH + 1], //  Javelin  7/19
+	text_display_line5[TEXT_DISPLAY_MAX_STRING_LENGTH + 1];
+
+static char
+	cannon_rounds[CANNON_DISPLAY_MAX_STRING_LENGTH +1],
+	weapon_rounds[WEAPON_DISPLAY_MAX_STRING_LENGTH +1];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -584,6 +601,22 @@ static char ta_symbol[]=
 	0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,
 	0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,
 	0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,
+};
+
+static char na_symbol[]=
+{
+	19,
+	8,
+	-9,
+	-8,
+	1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,
+	1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,
+	1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,
+	1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,
+	1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1345,6 +1378,92 @@ static void draw_sideslip_scale (void)
 
 ////////////////////////////////////////
 //
+// FLIR									//  Javelin  7/19
+//
+////////////////////////////////////////
+
+static display_3d_light_levels
+	flir_light_levels[WEATHERMODE_LAST][NUM_DAY_SEGMENT_TYPES] =
+	{
+		// WEATHERMODE_INVALID
+		{
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_DRY
+		{
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_LIGHT_LEVEL_HIGH,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_LIGHT_RAIN
+		{
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_HEAVY_RAIN
+		{
+			DISPLAY_3D_LIGHT_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_LIGHT_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_LIGHT_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_LIGHT_LEVEL_LOW,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_SNOW
+		{
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_LIGHT_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_NIGHT
+		},
+	};
+
+static display_3d_noise_levels
+	flir_noise_levels[WEATHERMODE_LAST][NUM_DAY_SEGMENT_TYPES] =
+	{
+		// WEATHERMODE_INVALID
+		{
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_DRY
+		{
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_LIGHT_RAIN
+		{
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_HEAVY_RAIN
+		{
+			DISPLAY_3D_NOISE_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_NOISE_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_NOISE_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_NOISE_LEVEL_MEDIUM,	// DAY_SEGMENT_TYPE_NIGHT
+		},
+		// WEATHERMODE_SNOW
+		{
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAWN
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DAY
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_DUSK
+			DISPLAY_3D_NOISE_LEVEL_LOW,		// DAY_SEGMENT_TYPE_NIGHT
+		},
+	};
+
+////////////////////////////////////////
+//
 // LLLTV
 //
 ////////////////////////////////////////
@@ -1435,6 +1554,11 @@ static display_3d_noise_levels
 
 static int get_undamaged_eo_display_mode (ka50_mfd_modes mode)
 {
+	if ((mode == KA50_MFD_MODE_FLIR) && (!ka50_damage.flir))		//  Javelin  7/19
+	{
+		return (TRUE);
+	}
+
 	if ((mode == KA50_MFD_MODE_LLLTV) && (!ka50_damage.llltv))
 	{
 		return (TRUE);
@@ -1479,23 +1603,31 @@ static void draw_3d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 	ASSERT (eo_3d_texture_screen);
 
 #ifdef OLD_EO
-	switch (eo->field_of_view)
+	switch (eo->field_of_view)			//  Javelin  7/19
 	{
 		case EO_FOV_NARROW:
 		{
-			zoom = 0.015;
+			zoom = 0.0165;
 
 			break;
 		}
 		case EO_FOV_MEDIUM:
 		{
-			zoom = 0.06;
+			zoom = 0.066;
+
+			break;
+		}
+		case EO_FOV_WIDE:
+		{
+			zoom = 0.3;
 
 			break;
 		}
 		default:
 		{
-			debug_fatal ("Invalid field of view = %d", eo->field_of_view);
+			//debug_fatal ("Invalid 3D field of view = %d", eo->field_of_view);
+			eo->field_of_view = EO_FOV_WIDE;
+			zoom = 0.3;
 
 			break;
 		}
@@ -1516,6 +1648,16 @@ static void draw_3d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 
 	switch (system)
 	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:		//  Javelin  7/19
+		{
+			light_level = flir_light_levels[weather_mode][day_segment_type];
+
+			noise_level = flir_noise_levels[weather_mode][day_segment_type];
+
+			tint = DISPLAY_3D_TINT_FLIR;
+
+			break;
+		}
 		case TARGET_ACQUISITION_SYSTEM_LLLTV:
 		{
 			light_level = llltv_light_levels[weather_mode][day_segment_type];
@@ -1640,23 +1782,29 @@ static void draw_full_screen_3d_eo_display (eo_params_dynamic_move *eo, target_a
 	ASSERT (eo);
 
 #ifdef OLD_EO
-	switch (eo->field_of_view)
+	switch (eo->field_of_view)			//  Javelin  7/19
 	{
 		case EO_FOV_NARROW:
 		{
-			zoom = 0.015;
+			zoom = 0.0165;
 
 			break;
 		}
 		case EO_FOV_MEDIUM:
 		{
-			zoom = 0.06;
+			zoom = 0.066;
+
+			break;
+		}
+		case EO_FOV_WIDE:
+		{
+			zoom = 0.3;
 
 			break;
 		}
 		default:
 		{
-			debug_fatal ("Invalid field of view = %d", eo->field_of_view);
+			debug_fatal ("Invalid full-3D field of view = %d", eo->field_of_view);
 
 			break;
 		}
@@ -1677,6 +1825,14 @@ static void draw_full_screen_3d_eo_display (eo_params_dynamic_move *eo, target_a
 
 	switch (system)
 	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:		//  Javelin  7/19
+		{
+			light_level = flir_light_levels[weather_mode][day_segment_type];
+
+			noise_level = flir_noise_levels[weather_mode][day_segment_type];
+
+			break;
+		}
 		case TARGET_ACQUISITION_SYSTEM_LLLTV:
 		{
 			light_level = llltv_light_levels[weather_mode][day_segment_type];
@@ -1847,6 +2003,12 @@ static void draw_2d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 
 	switch (system)
 	{
+		case TARGET_ACQUISITION_SYSTEM_FLIR:		//  Javelin  7/19
+		{
+			print_mono_font_string ("FLIR");
+
+			break;
+		}
 		case TARGET_ACQUISITION_SYSTEM_LLLTV:
 		{
 			print_mono_font_string ("LLLTV");
@@ -1938,7 +2100,7 @@ static void draw_2d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 		float level;
 
 #ifdef OLD_EO
-		switch (eo->field_of_view)
+		switch (eo->field_of_view)			//  Javelin  7/19
 		{
 			case EO_FOV_NARROW:
 			{
@@ -1952,9 +2114,15 @@ static void draw_2d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 
 				break;
 			}
+			case EO_FOV_WIDE:
+			{
+				level = 3;
+
+				break;
+			}
 			default:
 			{
-				debug_fatal ("Invalid field of view = %d", eo->field_of_view);
+				debug_fatal ("Invalid LEVEL field of view = %d", eo->field_of_view);
 
 				break;
 			}
@@ -2099,25 +2267,8 @@ static void draw_2d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 	// draw an indication if ground stablisation is enabled
 	//
 
-	if (eo_ground_stabilised)
-	{
-		if (draw_large_mfd) // Jabberwock 031107 Designated targets - moved the stab indicator one line up, sorry!
-		{
-			y_adjust = -38.0;
-		}
-		else
-		{
-			y_adjust = -19.0;
-		}
+	draw_mfd_automatics_marks(draw_large_mfd, eo_ground_stabilised);
 
-		width = get_mono_font_string_width ("S");
-
-		set_2d_mono_font_position (1.0, -1.0);
-
-		set_mono_font_rel_position (-width, y_adjust);
-
-		print_mono_font_string ("S");
-	}
 	////////////////////////////////////////
 	//
 	// line graphics
@@ -2402,11 +2553,15 @@ static void draw_adv_2d_eo_display (eo_params_dynamic_move *eo, target_acquisiti
 
 	if (eo_is_locked())
 	{
-		draw_2d_mono_sprite (ta_symbol, -0.25, 0.27, MFD_COLOUR2);
+		draw_2d_mono_sprite (ta_symbol, 0.25, 0.27, MFD_COLOUR2);
 	}
 	else if (eo_ground_stabilised)
 	{
-		draw_2d_mono_sprite (tg_symbol, 0.25, 0.27, MFD_COLOUR2);
+		draw_2d_mono_sprite (tg_symbol, -0.25, 0.27, MFD_COLOUR2);
+	}
+
+	if (flight_dynamics_autopilot_heading && flight_dynamics_autopilot_heading_active) {
+		draw_2d_mono_sprite (na_symbol, 0.12, 0.27, MFD_COLOUR2);
 	}
 
 	// warnings
@@ -2506,6 +2661,43 @@ static void draw_adv_2d_eo_display (eo_params_dynamic_move *eo, target_acquisiti
 	draw_2d_line (0.45, 0, 0.45, -0.02, MFD_COLOUR2); // right
 
 	reset_2d_instance (mfd_env);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// FLIR													//  Javelin  7/19
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void draw_3d_flir_mfd (int full_screen)			//  Javelin  7/19
+{
+	if (!ka50_damage.flir)
+	{
+		if (full_screen)
+		{
+			draw_full_screen_3d_eo_display (&ka50_flir, TARGET_ACQUISITION_SYSTEM_FLIR, DISPLAY_3D_TINT_FLIR);
+		}
+		else
+		{
+			draw_3d_eo_display (&ka50_flir, TARGET_ACQUISITION_SYSTEM_FLIR);
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void draw_2d_flir_mfd (int valid_3d)			//  Javelin  7/19
+{
+	if (command_line_advanced_mfd && command_line_colour_mfd && draw_large_mfd)
+		draw_adv_2d_eo_display (&ka50_flir, TARGET_ACQUISITION_SYSTEM_FLIR, ka50_damage.flir, valid_3d);
+	else
+		draw_2d_eo_display (&ka50_flir, TARGET_ACQUISITION_SYSTEM_FLIR, ka50_damage.flir, valid_3d);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3077,6 +3269,12 @@ static void draw_tactical_situation_display_mfd (ka50_mfd_locations mfd_location
 			case TARGET_ACQUISITION_SYSTEM_OFF:
 			{
 				s = "NO ACQ";
+
+				break;
+			}
+			case TARGET_ACQUISITION_SYSTEM_FLIR:		//  Javelin  7/19
+			{
+				s = "EOS FLIR";
 
 				break;
 			}
@@ -4915,6 +5113,8 @@ static void draw_system_display_mfd (void)
 		width_adjust = 1.0;
 	}
 
+	y_adjust = print_mfd_system_message ("FLIR", "FAIL", ka50_damage.flir, y_adjust, width_adjust);  //  Javelin  7/19
+
 	y_adjust = print_mfd_system_message ("LLLTV", "FAIL", ka50_damage.llltv, y_adjust, width_adjust);
 
 	y_adjust = print_mfd_system_message ("LASER DESIGNATOR", "FAIL", ka50_damage.laser_designator, y_adjust, width_adjust);
@@ -5746,7 +5946,9 @@ static void draw_airspeed_scale (void)
 	mfd_vp_y_min = v - (0.5 * mfd_viewport_size * (scale_top - scale_bottom) * 0.5);
 	mfd_vp_y_max = v + (0.5 * mfd_viewport_size * (scale_top - scale_bottom) * 0.5);
 
-	debug_log("min: %.02f, max: %.02f", mfd_vp_y_min, mfd_vp_y_max);
+	#if DEBUG_MODULE
+		debug_log("min: %.02f, max: %.02f", mfd_vp_y_min, mfd_vp_y_max);
+	#endif
 
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_vp_y_min, mfd_viewport_x_max, mfd_vp_y_max);
 
@@ -6689,6 +6891,14 @@ static void draw_mfd (screen *mfd_screen, ka50_mfd_modes* mode, ka50_mfd_locatio
 				break;
 			}
 			////////////////////////////////////////
+			case KA50_MFD_MODE_FLIR:				//  Javelin  7/19
+			////////////////////////////////////////
+			{
+				draw_2d_flir_mfd (FALSE);
+
+				break;
+			}
+			////////////////////////////////////////
 			case KA50_MFD_MODE_LLLTV:
 			////////////////////////////////////////
 			{
@@ -6788,48 +6998,160 @@ static void draw_text_display (screen *text_screen)
 
 		if (draw_large_mfd)
 		{
+			set_mono_font_type (MONO_FONT_TYPE_12X20); //MONO_FONT_TYPE_7X12
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 11.0);
+
+			print_mono_font_string (text_display_line1);
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 29.0);
+
+			print_mono_font_string (text_display_line2);
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 47.0);
+
+			print_mono_font_string (text_display_line3);
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 65.0);
+
+			print_mono_font_string (text_display_line4);
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 83.0);
+
+			print_mono_font_string (text_display_line5);
+		}
+		else
+		{
 			set_mono_font_type (MONO_FONT_TYPE_7X12);
 
 			set_2d_mono_font_position (-1.0, 1.0);
 
-			set_mono_font_rel_position (1.0, 11.0);
+			set_mono_font_rel_position (2.0, 11.0);
 
 			print_mono_font_string (text_display_line1);
 
 			set_2d_mono_font_position (-1.0, 1.0);
 
-			set_mono_font_rel_position (1.0, 25.0);
+			set_mono_font_rel_position (2.0, 25.0);
 
 			print_mono_font_string (text_display_line2);
 
 			set_2d_mono_font_position (-1.0, 1.0);
 
-			set_mono_font_rel_position (1.0, 39.0);
+			set_mono_font_rel_position (2.0, 39.0);
 
 			print_mono_font_string (text_display_line3);
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 53.0);
+
+			print_mono_font_string (text_display_line4);
+
+			set_2d_mono_font_position (-1.0, 1.0);
+
+			set_mono_font_rel_position (2.0, 67.0);
+
+			print_mono_font_string (text_display_line5);
 		}
-		else
-		{
-			set_mono_font_type (MONO_FONT_TYPE_3X6);
 
-			set_2d_mono_font_position (-1.0, 1.0);
+		if (command_line_shared_mem_export != 0)		//  Javelin  7/19
+			update_ka50_ekran_shared_mem(text_display_line1, text_display_line2, text_display_line3, text_display_line4, text_display_line5);
 
-			set_mono_font_rel_position (1.0, 5.0);
+		unlock_screen (text_screen);
+	}
 
-			print_mono_font_string (text_display_line1);
+	set_active_screen (video_screen);
+}
 
-			set_2d_mono_font_position (-1.0, 1.0);
 
-			set_mono_font_rel_position (1.0, 12.0);
+void draw_cannon_rounds_display(screen *text_screen)
+{
+	ASSERT (text_screen);
 
-			print_mono_font_string (text_display_line2);
+	set_active_screen (text_screen);
 
-			set_2d_mono_font_position (-1.0, 1.0);
+	if (lock_screen (text_screen))
+	{
+		set_block (0, 0, 70 - 1, 70 - 1, TEXT_BACKGROUND_COLOUR);
 
-			set_mono_font_rel_position (1.0, 19.0);
+		draw_mfd_layout_grid ();
 
-			print_mono_font_string (text_display_line3);
-		}
+		set_mono_font_colour (MFD_COLOUR_GREEN);
+
+		set_mono_font_type (MONO_FONT_TYPE_17X26_DIGITAL);
+
+		set_2d_mono_font_position (-1.0, 1.0);
+
+		set_mono_font_rel_position (0.0, 5.0);
+
+		print_mono_font_string (cannon_rounds);
+
+		unlock_screen (text_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+void draw_weapon_rounds_display(screen *text_screen)
+{
+	ASSERT (text_screen);
+
+	set_active_screen (text_screen);
+
+	if (lock_screen (text_screen))
+	{
+		set_block (0, 0, 70 - 1, 70 - 1, TEXT_BACKGROUND_COLOUR);
+
+		draw_mfd_layout_grid ();
+
+		set_mono_font_colour (MFD_COLOUR_GREEN);
+
+		set_mono_font_type (MONO_FONT_TYPE_17X26_DIGITAL);
+
+		set_2d_mono_font_position (-1.0, 1.0);
+
+		set_mono_font_rel_position (0.0, 5.0);
+
+		print_mono_font_string (weapon_rounds);
+
+		unlock_screen (text_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+void draw_weapon_name_display(screen *text_screen)
+{
+	ASSERT (text_screen);
+
+	set_active_screen (text_screen);
+
+	if (lock_screen (text_screen))
+	{
+		set_block (0, 0, 36 - 1, 36 - 1, TEXT_BACKGROUND_COLOUR);
+
+		draw_mfd_layout_grid ();
+
+		set_mono_font_colour (MFD_COLOUR_GREEN);
+
+		set_mono_font_type (MONO_FONT_TYPE_17X26_DIGITAL);
+
+		set_2d_mono_font_position (-1.0, 1.0);
+
+		set_mono_font_rel_position (0.0, 5.0);
+
+		update_ka50_weapon_name_display ();
 
 		unlock_screen (text_screen);
 	}
@@ -6906,12 +7228,14 @@ void initialise_ka50_mfd (void)
 
 	////////////////////////////////////////
 
-	set_ka50_text_display_text ("", "", "");
+	set_ka50_text_display_text ("", "", "", "", "");
+	set_ka50_cannon_rounds_display_text ("");
+	set_ka50_weapon_rounds_display_text ("");
 
 	////////////////////////////////////////
 
-	tsd_ase_range							= TSD_ASE_RANGE_5000;
-	tsd_declutter_level					= TSD_DECLUTTER_LEVEL_NAVIGATION;
+	tsd_ase_range					= TSD_ASE_RANGE_5000;
+	tsd_declutter_level				= TSD_DECLUTTER_LEVEL_NAVIGATION;
 	tsd_threat_line_flash_timer		= TSD_THREAT_LINE_FLASH_RATE;
 	tsd_draw_threat_line_status		= 0;
 	ase_threat_line_flash_timer		= ASE_THREAT_LINE_FLASH_RATE;
@@ -6926,6 +7250,9 @@ void initialise_ka50_mfd (void)
 	large_shkval_mfd_texture_screen = create_user_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
 	large_abris_mfd_texture_screen = create_user_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
 	large_ekran_display_texture_screen = create_user_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
+	cannon_rounds_display_screen = create_user_texture_screen (70, 70, TEXTURE_TYPE_SINGLEALPHA, 1);
+	weapon_rounds_display_screen = create_user_texture_screen (70, 70, TEXTURE_TYPE_SINGLEALPHA, 1);
+	weapon_name_display_screen = create_user_texture_screen (36, 36, TEXTURE_TYPE_SINGLEALPHA, 1);
 
 	small_shkval_mfd_texture_screen = create_user_texture_screen (SMALL_MFD_VIEWPORT_SIZE, SMALL_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
 	small_abris_mfd_texture_screen = create_user_texture_screen (SMALL_MFD_VIEWPORT_SIZE, SMALL_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
@@ -6972,7 +7299,7 @@ void initialise_ka50_mfd (void)
 	set_rgb_colour (MFD_BACKGROUND_COLOUR,   20,  20,  30, 255);
 	set_rgb_colour (MFD_CLEAR_COLOUR,         0,   0,   0, 255);
 
-	set_rgb_colour (TEXT_COLOUR1,             0, 243,  97, 255);
+	set_rgb_colour (TEXT_COLOUR1,             255, 147, 0, 255);
 	set_rgb_colour (TEXT_BACKGROUND_COLOUR,   0,  60,  34, 255);
 
     set_rgb_colour (clear_mfd_colour, 255, 255, 255, 0);
@@ -7030,6 +7357,9 @@ void deinitialise_ka50_mfd (void)
 	destroy_screen (large_shkval_mfd_texture_screen);
 	destroy_screen (large_abris_mfd_texture_screen);
 	destroy_screen (large_ekran_display_texture_screen);
+	destroy_screen (cannon_rounds_display_screen);
+	destroy_screen (weapon_rounds_display_screen);
+	destroy_screen (weapon_name_display_screen);
 
 	destroy_screen (small_shkval_mfd_texture_screen);
 	destroy_screen (small_abris_mfd_texture_screen);
@@ -7064,6 +7394,7 @@ void draw_ka50_mfd (void)
 	// support for high resolution mfd's
 	int
 		large_mfd;
+	screen *export_screen;						//  Javelin  6/19
 
 	if (!command_line_high_res_mfd)
 	{
@@ -7104,6 +7435,9 @@ void draw_ka50_mfd (void)
 		shkval_mfd_texture_screen = large_shkval_mfd_texture_screen;
 		abris_mfd_texture_screen = large_abris_mfd_texture_screen;
 		ekran_display_texture_screen = large_ekran_display_texture_screen;
+		cannon_rounds_display_texture_screen = cannon_rounds_display_screen;
+		weapon_rounds_display_texture_screen = weapon_rounds_display_screen;
+		weapon_name_display_texture_screen = weapon_name_display_screen;
 
 		eo_3d_texture_screen = large_eo_3d_texture_screen;
 		eo_3d_texture_screen_over = large_eo_3d_texture_screen_over;
@@ -7115,6 +7449,9 @@ void draw_ka50_mfd (void)
 		shkval_mfd_texture_screen = small_shkval_mfd_texture_screen;
 		abris_mfd_texture_screen = small_abris_mfd_texture_screen;
 		ekran_display_texture_screen = small_ekran_display_texture_screen;
+		cannon_rounds_display_texture_screen = cannon_rounds_display_screen;
+		weapon_rounds_display_texture_screen = weapon_rounds_display_screen;
+		weapon_name_display_texture_screen = weapon_name_display_screen;
 
 		eo_3d_texture_screen = small_eo_3d_texture_screen;
 		eo_3d_texture_screen_over = small_eo_3d_texture_screen_over;
@@ -7123,6 +7460,9 @@ void draw_ka50_mfd (void)
 	set_system_texture_screen (shkval_mfd_texture_screen, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_2);
 	set_system_texture_screen (abris_mfd_texture_screen, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_1);
 	set_system_texture_screen (ekran_display_texture_screen, TEXTURE_INDEX_HOKUM_COCKPIT_EKRAN);
+	set_system_texture_screen (cannon_rounds_display_texture_screen, TEXTURE_INDEX_COMANCHE_MFD1);
+	set_system_texture_screen (weapon_rounds_display_texture_screen, TEXTURE_INDEX_COMANCHE_MFD2);
+	set_system_texture_screen (weapon_name_display_texture_screen, TEXTURE_INDEX_COMANCHE_MFD3);
 
 	////////////////////////////////////////
 	//
@@ -7207,6 +7547,12 @@ void draw_ka50_mfd (void)
 			{
 				switch (get_mfd_mode_for_eo_sensor ())
 				{
+					case KA50_MFD_MODE_FLIR:			//  Javelin  7/19
+					{
+						draw_3d_flir_mfd (FALSE);
+
+						break;
+					}
 					case KA50_MFD_MODE_LLLTV:
 					{
 						draw_3d_llltv_mfd (FALSE);
@@ -7223,6 +7569,12 @@ void draw_ka50_mfd (void)
 
 					switch (get_mfd_mode_for_eo_sensor ())
 					{
+						case KA50_MFD_MODE_FLIR:			//  Javelin  7/19
+						{
+							draw_2d_flir_mfd (TRUE);
+
+							break;
+						}
 						case KA50_MFD_MODE_LLLTV:
 						{
 							draw_2d_llltv_mfd (TRUE);
@@ -7247,14 +7599,24 @@ void draw_ka50_mfd (void)
 	//
 	////////////////////////////////////////
 
-	//draw_mfd (shkval_mfd_texture_screen, &shkval_mfd_mode, KA50_MFD_LOCATION_SHKVAL);
+	draw_mfd (shkval_mfd_texture_screen, &shkval_mfd_mode, KA50_MFD_LOCATION_SHKVAL);
 
 	draw_mfd (abris_mfd_texture_screen, &abris_mfd_mode, KA50_MFD_LOCATION_ABRIS);
 
 	draw_text_display (ekran_display_texture_screen);
 
+	draw_cannon_rounds_display (cannon_rounds_display_texture_screen);
+	draw_weapon_rounds_display (weapon_rounds_display_texture_screen);
+	draw_weapon_name_display (weapon_name_display_texture_screen);
+
 	if (command_line_export_mfd)
-		copy_export_mfd(shkval_mfd_texture_screen, abris_mfd_texture_screen);
+	{
+		export_screen = get_screen_of_system_texture (TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_2);
+		copy_export_mfd(export_screen, NULL);  //  shkval
+
+		export_screen = get_screen_of_system_texture (TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_1);
+		copy_export_mfd(NULL, export_screen);  //  abris
+	}
 #endif
 }
 
@@ -7262,27 +7624,310 @@ void draw_ka50_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void set_ka50_text_display_text (char *s1, char *s2, char *s3)
+void update_ka50_ekran_display (void)
+{
+	char
+		s1[80],
+		s2[80],
+		s3[80];
+
+	int
+		lh_chaff,
+		rh_chaff,
+		lh_flare,
+		rh_flare,
+		lh_chaff_number,
+		rh_chaff_number,
+		lh_flare_number,
+		rh_flare_number,
+		damaged;
+
+	entity
+		*en;
+
+	entity_sub_types
+		weapon_sub_type;
+
+	en = get_gunship_entity ();
+
+	lh_chaff = get_local_entity_weapon_hardpoint_info (en, KA50_LHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &lh_chaff_number, &damaged);
+	rh_chaff = get_local_entity_weapon_hardpoint_info (en, KA50_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &rh_chaff_number, &damaged);
+
+	if (lh_chaff || rh_chaff)
+	{
+		if (!damaged)
+		{
+			sprintf	(s1, "C: L%02d R%02d", lh_chaff_number, rh_chaff_number);
+		}
+		else if (damaged)
+			{
+				if (ka50_damage.lh_chaff_dispensers)
+				{
+					sprintf (s1, "C: LXX R%02d", rh_chaff_number);
+				}
+
+				if (ka50_damage.rh_chaff_dispensers)
+				{
+					sprintf	(s1, "C: L%02d RXX", lh_chaff_number);
+				}
+			}
+	}
+
+	lh_flare = get_local_entity_weapon_hardpoint_info (en, KA50_LHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, &weapon_sub_type, &lh_flare_number, &damaged);
+	rh_flare = get_local_entity_weapon_hardpoint_info (en, KA50_RHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, &weapon_sub_type, &rh_flare_number, &damaged);
+
+	if (lh_flare || rh_flare)
+	{
+		if (!damaged)
+		{
+			sprintf	(s2, "F: L%02d R%02d", lh_flare_number, rh_flare_number);
+		}
+		else if (damaged)
+			{
+				if (ka50_damage.lh_flare_dispensers)
+				{
+					sprintf	(s2, "F: LXX R%02d", rh_flare_number);
+				}
+
+				if (ka50_damage.rh_flare_dispensers)
+				{
+					sprintf	(s2, "F: L%02d RXX", lh_flare_number);
+				}
+			}
+	}
+
+	sprintf (s3, "FUEL %04d", (int) (bound (current_flight_dynamics->fuel_weight.value, 0.0, 9999.0)));
+
+	set_ka50_text_display_text ("", "", s1, s2, s3);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void set_ka50_text_display_text (char *s1, char *s2, char *s3, char *s4, char *s5)
 {
 #ifndef OGRE_EE
-	ASSERT (s1);
 
-	ASSERT (s2);
+	if(s1 != "") {
+		strncpy (text_display_line1, s1, TEXT_DISPLAY_MAX_STRING_LENGTH);
+		text_display_line1[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
 
-	ASSERT (s3);
+	if(s2 != "") {
+		strncpy (text_display_line2, s2, TEXT_DISPLAY_MAX_STRING_LENGTH);
+		text_display_line2[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
 
-	strncpy (text_display_line1, s1, TEXT_DISPLAY_MAX_STRING_LENGTH);
+	if(s3 != "") {
+		strncpy (text_display_line3, s3, TEXT_DISPLAY_MAX_STRING_LENGTH);
+		text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
 
-	strncpy (text_display_line2, s2, TEXT_DISPLAY_MAX_STRING_LENGTH);
+	if(s4 != "") {
+		strncpy (text_display_line4, s4, TEXT_DISPLAY_MAX_STRING_LENGTH);
+		text_display_line4[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
 
-	strncpy (text_display_line3, s3, TEXT_DISPLAY_MAX_STRING_LENGTH);
+	if(s5 != "") {
+		strncpy (text_display_line5, s5, TEXT_DISPLAY_MAX_STRING_LENGTH);
+		text_display_line5[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
 
-	text_display_line1[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
-
-	text_display_line2[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
-
-	text_display_line3[TEXT_DISPLAY_MAX_STRING_LENGTH] = '\0';
 #endif
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_ka50_cannon_rounds_display (void)
+{
+	char
+		c1[10] = "";
+
+	int
+		ap_rounds_number,
+		he_rounds_number,
+		damaged;
+
+	entity
+		*en;
+
+	entity_sub_types
+		selected_weapon,
+		weapon_sub_type;
+
+	en = get_gunship_entity ();
+
+	selected_weapon = get_local_entity_int_value (en, INT_TYPE_SELECTED_WEAPON);
+
+	if (get_local_entity_weapon_hardpoint_info (en, KA50_CANNON_TURRET, ENTITY_SUB_TYPE_WEAPON_2A42_30MM_AP_ROUND, &weapon_sub_type, &ap_rounds_number, &damaged))
+	{
+		if (!damaged && weapon_sub_type == selected_weapon) {
+			sprintf	(c1, "%02d", ap_rounds_number > 0 ? (ap_rounds_number - 1) / 10 + 1 : 0);
+		}
+	}
+
+	if (get_local_entity_weapon_hardpoint_info (en, KA50_CANNON_TURRET, ENTITY_SUB_TYPE_WEAPON_2A42_30MM_HE_ROUND, &weapon_sub_type, &he_rounds_number, &damaged))
+	{
+		if (!damaged && weapon_sub_type == selected_weapon) {
+			sprintf	(c1, "%02d", he_rounds_number > 0 ? (he_rounds_number - 1) / 10 + 1 : 0);
+		}
+	}
+
+	set_ka50_cannon_rounds_display_text (c1);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void set_ka50_cannon_rounds_display_text (char *c1)
+{
+#ifndef OGRE_EE
+
+	if(c1 != "") {
+		strncpy (cannon_rounds, c1, CANNON_DISPLAY_MAX_STRING_LENGTH);
+		cannon_rounds[CANNON_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
+
+#endif
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_ka50_weapon_rounds_display (void)
+{
+	char
+		w1[80] = "";
+
+	int
+		inner_lhs_number,
+		inner_rhs_number,
+		inner_total_rnds,
+		inner_lhs_pylon,
+		inner_rhs_pylon,
+		outer_lhs_number,
+		outer_rhs_number,
+		outer_total_rnds,
+		outer_lhs_pylon,
+		outer_rhs_pylon,
+		damaged;
+
+	entity
+		*en;
+
+	entity_sub_types
+		selected_weapon,
+		inner_weapon_sub_type,
+		outer_weapon_sub_type;
+
+	en = get_gunship_entity ();
+
+	selected_weapon = get_local_entity_int_value (en, INT_TYPE_SELECTED_WEAPON);
+
+	inner_lhs_pylon = get_local_entity_weapon_hardpoint_info (en, KA50_LHS_INNER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &inner_weapon_sub_type, &inner_lhs_number, &damaged);
+	inner_rhs_pylon = get_local_entity_weapon_hardpoint_info (en, KA50_RHS_INNER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &inner_weapon_sub_type, &inner_rhs_number, &damaged);
+
+	outer_lhs_pylon = get_local_entity_weapon_hardpoint_info (en, KA50_LHS_OUTER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &outer_weapon_sub_type, &outer_lhs_number, &damaged);
+	outer_rhs_pylon = get_local_entity_weapon_hardpoint_info (en, KA50_RHS_OUTER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &outer_weapon_sub_type, &outer_rhs_number, &damaged);
+
+	inner_total_rnds = inner_lhs_number + inner_rhs_number;
+	outer_total_rnds = outer_lhs_number + outer_rhs_number;
+
+	if (inner_lhs_pylon || inner_rhs_pylon)
+	{
+		if (!damaged) {
+			if (inner_weapon_sub_type == selected_weapon) {
+				sprintf	(w1, "%02d", inner_total_rnds);
+			}
+		}
+	}
+
+	if (outer_lhs_pylon || outer_rhs_pylon)
+	{
+		if (!damaged) {
+			if (outer_weapon_sub_type == selected_weapon) {
+				sprintf	(w1, "%02d", outer_total_rnds);
+			}
+		}
+	}
+
+	set_ka50_weapon_rounds_display_text (w1);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void set_ka50_weapon_rounds_display_text (char *w1)
+{
+#ifndef OGRE_EE
+
+	if(w1 != "") {
+		strncpy (weapon_rounds, w1, WEAPON_DISPLAY_MAX_STRING_LENGTH);
+		weapon_rounds[WEAPON_DISPLAY_MAX_STRING_LENGTH] = '\0';
+	}
+
+#endif
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void update_ka50_weapon_name_display (void)
+{
+	int
+		inner_pylons,
+		outer_pylons,
+		cannon_ap,
+		cannon_he,
+		number,
+		damaged;
+
+	entity
+		*en;
+
+	entity_sub_types
+		weapon_sub_type,
+		selected_weapon;
+
+	en = get_gunship_entity ();
+
+	selected_weapon = get_local_entity_int_value (en, INT_TYPE_SELECTED_WEAPON);
+
+	cannon_ap = get_local_entity_weapon_hardpoint_info (en, KA50_CANNON_TURRET, ENTITY_SUB_TYPE_WEAPON_2A42_30MM_AP_ROUND, &weapon_sub_type, &number, &damaged);
+
+	if (cannon_ap && weapon_sub_type == selected_weapon)
+	{
+		print_mono_font_string (weapon_database[weapon_sub_type].abbrev);
+	}
+
+	cannon_he = get_local_entity_weapon_hardpoint_info (en, KA50_CANNON_TURRET, ENTITY_SUB_TYPE_WEAPON_2A42_30MM_HE_ROUND, &weapon_sub_type, &number, &damaged);
+
+	if (cannon_he && weapon_sub_type == selected_weapon)
+	{
+		print_mono_font_string (weapon_database[weapon_sub_type].abbrev);
+	}
+
+	inner_pylons = get_local_entity_weapon_hardpoint_info (en, KA50_LHS_INNER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &weapon_sub_type, &number, &damaged);
+
+	if (inner_pylons && weapon_sub_type == selected_weapon)
+	{
+		print_mono_font_string (weapon_database[weapon_sub_type].abbrev);
+	}
+
+	outer_pylons = get_local_entity_weapon_hardpoint_info (en, KA50_LHS_OUTER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, &weapon_sub_type, &number, &damaged);
+
+	if (outer_pylons && weapon_sub_type == selected_weapon)
+	{
+		print_mono_font_string (weapon_database[weapon_sub_type].abbrev);
+	}
 }
 
 #ifndef OGRE_EE
@@ -7371,6 +8016,12 @@ void draw_ka50_full_screen_display (void)
 
 	switch (mode)
 	{
+		case KA50_MFD_MODE_FLIR:		//  Javelin  7/19
+		{
+			draw_3d_flir_mfd (TRUE);
+
+			break;
+		}
 		case KA50_MFD_MODE_LLLTV:
 		{
 			draw_3d_llltv_mfd (TRUE);
@@ -7430,6 +8081,12 @@ void draw_ka50_full_screen_display (void)
 
 		switch (mode)
 		{
+			case KA50_MFD_MODE_FLIR:		//  Javelin  7/19
+			{
+				draw_2d_flir_mfd (TRUE);
+
+				break;
+			}
 			case KA50_MFD_MODE_LLLTV:
 			{
 				draw_2d_llltv_mfd (TRUE);
@@ -7760,6 +8417,38 @@ static void draw_overlaid_mfd (screen *mfd_screen, ka50_mfd_modes mode, ka50_mfd
 
 				unlock_screen (mfd_screen);
 			}
+
+			break;
+		}
+		////////////////////////////////////////
+		case KA50_MFD_MODE_FLIR:					//  Javelin  7/19
+		////////////////////////////////////////
+		{
+			if (!ka50_damage.flir)
+			{
+				draw_full_screen_3d_eo_display (&ka50_flir, TARGET_ACQUISITION_SYSTEM_FLIR, DISPLAY_3D_TINT_FLIR);
+			}
+			else
+			{
+				draw_translucent_mfd_background (mfd_screen_x_min, mfd_screen_y_min, mfd_screen_x_max, mfd_screen_y_max);
+			}
+
+			set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
+
+			set_active_screen (mfd_screen);
+
+			if (lock_screen (mfd_screen))
+			{
+				set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, clear_mfd_colour);
+
+				draw_mfd_layout_grid ();
+
+				draw_2d_flir_mfd (TRUE);
+
+				unlock_screen (mfd_screen);
+			}
+
+			set_pilots_full_screen_params (FALSE);
 
 			break;
 		}
@@ -8122,6 +8811,9 @@ void draw_overlaid_ka50_mfd (void)
 		shkval_mfd_texture_screen = large_shkval_mfd_texture_screen;
 		abris_mfd_texture_screen = large_abris_mfd_texture_screen;
 		ekran_display_texture_screen = large_ekran_display_texture_screen;
+		cannon_rounds_display_texture_screen = cannon_rounds_display_screen;
+		weapon_rounds_display_texture_screen = weapon_rounds_display_screen;
+		weapon_name_display_texture_screen = weapon_name_display_screen;
 
 		eo_3d_texture_screen = large_eo_3d_texture_screen;
 		eo_3d_texture_screen_over = large_eo_3d_texture_screen_over;
@@ -8133,6 +8825,9 @@ void draw_overlaid_ka50_mfd (void)
 		shkval_mfd_texture_screen = small_shkval_mfd_texture_screen;
 		abris_mfd_texture_screen = small_abris_mfd_texture_screen;
 		ekran_display_texture_screen = small_ekran_display_texture_screen;
+		cannon_rounds_display_texture_screen = cannon_rounds_display_screen;
+		weapon_rounds_display_texture_screen = weapon_rounds_display_screen;
+		weapon_name_display_texture_screen = weapon_name_display_screen;
 
 		eo_3d_texture_screen = small_eo_3d_texture_screen;
 		eo_3d_texture_screen_over = small_eo_3d_texture_screen_over;
@@ -8141,6 +8836,9 @@ void draw_overlaid_ka50_mfd (void)
 	set_system_texture_screen (shkval_mfd_texture_screen, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_2);
 	set_system_texture_screen (abris_mfd_texture_screen, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_1);
 	set_system_texture_screen (ekran_display_texture_screen, TEXTURE_INDEX_HOKUM_COCKPIT_EKRAN);
+	set_system_texture_screen (cannon_rounds_display_texture_screen, TEXTURE_INDEX_COMANCHE_MFD1);
+	set_system_texture_screen (weapon_rounds_display_texture_screen, TEXTURE_INDEX_COMANCHE_MFD2);
+	set_system_texture_screen (weapon_name_display_texture_screen, TEXTURE_INDEX_COMANCHE_MFD3);
 
 	////////////////////////////////////////
 	//
@@ -8212,7 +8910,11 @@ static ka50_mfd_modes get_mfd_mode_for_eo_sensor (void)
 	ka50_mfd_modes
 		mfd_mode;
 
-	if (eo_sensor == TARGET_ACQUISITION_SYSTEM_LLLTV)
+	if (eo_sensor == TARGET_ACQUISITION_SYSTEM_FLIR)		//  Javelin  7/19
+	{
+		mfd_mode = KA50_MFD_MODE_FLIR;
+	}
+	else if (eo_sensor == TARGET_ACQUISITION_SYSTEM_LLLTV)
 	{
 		mfd_mode = KA50_MFD_MODE_LLLTV;
 	}
@@ -8359,6 +9061,22 @@ static ka50_mfd_modes get_next_mfd_mode (ka50_mfd_modes mfd_mode, ka50_mfd_locat
 			break;
 		}
 		////////////////////////////////////////
+		case KA50_MFD_MODE_FLIR:					//  Javelin  7/19
+		////////////////////////////////////////
+		{
+			next_mfd_mode = KA50_MFD_MODE_LLLTV;
+
+			break;
+		}
+		////////////////////////////////////////
+		case KA50_MFD_MODE_LLLTV:					//  Javelin  7/19
+		////////////////////////////////////////
+		{
+			next_mfd_mode = KA50_MFD_MODE_FLIR;
+
+			break;
+		}
+		////////////////////////////////////////
 		case KA50_MFD_MODE_TSD:
 		////////////////////////////////////////
 		{
@@ -8455,6 +9173,22 @@ static ka50_mfd_modes get_previous_mfd_mode (ka50_mfd_modes mfd_mode, ka50_mfd_l
 		////////////////////////////////////////
 		{
 			previous_mfd_mode = KA50_MFD_MODE_DAMAGED;
+
+			break;
+		}
+		////////////////////////////////////////
+		case KA50_MFD_MODE_FLIR:					//  Javelin  7/19
+		////////////////////////////////////////
+		{
+			previous_mfd_mode = KA50_MFD_MODE_LLLTV;
+
+			break;
+		}
+		////////////////////////////////////////
+		case KA50_MFD_MODE_LLLTV:					//  Javelin  7/19
+		////////////////////////////////////////
+		{
+			previous_mfd_mode = KA50_MFD_MODE_FLIR;
 
 			break;
 		}
@@ -8708,18 +9442,44 @@ void auto_page_ka50_ase_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void select_ka50_eo_mfd (void)
+void select_ka50_eo_mfd (target_acquisition_systems system)		//  Javelin  7/19
 {
-	if (shkval_mfd_mode == KA50_MFD_MODE_LLLTV)
+	switch (system)
 	{
-		return;
-	}
-
-	if ((shkval_mfd_mode == KA50_MFD_MODE_OFF) && (!ka50_damage.shkval_mfd))
-	{
-		select_ka50_mfd_mode (get_mfd_mode_for_eo_sensor (), KA50_MFD_LOCATION_SHKVAL);
-
-		return;
+		////////////////////////////////////////
+		case TARGET_ACQUISITION_SYSTEM_OFF:
+		////////////////////////////////////////
+		{
+			select_ka50_mfd_mode (KA50_MFD_MODE_OFF, KA50_MFD_LOCATION_SHKVAL);
+			return;
+		}
+		////////////////////////////////////////
+		case TARGET_ACQUISITION_SYSTEM_FLIR:		
+		////////////////////////////////////////
+		{
+			select_ka50_mfd_mode (KA50_MFD_MODE_FLIR, KA50_MFD_LOCATION_SHKVAL);
+			return;
+		}
+		////////////////////////////////////////
+		case TARGET_ACQUISITION_SYSTEM_LLLTV:
+		////////////////////////////////////////
+		{
+			select_ka50_mfd_mode (KA50_MFD_MODE_LLLTV, KA50_MFD_LOCATION_SHKVAL);
+			return;
+		}
+		////////////////////////////////////////
+		case TARGET_ACQUISITION_SYSTEM_HMS:
+		////////////////////////////////////////
+		{
+			return;
+		}
+		////////////////////////////////////////
+		default:
+		////////////////////////////////////////
+		{
+			debug_fatal ("Invalid shkval targeting system = %d", system);
+			return;
+		}
 	}
 }
 

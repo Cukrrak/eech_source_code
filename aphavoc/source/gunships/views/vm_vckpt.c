@@ -170,7 +170,7 @@ static float get_rotate_left_limit(void) {
 	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
 	{
-		limit = rad(MAX_LOOK_ANGLE_LEFT_RIGHT2);
+		limit = rad (MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
 		break;
 	}
@@ -282,7 +282,7 @@ static float get_rotate_right_limit(void) {
 	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
 	{
-		limit = rad(-MAX_LOOK_ANGLE_LEFT_RIGHT2);
+		limit = rad (-MAX_LOOK_ANGLE_LEFT_RIGHT1);
 
 		break;
 	}
@@ -504,7 +504,7 @@ static float get_rotate_down_limit(void) {
 	case GUNSHIP_TYPE_KA50:
 		////////////////////////////////////////
 	{
-		limit = rad(-MAX_LOOK_ANGLE_DOWN2);
+		limit = rad (-MAX_LOOK_ANGLE_DOWN1);
 
 		break;
 	}
@@ -1081,16 +1081,16 @@ void get_pilot_head_viewpoint(void) {
 		case GUNSHIP_TYPE_VIPER:
 			////////////////////////////////////////
 		{
-//VJ#	this does the proper viepoint?
-			get_viper_crew_viewpoint();
+//VJ#	this does the proper viewpoint?
+			get_viper_crew_viewpoint ();
 
 			break;
 		}
 		case GUNSHIP_TYPE_KIOWA:
 			////////////////////////////////////////
 		{
-//VJ#	this does the proper viepoint?
-			get_kiowa_crew_viewpoint();
+//VJ#	this does the proper viewpoint?
+			get_kiowa_crew_viewpoint ();
 
 			break;
 		}

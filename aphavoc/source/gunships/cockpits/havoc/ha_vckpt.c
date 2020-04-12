@@ -557,7 +557,7 @@ void update_havoc_virtual_cockpit (void)
 	update_status_lamps();
 	update_warning_lamps();
 	update_chaff_flare_status_lamps();
-	update_weapon_panel_Lamps();
+	update_weapon_panel_lamps();
 	#endif
 }
 
@@ -1115,6 +1115,28 @@ void draw_havoc_internal_virtual_cockpit (unsigned int flags)
 
 					search.result_sub_object->relative_roll = -reng_rpm;
 				}
+
+
+				////////////////////////////////////////
+				//
+				// ENGINE STATUS BARS - MFD STYLE		//  Javelin  7/19
+				//
+				////////////////////////////////////////
+
+				search.search_depth = 0;
+				search.search_object = virtual_cockpit_instrument_needles_inst3d;
+				search.sub_object_index = OBJECT_3D_SUB_OBJECT_HAVOC_TRQ_GAUGE;  //  trq_gauge.eeo in NEEDLES
+
+				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+				{
+					draw_engine_mfd_on_texture ();
+
+					//search.result_sub_object->relative_roll = -0.35;  //  Tests to see if we got the right Object
+					//search.result_sub_object->relative_scale.x = 1.5;
+					search.result_sub_object->relative_position.x = 0.05;
+					search.result_sub_object->relative_position.y = 0.01;
+				}
+
 
 				////////////////////////////////////////
 				//
@@ -2086,7 +2108,7 @@ void update_chaff_flare_status_lamps(void)
 #endif
 
 #ifndef OGRE_EE
-void update_weapon_panel_Lamps(void)
+void update_weapon_panel_lamps(void)
 {
 	he_cann_lamp->visible_object = havoc_lamps.weapons_management_high_explosive_cannon_green;
 	he_cann_dmg_lamp->visible_object = havoc_lamps.weapons_management_high_explosive_cannon_red;
