@@ -823,17 +823,6 @@ void set_blackhawk_avionics_events (void)
 //	set_event (DIK_0, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_mission_mfd_event);
 
 	set_event (DIK_C, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, toggle_blackhawk_canopy_doors);
-
-	////////////////////////////////////////
-	//
-	// JOYSTICK EVENTS
-	//
-	////////////////////////////////////////
-
-	set_event ((JOYSTICK_BUTTON + 4), MODIFIER_NONE, KEY_STATE_DOWN, virtual_cockpit_track_target_event);
-
-	set_event (DIK_J, MODIFIER_NONE, KEY_STATE_DOWN, toggle_radar_jammer_event);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
