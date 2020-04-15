@@ -87,7 +87,12 @@ static rgb_colour
 
 static screen
 	*left_ng_screen,
-	*right_ng_screen;
+	*right_ng_screen,
+	*left_tgt_screen,
+	*right_tgt_screen,
+	*left_trq_screen,
+	*right_trq_screen,
+	*fuel_quantity_screen;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,13 +197,13 @@ static void display_left_ng (void)
 	float y = 1.0;
 	char buffer[64];
 
-	set_mono_font_type(MONO_FONT_TYPE_10X16);
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%03d%", (int) (bound(current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0)));
+	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0)*10));
 
 	set_mono_font_position(0.0, y);
-	set_mono_font_rel_position(3.0, 10.0);
+	set_mono_font_rel_position(0.0, 0.0);
 
 	print_mono_font_string(buffer);
 }
@@ -212,13 +217,93 @@ static void display_right_ng (void)
 	float y = 1.0;
 	char buffer[64];
 
-	set_mono_font_type(MONO_FONT_TYPE_10X16);
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%03d%", (int) (bound(current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0)));
+	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0)*10));
 
 	set_mono_font_position(0.0, y);
-	set_mono_font_rel_position(3.0, 10.0);
+	set_mono_font_rel_position(0.0, 0.0);
+
+	print_mono_font_string(buffer);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void display_left_tgt (void)
+{
+	float y = 1.0;
+	char buffer[64];
+
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
+	set_mono_font_colour(text_colour);
+
+	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->left_engine_temp.value, 0.0, 1000.0)));
+
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(0.0, 0.0);
+
+	print_mono_font_string(buffer);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void display_right_tgt (void)
+{
+	float y = 1.0;
+	char buffer[64];
+
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
+	set_mono_font_colour(text_colour);
+
+	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->right_engine_temp.value, 0.0, 1000.0)));
+
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(0.0, 0.0);
+
+	print_mono_font_string(buffer);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void display_left_trq (void)
+{
+	float y = 1.0;
+	char buffer[64];
+
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
+	set_mono_font_colour(text_colour);
+
+	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->left_engine_torque.value, 0.0, 120.0)));
+
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(0.0, 0.0);
+
+	print_mono_font_string(buffer);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void display_right_trq (void)
+{
+	float y = 1.0;
+	char buffer[64];
+
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
+	set_mono_font_colour(text_colour);
+
+	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->right_engine_torque.value, 0.0, 120.0)));
+
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(0.0, 0.0);
 
 	print_mono_font_string(buffer);
 }
@@ -232,13 +317,13 @@ static void display_fuel (void)
 	float y = 1.0;
 	char buffer[64];
 
-	set_mono_font_type(MONO_FONT_TYPE_10X16);
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%04d", (int) (bound (kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 2500.0)));
+	sprintf (buffer, "%d", (int) (bound (kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 2500.0)));
 
 	set_mono_font_position(0.0, y);
-	set_mono_font_rel_position(3.0, 10.0);
+	set_mono_font_rel_position(-1.0, 0.0);
 
 	print_mono_font_string(buffer);
 }
@@ -249,13 +334,20 @@ static void display_fuel (void)
 
 void initialise_blackhawk_upfront_display (void)
 {
-	left_ng_screen = create_system_texture_screen (35, 35, TEXTURE_INDEX_AVCKPT_DISPLAY_UPFRONT, TEXTURE_TYPE_SINGLEALPHA);
+	left_ng_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_RHS_1, TEXTURE_TYPE_SINGLEALPHA);
+	right_ng_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_RHS_2, TEXTURE_TYPE_SINGLEALPHA);
 
-	right_ng_screen = create_system_texture_screen (35, 35, TEXTURE_INDEX_BHCKPT_RIGHT_NG_DISPLAY, TEXTURE_TYPE_SINGLEALPHA);
+	left_tgt_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_1, TEXTURE_TYPE_SINGLEALPHA);
+	right_tgt_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_2, TEXTURE_TYPE_SINGLEALPHA);
 
-	set_rgb_colour (text_colour, 65, 194, 130, 255);
+	left_trq_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_AVCKPT_DISPLAY_LHS_MFD, TEXTURE_TYPE_SINGLEALPHA);
+	right_trq_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_COMANCHE_MFD1, TEXTURE_TYPE_SINGLEALPHA);
 
-	set_rgb_colour (clear_colour,180, 240, 0, 0);
+	fuel_quantity_screen = create_system_texture_screen (69, 26, TEXTURE_INDEX_AVCKPT_DISPLAY_UPFRONT, TEXTURE_TYPE_SINGLEALPHA);
+
+	set_rgb_colour (text_colour, 65, 211, 42, 255);
+
+	set_rgb_colour (clear_colour, 180, 240, 0, 0);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,8 +357,15 @@ void initialise_blackhawk_upfront_display (void)
 void deinitialise_blackhawk_upfront_display (void)
 {
 	destroy_screen (left_ng_screen);
-
 	destroy_screen (right_ng_screen);
+
+	destroy_screen (left_tgt_screen);
+	destroy_screen (right_tgt_screen);
+
+	destroy_screen (left_trq_screen);
+	destroy_screen (right_trq_screen);
+
+	destroy_screen (fuel_quantity_screen);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,7 +412,11 @@ void draw_blackhawk_upfront_display_on_texture (void)
 {
 	draw_left_ng_display_on_texture();
 	draw_right_ng_display_on_texture();
-//	draw_fuel_display_on_texture();
+	draw_left_tgt_display_on_texture();
+	draw_right_tgt_display_on_texture();
+	draw_left_trq_display_on_texture();
+	draw_right_trq_display_on_texture();
+	draw_fuel_display_on_texture();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -326,7 +429,7 @@ void draw_left_ng_display_on_texture (void)
 
 	if (lock_screen (left_ng_screen))
 	{
-		set_block (0, 0, 33, 33, clear_colour);
+		set_block (0, 0, (left_ng_screen->width-1), (left_ng_screen->height-1), clear_colour);
 
 		display_left_ng ();
 
@@ -346,7 +449,7 @@ void draw_right_ng_display_on_texture (void)
 
 	if (lock_screen (right_ng_screen))
 	{
-		set_block (0, 0, 33, 33, clear_colour);
+		set_block (0, 0, (right_ng_screen->width-1), (right_ng_screen->height-1), clear_colour);
 
 		display_right_ng ();
 
@@ -360,17 +463,97 @@ void draw_right_ng_display_on_texture (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void draw_left_tgt_display_on_texture (void)
+{
+	set_active_screen (left_tgt_screen);
+
+	if (lock_screen (left_tgt_screen))
+	{
+		set_block (0, 0, (left_tgt_screen->width-1), (left_tgt_screen->height-1), clear_colour);
+
+		display_left_tgt ();
+
+		unlock_screen (left_tgt_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_right_tgt_display_on_texture (void)
+{
+	set_active_screen (right_tgt_screen);
+
+	if (lock_screen (right_tgt_screen))
+	{
+		set_block (0, 0, (right_tgt_screen->width-1), (right_tgt_screen->height-1), clear_colour);
+
+		display_right_tgt ();
+
+		unlock_screen (right_tgt_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_left_trq_display_on_texture (void)
+{
+	set_active_screen (left_trq_screen);
+
+	if (lock_screen (left_trq_screen))
+	{
+		set_block (0, 0, (left_trq_screen->width-1), (left_trq_screen->height-1), clear_colour);
+
+		display_left_trq ();
+
+		unlock_screen (left_trq_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_right_trq_display_on_texture (void)
+{
+	set_active_screen (right_trq_screen);
+
+	if (lock_screen (right_trq_screen))
+	{
+		set_block (0, 0, (right_trq_screen->width-1), (right_trq_screen->height-1), clear_colour);
+
+		display_right_trq ();
+
+		unlock_screen (right_trq_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void draw_fuel_display_on_texture (void)
 {
-	set_active_screen (right_ng_screen);
+	set_active_screen (fuel_quantity_screen);
 
-	if (lock_screen (right_ng_screen))
+	if (lock_screen (fuel_quantity_screen))
 	{
-		set_block (0, 0, 33, 33, clear_colour);
+		set_block (0, 0, (fuel_quantity_screen->width-1), (fuel_quantity_screen->height-1), clear_colour);
 
-		display_right_ng ();
+		display_fuel ();
 
-		unlock_screen (right_ng_screen);
+		unlock_screen (fuel_quantity_screen);
 	}
 
 	set_active_screen (video_screen);

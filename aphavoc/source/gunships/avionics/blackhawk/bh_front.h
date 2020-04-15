@@ -78,6 +78,14 @@ void draw_left_ng_display_on_texture (void);
 
 void draw_right_ng_display_on_texture (void);
 
+void draw_left_tgt_display_on_texture (void);
+
+void draw_right_tgt_display_on_texture (void);
+
+void draw_left_trq_display_on_texture (void);
+
+void draw_right_trq_display_on_texture (void);
+
 void draw_fuel_display_on_texture (void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

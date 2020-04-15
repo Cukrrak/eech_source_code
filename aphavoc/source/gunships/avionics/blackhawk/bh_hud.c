@@ -2327,7 +2327,7 @@ void initialise_blackhawk_hud (void)
 {
 	hud_env = create_2d_environment ();
 
-	hud_texture_screen = create_system_texture_screen (HUD_VIEWPORT_SIZE, HUD_VIEWPORT_SIZE, TEXTURE_INDEX_AVCKPT_DISPLAY_LHS_MFD, TEXTURE_TYPE_SINGLEALPHA);
+	hud_texture_screen = create_system_texture_screen (HUD_VIEWPORT_SIZE, HUD_VIEWPORT_SIZE, TEXTURE_INDEX_HOKUM_COCKPIT_EKRAN, TEXTURE_TYPE_SINGLEALPHA);
 
 	lens_hud_texture_screen = create_system_texture_screen (LENS_HUD_VIEWPORT_SIZE, LENS_HUD_VIEWPORT_SIZE, TEXTURE_INDEX_COMANCHE_HIDDS, TEXTURE_TYPE_SINGLEALPHA);
 
@@ -2605,7 +2605,7 @@ void draw_blackhawk_hud (void)
 			set_d3d_texture_mip_filtering (FALSE);
 		}
 
-		set_d3d_flat_shaded_textured_renderstate (get_system_texture_ptr (TEXTURE_INDEX_AVCKPT_DISPLAY_LHS_MFD));
+		set_d3d_flat_shaded_textured_renderstate (get_system_texture_ptr (TEXTURE_INDEX_HOKUM_COCKPIT_EKRAN));
 
 		////////////////////////////////////////
 		//
