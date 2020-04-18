@@ -89,8 +89,10 @@ union BLACKHAWK_DAMAGE_FLAGS
 			lh_inner_pylon				:1,	// 15
 			rh_outer_pylon				:1,	// 16
 			rh_inner_pylon				:1,	// 17
-			chaff_dispenser			:1,	// 18
-			flare_dispenser			:1;	// 19
+			lh_chaff_dispenser			:1,	// 18
+			rh_chaff_dispenser			:1,	// 19
+			lh_flare_dispenser			:1,	// 20
+			rh_flare_dispenser			:1;	// 21
 	};
 };
 

@@ -86,13 +86,11 @@ static rgb_colour
 	clear_colour;
 
 static screen
-	*left_ng_screen,
-	*right_ng_screen,
-	*left_tgt_screen,
-	*right_tgt_screen,
-	*left_trq_screen,
-	*right_trq_screen,
-	*fuel_quantity_screen;
+	*ng_screen,
+	*tgt_screen,
+	*trq_screen,
+	*fuel_quantity_screen,
+	*chaff_flare_screen;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +190,7 @@ static screen
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void display_left_ng (void)
+static void display_ng (void)
 {
 	float y = 1.0;
 	char buffer[64];
@@ -200,7 +198,8 @@ static void display_left_ng (void)
 	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0)*10));
+	sprintf (buffer, "%d %d", (int) (bound(current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0)*10),
+			(int) (bound(current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0)*10));
 
 	set_mono_font_position(0.0, y);
 	set_mono_font_rel_position(0.0, 0.0);
@@ -212,7 +211,7 @@ static void display_left_ng (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void display_right_ng (void)
+static void display_tgt (void)
 {
 	float y = 1.0;
 	char buffer[64];
@@ -220,7 +219,8 @@ static void display_right_ng (void)
 	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0)*10));
+	sprintf (buffer, "%d %d", (int) (bound(current_flight_dynamics->left_engine_temp.value, 0.0, 1000.0)),
+			(int) (bound(current_flight_dynamics->right_engine_temp.value, 0.0, 1000.0)));
 
 	set_mono_font_position(0.0, y);
 	set_mono_font_rel_position(0.0, 0.0);
@@ -232,7 +232,7 @@ static void display_right_ng (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void display_left_tgt (void)
+static void display_trq (void)
 {
 	float y = 1.0;
 	char buffer[64];
@@ -240,67 +240,8 @@ static void display_left_tgt (void)
 	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->left_engine_temp.value, 0.0, 1000.0)));
-
-	set_mono_font_position(0.0, y);
-	set_mono_font_rel_position(0.0, 0.0);
-
-	print_mono_font_string(buffer);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void display_right_tgt (void)
-{
-	float y = 1.0;
-	char buffer[64];
-
-	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
-	set_mono_font_colour(text_colour);
-
-	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->right_engine_temp.value, 0.0, 1000.0)));
-
-	set_mono_font_position(0.0, y);
-	set_mono_font_rel_position(0.0, 0.0);
-
-	print_mono_font_string(buffer);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void display_left_trq (void)
-{
-	float y = 1.0;
-	char buffer[64];
-
-	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
-	set_mono_font_colour(text_colour);
-
-	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->left_engine_torque.value, 0.0, 120.0)));
-
-	set_mono_font_position(0.0, y);
-	set_mono_font_rel_position(0.0, 0.0);
-
-	print_mono_font_string(buffer);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void display_right_trq (void)
-{
-	float y = 1.0;
-	char buffer[64];
-
-	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
-	set_mono_font_colour(text_colour);
-
-	sprintf (buffer, "%d", (int) (bound(current_flight_dynamics->right_engine_torque.value, 0.0, 120.0)));
+	sprintf (buffer, "%02d %02d", (int) (bound(current_flight_dynamics->left_engine_torque.value, 0.0, 120.0)),
+							(int) (bound(current_flight_dynamics->right_engine_torque.value, 0.0, 120.0)));
 
 	set_mono_font_position(0.0, y);
 	set_mono_font_rel_position(0.0, 0.0);
@@ -332,18 +273,117 @@ static void display_fuel (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+static void display_chaff_flare (void)
+{
+	float y = 1.0;
+	char buffer[64];
+
+//	int
+//		lh_chaff,
+//		rh_chaff,
+//		lh_chaff_number,
+//		rh_chaff_number,
+//		total_chaff,
+//		lh_flare,
+//		rh_flare,
+//		lh_flare_number,
+//		rh_flare_number,
+//		total_flare,
+//		damaged;
+
+	entity
+		*en;
+
+//	entity_sub_types
+//		weapon_sub_type;
+
+	en = get_gunship_entity ();
+
+	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
+	set_mono_font_colour(text_colour);
+
+	sprintf (buffer, "%d          %d", get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_CHAFF), get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_FLARE));
+
+//	lh_chaff = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_LHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &lh_chaff_number, &damaged);
+//	rh_chaff = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &rh_chaff_number, &damaged);
+//	lh_flare = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_LHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &lh_flare_number, &damaged);
+//	rh_flare = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_RHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &rh_flare_number, &damaged);
+//
+//	if (lh_chaff || rh_chaff || lh_flare || rh_flare)
+//	{
+//		if (!damaged)
+//		{
+////			total_chaff = lh_chaff_number + rh_chaff_number;
+////			total_flare = lh_flare_number + rh_flare_number;
+//
+//			sprintf (buffer, "%d %d", get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_CHAFF), get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_FLARE));
+//		}
+////		else if (damaged)
+////			{
+////				if (blackhawk_damage.lh_chaff_dispenser)
+////				{
+////					total_chaff = rh_chaff_number;
+////					total_flare = lh_flare_number + rh_flare_number;
+////
+////					sprintf (buffer, "%d %d", total_chaff, total_flare);
+////				}
+////
+////				if (blackhawk_damage.rh_chaff_dispenser)
+////				{
+////					total_chaff = lh_chaff_number;
+////					total_flare = lh_flare_number + rh_flare_number;
+////
+////					sprintf (buffer, "%d %d", total_chaff, total_flare);
+////				}
+////
+////				if (blackhawk_damage.lh_flare_dispenser)
+////				{
+////					total_chaff = lh_chaff_number + rh_chaff_number;
+////					total_flare = rh_flare_number;
+////
+////					sprintf (buffer, "%d %d", total_chaff, total_flare);
+////				}
+////
+////				if (blackhawk_damage.rh_flare_dispenser)
+////				{
+////					total_chaff = lh_chaff_number + rh_chaff_number;
+////					total_flare = lh_flare_number;
+////
+////					sprintf (buffer, "%d %d", total_chaff, total_flare);
+////				}
+////
+////				if (blackhawk_damage.lh_chaff_dispenser && blackhawk_damage.rh_chaff_dispenser)
+////				{
+////					sprintf (buffer, "XX %d", total_flare);
+////				}
+////				else if (blackhawk_damage.lh_flare_dispenser && blackhawk_damage.rh_flare_dispenser)
+////					{
+////						sprintf (buffer, "%d XX", total_chaff);
+////					}
+////			}
+//	}
+
+	set_mono_font_position(0.0, y);
+	set_mono_font_rel_position(15.0, 0.0);
+
+	print_mono_font_string(buffer);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void initialise_blackhawk_upfront_display (void)
 {
-	left_ng_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_RHS_1, TEXTURE_TYPE_SINGLEALPHA);
-	right_ng_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_RHS_2, TEXTURE_TYPE_SINGLEALPHA);
+	ng_screen = create_system_texture_screen (125, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_RHS_1, TEXTURE_TYPE_SINGLEALPHA);
 
-	left_tgt_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_1, TEXTURE_TYPE_SINGLEALPHA);
-	right_tgt_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_2, TEXTURE_TYPE_SINGLEALPHA);
+	tgt_screen = create_system_texture_screen (125, 26, TEXTURE_INDEX_HOKUM_COCKPIT_MFD_LHS_1, TEXTURE_TYPE_SINGLEALPHA);
 
-	left_trq_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_AVCKPT_DISPLAY_LHS_MFD, TEXTURE_TYPE_SINGLEALPHA);
-	right_trq_screen = create_system_texture_screen (52, 26, TEXTURE_INDEX_COMANCHE_MFD1, TEXTURE_TYPE_SINGLEALPHA);
+	trq_screen = create_system_texture_screen (125, 26, TEXTURE_INDEX_AVCKPT_DISPLAY_LHS_MFD, TEXTURE_TYPE_SINGLEALPHA);
 
 	fuel_quantity_screen = create_system_texture_screen (69, 26, TEXTURE_INDEX_AVCKPT_DISPLAY_UPFRONT, TEXTURE_TYPE_SINGLEALPHA);
+
+	chaff_flare_screen = create_system_texture_screen (140, 26, TEXTURE_INDEX_COMANCHE_MFD1, TEXTURE_TYPE_SINGLEALPHA);
 
 	set_rgb_colour (text_colour, 65, 211, 42, 255);
 
@@ -356,16 +396,11 @@ void initialise_blackhawk_upfront_display (void)
 
 void deinitialise_blackhawk_upfront_display (void)
 {
-	destroy_screen (left_ng_screen);
-	destroy_screen (right_ng_screen);
-
-	destroy_screen (left_tgt_screen);
-	destroy_screen (right_tgt_screen);
-
-	destroy_screen (left_trq_screen);
-	destroy_screen (right_trq_screen);
-
+	destroy_screen (ng_screen);
+	destroy_screen (tgt_screen);
+	destroy_screen (trq_screen);
 	destroy_screen (fuel_quantity_screen);
+	destroy_screen (chaff_flare_screen);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,30 +445,28 @@ void update_blackhawk_upfront_display (void)
 
 void draw_blackhawk_upfront_display_on_texture (void)
 {
-	draw_left_ng_display_on_texture();
-	draw_right_ng_display_on_texture();
-	draw_left_tgt_display_on_texture();
-	draw_right_tgt_display_on_texture();
-	draw_left_trq_display_on_texture();
-	draw_right_trq_display_on_texture();
+	draw_ng_display_on_texture();
+	draw_tgt_display_on_texture();
+	draw_trq_display_on_texture();
 	draw_fuel_display_on_texture();
+	draw_chaff_flare_display_on_texture();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_left_ng_display_on_texture (void)
+void draw_ng_display_on_texture (void)
 {
-	set_active_screen (left_ng_screen);
+	set_active_screen (ng_screen);
 
-	if (lock_screen (left_ng_screen))
+	if (lock_screen (ng_screen))
 	{
-		set_block (0, 0, (left_ng_screen->width-1), (left_ng_screen->height-1), clear_colour);
+		set_block (0, 0, (ng_screen->width-1), (ng_screen->height-1), clear_colour);
 
-		display_left_ng ();
+		display_ng ();
 
-		unlock_screen (left_ng_screen);
+		unlock_screen (ng_screen);
 	}
 
 	set_active_screen (video_screen);
@@ -443,17 +476,37 @@ void draw_left_ng_display_on_texture (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_right_ng_display_on_texture (void)
+//void draw_right_ng_display_on_texture (void)
+//{
+//	set_active_screen (right_ng_screen);
+//
+//	if (lock_screen (right_ng_screen))
+//	{
+//		set_block (0, 0, (right_ng_screen->width-1), (right_ng_screen->height-1), clear_colour);
+//
+//		display_right_ng ();
+//
+//		unlock_screen (right_ng_screen);
+//	}
+//
+//	set_active_screen (video_screen);
+//}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_tgt_display_on_texture (void)
 {
-	set_active_screen (right_ng_screen);
+	set_active_screen (tgt_screen);
 
-	if (lock_screen (right_ng_screen))
+	if (lock_screen (tgt_screen))
 	{
-		set_block (0, 0, (right_ng_screen->width-1), (right_ng_screen->height-1), clear_colour);
+		set_block (0, 0, (tgt_screen->width-1), (tgt_screen->height-1), clear_colour);
 
-		display_right_ng ();
+		display_tgt ();
 
-		unlock_screen (right_ng_screen);
+		unlock_screen (tgt_screen);
 	}
 
 	set_active_screen (video_screen);
@@ -463,77 +516,17 @@ void draw_right_ng_display_on_texture (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void draw_left_tgt_display_on_texture (void)
+void draw_trq_display_on_texture (void)
 {
-	set_active_screen (left_tgt_screen);
+	set_active_screen (trq_screen);
 
-	if (lock_screen (left_tgt_screen))
+	if (lock_screen (trq_screen))
 	{
-		set_block (0, 0, (left_tgt_screen->width-1), (left_tgt_screen->height-1), clear_colour);
+		set_block (0, 0, (trq_screen->width-1), (trq_screen->height-1), clear_colour);
 
-		display_left_tgt ();
+		display_trq ();
 
-		unlock_screen (left_tgt_screen);
-	}
-
-	set_active_screen (video_screen);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_right_tgt_display_on_texture (void)
-{
-	set_active_screen (right_tgt_screen);
-
-	if (lock_screen (right_tgt_screen))
-	{
-		set_block (0, 0, (right_tgt_screen->width-1), (right_tgt_screen->height-1), clear_colour);
-
-		display_right_tgt ();
-
-		unlock_screen (right_tgt_screen);
-	}
-
-	set_active_screen (video_screen);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_left_trq_display_on_texture (void)
-{
-	set_active_screen (left_trq_screen);
-
-	if (lock_screen (left_trq_screen))
-	{
-		set_block (0, 0, (left_trq_screen->width-1), (left_trq_screen->height-1), clear_colour);
-
-		display_left_trq ();
-
-		unlock_screen (left_trq_screen);
-	}
-
-	set_active_screen (video_screen);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_right_trq_display_on_texture (void)
-{
-	set_active_screen (right_trq_screen);
-
-	if (lock_screen (right_trq_screen))
-	{
-		set_block (0, 0, (right_trq_screen->width-1), (right_trq_screen->height-1), clear_colour);
-
-		display_right_trq ();
-
-		unlock_screen (right_trq_screen);
+		unlock_screen (trq_screen);
 	}
 
 	set_active_screen (video_screen);
@@ -554,6 +547,26 @@ void draw_fuel_display_on_texture (void)
 		display_fuel ();
 
 		unlock_screen (fuel_quantity_screen);
+	}
+
+	set_active_screen (video_screen);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void draw_chaff_flare_display_on_texture (void)
+{
+	set_active_screen (chaff_flare_screen);
+
+	if (lock_screen (chaff_flare_screen))
+	{
+		set_block (0, 0, (chaff_flare_screen->width-1), (chaff_flare_screen->height-1), clear_colour);
+
+		display_chaff_flare ();
+
+		unlock_screen (chaff_flare_screen);
 	}
 
 	set_active_screen (video_screen);

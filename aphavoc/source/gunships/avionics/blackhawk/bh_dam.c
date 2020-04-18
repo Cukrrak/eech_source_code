@@ -99,12 +99,10 @@ void set_blackhawk_weapon_damage_status (void)
 	set_client_server_entity_weapon_damage (en, BLACKHAWK_RHS_OUTER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, blackhawk_damage.rh_outer_pylon);
 	set_client_server_entity_weapon_damage (en, BLACKHAWK_RHS_INNER_PYLON, ENTITY_SUB_TYPE_WEAPON_NO_WEAPON, blackhawk_damage.rh_inner_pylon);
 
-	set_client_server_entity_weapon_damage (en, BLACKHAWK_LFHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, blackhawk_damage.chaff_dispenser);
-	set_client_server_entity_weapon_damage (en, BLACKHAWK_LBHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, blackhawk_damage.chaff_dispenser);
-	set_client_server_entity_weapon_damage (en, BLACKHAWK_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, blackhawk_damage.chaff_dispenser);
-	set_client_server_entity_weapon_damage (en, BLACKHAWK_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, blackhawk_damage.chaff_dispenser);
-	set_client_server_entity_weapon_damage (en, BLACKHAWK_LFHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, blackhawk_damage.flare_dispenser);
-	set_client_server_entity_weapon_damage (en, BLACKHAWK_LBHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, blackhawk_damage.flare_dispenser);
+	set_client_server_entity_weapon_damage (en, BLACKHAWK_LHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, blackhawk_damage.lh_chaff_dispenser);
+	set_client_server_entity_weapon_damage (en, BLACKHAWK_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, blackhawk_damage.rh_chaff_dispenser);
+	set_client_server_entity_weapon_damage (en, BLACKHAWK_LHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, blackhawk_damage.lh_flare_dispenser);
+	set_client_server_entity_weapon_damage (en, BLACKHAWK_RHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, blackhawk_damage.rh_flare_dispenser);
 
 	//
 	// check if selected weapon is still available, if not, select next
@@ -217,11 +215,19 @@ void fully_repair_blackhawk_damage (void)
 
 	////////////////////////////////////////
 
-	blackhawk_damage.chaff_dispenser = FALSE;
+	blackhawk_damage.lh_chaff_dispenser = FALSE;
 
 	////////////////////////////////////////
 
-	blackhawk_damage.flare_dispenser = FALSE;
+	blackhawk_damage.rh_chaff_dispenser = FALSE;
+
+	////////////////////////////////////////
+
+	blackhawk_damage.lh_flare_dispenser = FALSE;
+
+	////////////////////////////////////////
+
+	blackhawk_damage.rh_flare_dispenser = FALSE;
 
 	////////////////////////////////////////
 
@@ -370,16 +376,30 @@ void partially_repair_blackhawk_damage (void)
 
 	////////////////////////////////////////
 
-	if (blackhawk_damage.chaff_dispenser)
+	if (blackhawk_damage.lh_chaff_dispenser)
 	{
-		blackhawk_damage.chaff_dispenser = frand1 () > 0.90;
+		blackhawk_damage.lh_chaff_dispenser = frand1 () > 0.90;
 	}
 
 	////////////////////////////////////////
 
-	if (blackhawk_damage.flare_dispenser)
+	if (blackhawk_damage.rh_chaff_dispenser)
 	{
-		blackhawk_damage.flare_dispenser = frand1 () > 0.90;
+		blackhawk_damage.rh_chaff_dispenser = frand1 () > 0.90;
+	}
+
+	////////////////////////////////////////
+
+	if (blackhawk_damage.rh_flare_dispenser)
+	{
+		blackhawk_damage.rh_flare_dispenser = frand1 () > 0.90;
+	}
+
+	////////////////////////////////////////
+
+	if (blackhawk_damage.lh_flare_dispenser)
+	{
+		blackhawk_damage.lh_flare_dispenser = frand1 () > 0.90;
 	}
 
 	////////////////////////////////////////
@@ -397,8 +417,10 @@ void repair_blackhawk_weapon_damage (void)
 	blackhawk_damage.lh_inner_pylon		= FALSE;
 	blackhawk_damage.rh_outer_pylon		= FALSE;
 	blackhawk_damage.rh_inner_pylon		= FALSE;
-	blackhawk_damage.chaff_dispenser		= FALSE;
-	blackhawk_damage.flare_dispenser		= FALSE;
+	blackhawk_damage.lh_chaff_dispenser		= FALSE;
+	blackhawk_damage.rh_chaff_dispenser		= FALSE;
+	blackhawk_damage.lh_flare_dispenser		= FALSE;
+	blackhawk_damage.rh_flare_dispenser		= FALSE;
 
 	set_blackhawk_weapon_damage_status ();
 }
@@ -700,13 +722,13 @@ static void damage_systems (blackhawk_damage_flags damage)
 
 	////////////////////////////////////////
 
-	if (damage.chaff_dispenser)
+	if (damage.lh_chaff_dispenser)
 	{
-		if (!blackhawk_damage.chaff_dispenser)
+		if (!blackhawk_damage.lh_chaff_dispenser)
 		{
 			activate_blackhawk_master_caution ();
 
-			blackhawk_damage.chaff_dispenser = TRUE;
+			blackhawk_damage.lh_chaff_dispenser = TRUE;
 
 			dynamics_damage_model (DYNAMICS_DAMAGE_AVIONICS, FALSE);
 
@@ -716,14 +738,46 @@ static void damage_systems (blackhawk_damage_flags damage)
 
 	////////////////////////////////////////
 
-	if (damage.flare_dispenser)
+	if (damage.rh_chaff_dispenser)
 	{
-		debug_log("FLARE");
-		if (!blackhawk_damage.flare_dispenser)
+		if (!blackhawk_damage.rh_chaff_dispenser)
 		{
 			activate_blackhawk_master_caution ();
 
-			blackhawk_damage.flare_dispenser = TRUE;
+			blackhawk_damage.rh_chaff_dispenser = TRUE;
+
+			dynamics_damage_model (DYNAMICS_DAMAGE_AVIONICS, FALSE);
+
+			play_client_server_warning_message (en, SPEECH_SYSTEM_CHAFF_DISPENSER_DAMAGED);
+		}
+	}
+
+	////////////////////////////////////////
+
+	if (damage.lh_flare_dispenser)
+	{
+		debug_log("FLARE");
+		if (!blackhawk_damage.lh_flare_dispenser)
+		{
+			activate_blackhawk_master_caution ();
+
+			blackhawk_damage.lh_flare_dispenser = TRUE;
+
+			dynamics_damage_model (DYNAMICS_DAMAGE_AVIONICS, FALSE);
+
+			play_client_server_warning_message (en, SPEECH_SYSTEM_FLARE_DISPENSER_DAMAGED);
+		}
+	}
+
+
+	if (damage.rh_flare_dispenser)
+	{
+		debug_log("FLARE");
+		if (!blackhawk_damage.rh_flare_dispenser)
+		{
+			activate_blackhawk_master_caution ();
+
+			blackhawk_damage.rh_flare_dispenser = TRUE;
 
 			dynamics_damage_model (DYNAMICS_DAMAGE_AVIONICS, FALSE);
 

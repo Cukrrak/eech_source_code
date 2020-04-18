@@ -4221,7 +4221,7 @@ static void draw_aircraft_survivability_equipment_display_mfd (blackhawk_mfd_loc
 
 	if (draw_large_mfd)
 	{
-		if (blackhawk_damage.chaff_dispenser)
+		if (blackhawk_damage.lh_chaff_dispenser || blackhawk_damage.rh_chaff_dispenser)
 		{
 			sprintf (buffer, "CHAFF:XX");
 		}
@@ -4238,7 +4238,7 @@ static void draw_aircraft_survivability_equipment_display_mfd (blackhawk_mfd_loc
 	}
 	else
 	{
-		if (blackhawk_damage.chaff_dispenser)
+		if (blackhawk_damage.lh_chaff_dispenser || blackhawk_damage.rh_chaff_dispenser)
 		{
 			sprintf (buffer, "C:XX");
 		}
@@ -4266,7 +4266,7 @@ static void draw_aircraft_survivability_equipment_display_mfd (blackhawk_mfd_loc
 
 	if (draw_large_mfd)
 	{
-		if (blackhawk_damage.flare_dispenser)
+		if (blackhawk_damage.lh_flare_dispenser || blackhawk_damage.rh_flare_dispenser)
 		{
 			sprintf (buffer, "FLARE:XX");
 		}
@@ -4283,7 +4283,7 @@ static void draw_aircraft_survivability_equipment_display_mfd (blackhawk_mfd_loc
 	}
 	else
 	{
-		if (blackhawk_damage.flare_dispenser)
+		if (blackhawk_damage.lh_flare_dispenser || blackhawk_damage.rh_flare_dispenser)
 		{
 			sprintf (buffer, "F:XX");
 		}
@@ -4402,7 +4402,7 @@ static void draw_weapon_display_mfd (void)
 	set_2d_mono_font_position (0.0, -0.3);
 
 	get_local_entity_weapon_hardpoint_info (get_gunship_entity (),
-		BLACKHAWK_LBHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF,
+		BLACKHAWK_LHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF,
 		&weapon_sub_type, &number, &damaged);
 
 	if (!damaged)
@@ -4428,7 +4428,7 @@ static void draw_weapon_display_mfd (void)
 
 
 	get_local_entity_weapon_hardpoint_info (get_gunship_entity (),
-		BLACKHAWK_LBHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE,
+		BLACKHAWK_LHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE,
 		&weapon_sub_type, &number, &damaged);
 
 	if (!damaged)

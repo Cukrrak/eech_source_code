@@ -74,19 +74,15 @@ extern void draw_blackhawk_upfront_display_on_texture (void);
 
 void clear_blackhawk_upfront_display(void);
 
-void draw_left_ng_display_on_texture (void);
+void draw_ng_display_on_texture (void);
 
-void draw_right_ng_display_on_texture (void);
+void draw_tgt_display_on_texture (void);
 
-void draw_left_tgt_display_on_texture (void);
-
-void draw_right_tgt_display_on_texture (void);
-
-void draw_left_trq_display_on_texture (void);
-
-void draw_right_trq_display_on_texture (void);
+void draw_trq_display_on_texture (void);
 
 void draw_fuel_display_on_texture (void);
+
+void draw_chaff_flare_display_on_texture(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

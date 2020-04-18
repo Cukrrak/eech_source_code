@@ -1730,12 +1730,10 @@ typedef int weapon_config_types;
 #define BLACKHAWK_RHS_INNER_PYLON	  		(1)
 #define BLACKHAWK_LHS_OUTER_PYLON	  		(2)
 #define BLACKHAWK_RHS_OUTER_PYLON	  		(3)
-#define BLACKHAWK_LFHS_CHAFF_DISPENSER	  		(4)
-#define BLACKHAWK_LFHS_FLARE_DISPENSER	  		(4)
-#define BLACKHAWK_LBHS_CHAFF_DISPENSER	  		(5)
-#define BLACKHAWK_LBHS_FLARE_DISPENSER	  		(5)
-#define BLACKHAWK_RHS_CHAFF_DISPENSER	  		(6)
-#define BLACKHAWK_RHS_FLARE_DISPENSER	  		(6)
+#define BLACKHAWK_LHS_CHAFF_DISPENSER	  		(4)
+#define BLACKHAWK_LHS_FLARE_DISPENSER	  		(5)
+#define BLACKHAWK_RHS_CHAFF_DISPENSER	  		(4)
+#define BLACKHAWK_RHS_FLARE_DISPENSER	  		(5)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1752,7 +1750,7 @@ typedef int weapon_config_types;
 #define HIND_RHS_OUTER_PYLON	  		(3)
 #define HIND_LHS_WING_TIP_MOUNT  		(4)
 #define HIND_RHS_WING_TIP_MOUNT  		(5)
-#define HIND_CANNON_TURRET			(6)
+#define HIND_CANNON_TURRET				(6)
 #define HIND_LHS_CHAFF_DISPENSER		(7)
 #define HIND_RHS_CHAFF_DISPENSER		(8)
 #define HIND_LHS_FLARE_DISPENSER		(7)
