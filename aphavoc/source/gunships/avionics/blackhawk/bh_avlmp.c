@@ -1510,130 +1510,201 @@ static void update_reng_trq_leds(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void update_fuel_leds(void) {
-	float fuel_level;
+	float
+		fuel_level,
+		lfuel_level,
+		rfuel_level;
 
 	clear_fuel_leds();
 
-	fuel_level = bound(current_flight_dynamics->fuel_weight.value, 0.0, 1500.0);
+	fuel_level = bound(kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 1500.0);
 
-	if (fuel_level > 5 && fuel_level < 20) {
+	lfuel_level = ((fuel_level / 2.0) * 0.1);
+	rfuel_level = ((fuel_level / 2.0) * 0.1);
+
+	// Left tank
+
+	if (lfuel_level > 5 && lfuel_level < 20) {
 		blackhawk_lamps.lfuel_tank_yellow1 = 1;
+	}
+	if (lfuel_level > 10 && lfuel_level < 20) {
+		blackhawk_lamps.lfuel_tank_yellow2 = 1;
+	}
+	if (lfuel_level > 15 && lfuel_level < 20) {
+		blackhawk_lamps.lfuel_tank_yellow3 = 1;
+	}
+	if (lfuel_level > 20 && lfuel_level < 20) {
+		blackhawk_lamps.lfuel_tank_yellow4 = 1;
+	}
+	if (lfuel_level > 25) {
+		blackhawk_lamps.lfuel_tank_green1 = 1;
+	}
+	if (lfuel_level > 30) {
+		blackhawk_lamps.lfuel_tank_green2 = 1;
+	}
+	if (lfuel_level > 35) {
+		blackhawk_lamps.lfuel_tank_green3 = 1;
+	}
+	if (lfuel_level > 40) {
+		blackhawk_lamps.lfuel_tank_green4 = 1;
+	}
+	if (lfuel_level > 45) {
+		blackhawk_lamps.lfuel_tank_green5 = 1;
+	}
+	if (lfuel_level > 50) {
+		blackhawk_lamps.lfuel_tank_green6 = 1;
+	}
+	if (lfuel_level > 55) {
+		blackhawk_lamps.lfuel_tank_green7 = 1;
+	}
+	if (lfuel_level > 60) {
+		blackhawk_lamps.lfuel_tank_green8 = 1;
+	}
+	if (lfuel_level > 65) {
+		blackhawk_lamps.lfuel_tank_green9 = 1;
+	}
+	if (lfuel_level > 70) {
+		blackhawk_lamps.lfuel_tank_green10 = 1;
+	}
+	if (lfuel_level > 75) {
+		blackhawk_lamps.lfuel_tank_green11 = 1;
+	}
+	if (lfuel_level > 80) {
+		blackhawk_lamps.lfuel_tank_green12 = 1;
+	}
+	if (lfuel_level > 85) {
+		blackhawk_lamps.lfuel_tank_green13 = 1;
+	}
+	if (lfuel_level > 90) {
+		blackhawk_lamps.lfuel_tank_green14 = 1;
+	}
+	if (lfuel_level > 95) {
+		blackhawk_lamps.lfuel_tank_green15 = 1;
+	}
+	if (lfuel_level > 100) {
+		blackhawk_lamps.lfuel_tank_green16 = 1;
+	}
+	if (lfuel_level > 105) {
+		blackhawk_lamps.lfuel_tank_green17 = 1;
+	}
+	if (lfuel_level > 110) {
+		blackhawk_lamps.lfuel_tank_green18 = 1;
+	}
+	if (lfuel_level > 115) {
+		blackhawk_lamps.lfuel_tank_green19 = 1;
+	}
+	if (lfuel_level > 120) {
+		blackhawk_lamps.lfuel_tank_green20 = 1;
+	}
+	if (lfuel_level > 125) {
+		blackhawk_lamps.lfuel_tank_green21 = 1;
+	}
+	if (lfuel_level > 130) {
+		blackhawk_lamps.lfuel_tank_green22 = 1;
+	}
+	if (lfuel_level > 135) {
+		blackhawk_lamps.lfuel_tank_green23 = 1;
+	}
+	if (lfuel_level > 140) {
+		blackhawk_lamps.lfuel_tank_green24 = 1;
+	}
+	if (lfuel_level > 145) {
+		blackhawk_lamps.lfuel_tank_green25 = 1;
+	}
+	if (lfuel_level > 150) {
+		blackhawk_lamps.lfuel_tank_green26 = 1;
+	}
+
+	// Right tank
+
+	if (rfuel_level > 5 && rfuel_level < 20) {
 		blackhawk_lamps.rfuel_tank_yellow1 = 1;
 	}
-	if (fuel_level > 10 && fuel_level < 20) {
-		blackhawk_lamps.lfuel_tank_yellow2 = 1;
+	if (rfuel_level > 10 && rfuel_level < 20) {
 		blackhawk_lamps.rfuel_tank_yellow2 = 1;
 	}
-	if (fuel_level > 15 && fuel_level < 20) {
-		blackhawk_lamps.lfuel_tank_yellow3 = 1;
+	if (rfuel_level > 15 && rfuel_level < 20) {
 		blackhawk_lamps.rfuel_tank_yellow3 = 1;
 	}
-	if (fuel_level > 20 && fuel_level < 20) {
-		blackhawk_lamps.lfuel_tank_yellow4 = 1;
+	if (rfuel_level > 20 && rfuel_level < 20) {
 		blackhawk_lamps.rfuel_tank_yellow4 = 1;
 	}
-	if (fuel_level > 25) {
-		blackhawk_lamps.lfuel_tank_green1 = 1;
+	if (rfuel_level > 25) {
 		blackhawk_lamps.rfuel_tank_green1 = 1;
 	}
-	if (fuel_level > 30) {
-		blackhawk_lamps.lfuel_tank_green2 = 1;
+	if (rfuel_level > 30) {
 		blackhawk_lamps.rfuel_tank_green2 = 1;
 	}
-	if (fuel_level > 35) {
-		blackhawk_lamps.lfuel_tank_green3 = 1;
+	if (rfuel_level > 35) {
 		blackhawk_lamps.rfuel_tank_green3 = 1;
 	}
-	if (fuel_level > 40) {
-		blackhawk_lamps.lfuel_tank_green4 = 1;
+	if (rfuel_level > 40) {
 		blackhawk_lamps.rfuel_tank_green4 = 1;
 	}
-	if (fuel_level > 45) {
-		blackhawk_lamps.lfuel_tank_green5 = 1;
+	if (rfuel_level > 45) {
 		blackhawk_lamps.rfuel_tank_green5 = 1;
 	}
-	if (fuel_level > 50) {
-		blackhawk_lamps.lfuel_tank_green6 = 1;
+	if (rfuel_level > 50) {
 		blackhawk_lamps.rfuel_tank_green6 = 1;
 	}
-	if (fuel_level > 55) {
-		blackhawk_lamps.lfuel_tank_green7 = 1;
+	if (rfuel_level > 55) {
 		blackhawk_lamps.rfuel_tank_green7 = 1;
 	}
-	if (fuel_level > 60) {
-		blackhawk_lamps.lfuel_tank_green8 = 1;
+	if (rfuel_level > 60) {
 		blackhawk_lamps.rfuel_tank_green8 = 1;
 	}
-	if (fuel_level > 65) {
-		blackhawk_lamps.lfuel_tank_green9 = 1;
+	if (rfuel_level > 65) {
 		blackhawk_lamps.rfuel_tank_green9 = 1;
 	}
-	if (fuel_level > 70) {
-		blackhawk_lamps.lfuel_tank_green10 = 1;
+	if (rfuel_level > 70) {
 		blackhawk_lamps.rfuel_tank_green10 = 1;
 	}
-	if (fuel_level > 75) {
-		blackhawk_lamps.lfuel_tank_green11 = 1;
+	if (rfuel_level > 75) {
 		blackhawk_lamps.rfuel_tank_green11 = 1;
 	}
-	if (fuel_level > 80) {
-		blackhawk_lamps.lfuel_tank_green12 = 1;
+	if (rfuel_level > 80) {
 		blackhawk_lamps.rfuel_tank_green12 = 1;
 	}
-	if (fuel_level > 85) {
-		blackhawk_lamps.lfuel_tank_green13 = 1;
+	if (rfuel_level > 85) {
 		blackhawk_lamps.rfuel_tank_green13 = 1;
 	}
-	if (fuel_level > 90) {
-		blackhawk_lamps.lfuel_tank_green14 = 1;
+	if (rfuel_level > 90) {
 		blackhawk_lamps.rfuel_tank_green14 = 1;
 	}
-	if (fuel_level > 95) {
-		blackhawk_lamps.lfuel_tank_green15 = 1;
+	if (rfuel_level > 95) {
 		blackhawk_lamps.rfuel_tank_green15 = 1;
 	}
-	if (fuel_level > 100) {
-		blackhawk_lamps.lfuel_tank_green16 = 1;
+	if (rfuel_level > 100) {
 		blackhawk_lamps.rfuel_tank_green16 = 1;
 	}
-	if (fuel_level > 105) {
-		blackhawk_lamps.lfuel_tank_green17 = 1;
+	if (rfuel_level > 105) {
 		blackhawk_lamps.rfuel_tank_green17 = 1;
 	}
-	if (fuel_level > 110) {
-		blackhawk_lamps.lfuel_tank_green18 = 1;
+	if (rfuel_level > 110) {
 		blackhawk_lamps.rfuel_tank_green18 = 1;
 	}
-	if (fuel_level > 115) {
-		blackhawk_lamps.lfuel_tank_green19 = 1;
+	if (rfuel_level > 115) {
 		blackhawk_lamps.rfuel_tank_green19 = 1;
 	}
-	if (fuel_level > 120) {
-		blackhawk_lamps.lfuel_tank_green20 = 1;
+	if (rfuel_level > 120) {
 		blackhawk_lamps.rfuel_tank_green20 = 1;
 	}
-	if (fuel_level > 125) {
-		blackhawk_lamps.lfuel_tank_green21 = 1;
+	if (rfuel_level > 125) {
 		blackhawk_lamps.rfuel_tank_green21 = 1;
 	}
-	if (fuel_level > 130) {
-		blackhawk_lamps.lfuel_tank_green22 = 1;
+	if (rfuel_level > 130) {
 		blackhawk_lamps.rfuel_tank_green22 = 1;
 	}
-	if (fuel_level > 135) {
-		blackhawk_lamps.lfuel_tank_green23 = 1;
+	if (rfuel_level > 135) {
 		blackhawk_lamps.rfuel_tank_green23 = 1;
 	}
-	if (fuel_level > 140) {
-		blackhawk_lamps.lfuel_tank_green24 = 1;
+	if (rfuel_level > 140) {
 		blackhawk_lamps.rfuel_tank_green24 = 1;
 	}
-	if (fuel_level > 145) {
-		blackhawk_lamps.lfuel_tank_green25 = 1;
+	if (rfuel_level > 145) {
 		blackhawk_lamps.rfuel_tank_green25 = 1;
 	}
-	if (fuel_level > 150) {
-		blackhawk_lamps.lfuel_tank_green26 = 1;
+	if (rfuel_level > 150) {
 		blackhawk_lamps.rfuel_tank_green26 = 1;
 	}
 }
