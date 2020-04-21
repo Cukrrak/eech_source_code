@@ -84,6 +84,7 @@ c_object_files		+=	$+ &
 							$(currentdir)\bh_dam.obj &
 							$(currentdir)\bh_eo.obj &
 							$(currentdir)\bh_front.obj &
+							$(currentdir)\bh_digits.obj &
 							$(currentdir)\bh_chrono.obj &
 							$(currentdir)\bh_hms.obj &
 							$(currentdir)\bh_hud.obj &

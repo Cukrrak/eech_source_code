@@ -1830,7 +1830,8 @@ void draw_blackhawk_virtual_cockpit (void)
 	// upfront
 	//
 
-	draw_blackhawk_upfront_display_on_texture();
+//	draw_blackhawk_upfront_display_on_texture();
+	draw_blackhawk_digital_display_on_texture ();
 
 	//
 	// crew animation

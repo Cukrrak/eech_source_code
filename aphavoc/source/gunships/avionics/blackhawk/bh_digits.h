@@ -64,17 +64,30 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void initialise_apache_upfront_display (void);
+extern void initialise_blackhawk_digital_displays (void);
 
-extern void deinitialise_apache_upfront_display (void);
+extern void deinitialise_blackhawk_digital_displays (void);
 
-extern void update_apache_upfront_display (void);
+extern void update_blackhawk_digital_displays (void);
 
-extern void draw_apache_upfront_display_on_cockpit (float x_org, float y_org);
+extern void draw_blackhawk_digital_display_on_texture (void);
 
-extern void draw_apache_upfront_display_on_texture (void);
+void draw_chrono_display_on_texture (void);
 
-extern void set_apache_upfront_display_text (char *s1, char *s2, char *s3, char *s4);
+void set_chrono_display_text (char *s1, char *s2);
+
+void draw_ng_display_on_texture (void);
+
+void draw_tgt_display_on_texture (void);
+
+void draw_trq_display_on_texture (void);
+
+void draw_fuel_display_on_texture (void);
+
+void draw_chaff_flare_display_on_texture(void);
+
+void draw_rdr_alt_display_on_texture (void);
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
