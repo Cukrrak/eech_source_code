@@ -72,6 +72,8 @@ extern void update_blackhawk_upfront_display (void);
 
 extern void draw_blackhawk_upfront_display_on_texture (void);
 
+void set_blackhawk_upfront_display_text (char *s1, char *s2);
+
 void clear_blackhawk_upfront_display(void);
 
 void draw_ng_display_on_texture (void);
@@ -83,6 +85,10 @@ void draw_trq_display_on_texture (void);
 void draw_fuel_display_on_texture (void);
 
 void draw_chaff_flare_display_on_texture(void);
+
+void draw_rdr_alt_display_on_texture (void);
+
+void draw_chrono_display_on_texture (void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
