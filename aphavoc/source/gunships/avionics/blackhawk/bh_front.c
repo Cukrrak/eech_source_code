@@ -284,90 +284,85 @@ static void display_chaff_flare (void)
 	float y = 1.0;
 	char buffer[64];
 
-//	int
-//		lh_chaff,
-//		rh_chaff,
-//		lh_chaff_number,
-//		rh_chaff_number,
-//		total_chaff,
-//		lh_flare,
-//		rh_flare,
-//		lh_flare_number,
-//		rh_flare_number,
-//		total_flare,
-//		damaged;
+	int
+		lh_chaff,
+		rh_chaff,
+		lh_chaff_number,
+		rh_chaff_number,
+		total_chaff,
+		lh_flare,
+		rh_flare,
+		lh_flare_number,
+		rh_flare_number,
+		total_flare,
+		damaged;
 
 	entity
 		*en;
 
-//	entity_sub_types
-//		weapon_sub_type;
+	entity_sub_types
+		weapon_sub_type;
 
 	en = get_gunship_entity ();
 
 	set_mono_font_type(MONO_FONT_TYPE_17X26_DIGITAL);
 	set_mono_font_colour(text_colour);
 
-	sprintf (buffer, "%d          %d", get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_CHAFF), get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_FLARE));
+	lh_chaff = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_LHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &lh_chaff_number, &damaged);
+	rh_chaff = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &rh_chaff_number, &damaged);
+	lh_flare = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_LHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, &weapon_sub_type, &lh_flare_number, &damaged);
+	rh_flare = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_RHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_FLARE, &weapon_sub_type, &rh_flare_number, &damaged);
 
-//	lh_chaff = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_LHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &lh_chaff_number, &damaged);
-//	rh_chaff = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_RHS_CHAFF_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &rh_chaff_number, &damaged);
-//	lh_flare = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_LHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &lh_flare_number, &damaged);
-//	rh_flare = get_local_entity_weapon_hardpoint_info (en, BLACKHAWK_RHS_FLARE_DISPENSER, ENTITY_SUB_TYPE_WEAPON_CHAFF, &weapon_sub_type, &rh_flare_number, &damaged);
-//
-//	if (lh_chaff || rh_chaff || lh_flare || rh_flare)
-//	{
-//		if (!damaged)
-//		{
-////			total_chaff = lh_chaff_number + rh_chaff_number;
-////			total_flare = lh_flare_number + rh_flare_number;
-//
-//			sprintf (buffer, "%d %d", get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_CHAFF), get_local_entity_weapon_count (en, ENTITY_SUB_TYPE_WEAPON_FLARE));
-//		}
-////		else if (damaged)
-////			{
-////				if (blackhawk_damage.lh_chaff_dispenser)
-////				{
-////					total_chaff = rh_chaff_number;
-////					total_flare = lh_flare_number + rh_flare_number;
-////
-////					sprintf (buffer, "%d %d", total_chaff, total_flare);
-////				}
-////
-////				if (blackhawk_damage.rh_chaff_dispenser)
-////				{
-////					total_chaff = lh_chaff_number;
-////					total_flare = lh_flare_number + rh_flare_number;
-////
-////					sprintf (buffer, "%d %d", total_chaff, total_flare);
-////				}
-////
-////				if (blackhawk_damage.lh_flare_dispenser)
-////				{
-////					total_chaff = lh_chaff_number + rh_chaff_number;
-////					total_flare = rh_flare_number;
-////
-////					sprintf (buffer, "%d %d", total_chaff, total_flare);
-////				}
-////
-////				if (blackhawk_damage.rh_flare_dispenser)
-////				{
-////					total_chaff = lh_chaff_number + rh_chaff_number;
-////					total_flare = lh_flare_number;
-////
-////					sprintf (buffer, "%d %d", total_chaff, total_flare);
-////				}
-////
-////				if (blackhawk_damage.lh_chaff_dispenser && blackhawk_damage.rh_chaff_dispenser)
-////				{
-////					sprintf (buffer, "XX %d", total_flare);
-////				}
-////				else if (blackhawk_damage.lh_flare_dispenser && blackhawk_damage.rh_flare_dispenser)
-////					{
-////						sprintf (buffer, "%d XX", total_chaff);
-////					}
-////			}
-//	}
+	total_chaff = lh_chaff_number + rh_chaff_number;
+	total_flare = lh_flare_number + rh_flare_number;
+
+	if (lh_chaff || rh_chaff || lh_flare || rh_flare)
+	{
+		if (!damaged)
+		{
+			sprintf (buffer, "%d          %d", total_chaff, total_flare);
+		}
+		else if (damaged)
+			{
+				if (blackhawk_damage.lh_chaff_dispenser)
+				{
+					total_chaff = rh_chaff_number;
+				}
+
+				if (blackhawk_damage.rh_chaff_dispenser)
+				{
+					total_chaff = lh_chaff_number;
+				}
+
+				if (blackhawk_damage.lh_flare_dispenser)
+				{
+					total_flare = rh_flare_number;
+				}
+
+				if (blackhawk_damage.rh_flare_dispenser)
+				{
+					total_flare = lh_flare_number;
+				}
+
+				if (blackhawk_damage.lh_chaff_dispenser && blackhawk_damage.rh_chaff_dispenser
+						&& blackhawk_damage.lh_flare_dispenser && blackhawk_damage.rh_flare_dispenser)
+				{
+					sprintf (buffer, "XX          XX");
+				}
+				else if (blackhawk_damage.lh_chaff_dispenser && blackhawk_damage.rh_chaff_dispenser)
+				{
+					sprintf (buffer, "XX          %d", total_flare);
+				}
+				else if (blackhawk_damage.lh_flare_dispenser && blackhawk_damage.rh_flare_dispenser)
+				{
+					sprintf (buffer, "%d          XX", total_chaff);
+				}
+				else
+				{
+					sprintf (buffer, "%d          %d", total_chaff, total_flare);
+				}
+			}
+	}
 
 	set_mono_font_position(0.0, y);
 	set_mono_font_rel_position(15.0, 0.0);
