@@ -231,12 +231,12 @@ static int
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define MFD_WINDOW_X_MIN				(-1.0)
-#define MFD_WINDOW_Y_MIN				(-1.0)
-#define MFD_WINDOW_X_MAX				(0.999)
-#define MFD_WINDOW_Y_MAX				(0.999)
+#define MFD_WINDOW_X_MIN				(-1.2)
+#define MFD_WINDOW_Y_MIN				(-1.2)
+#define MFD_WINDOW_X_MAX				(1.200)
+#define MFD_WINDOW_Y_MAX				(1.200)
 
-#define LARGE_MFD_VIEWPORT_SIZE		(256)
+#define LARGE_MFD_VIEWPORT_SIZE		(360) //360 works
 #define SMALL_MFD_VIEWPORT_SIZE		(128)
 
 static env_2d
@@ -656,7 +656,7 @@ static void draw_radar_altitude_scale (void)
 	draw_2d_line(x_start, y_centre, box_start, y_centre, MFD_COLOUR1);
 
 	// rate_of_climb
-			{
+	{
 		float roc = bound(current_flight_dynamics->world_velocity_y.value * 0.05, -0.2, 0.2);
 		draw_2d_mono_sprite (large_left_carat, x_end, y_centre + roc, MFD_COLOUR1);
 	}
@@ -674,7 +674,7 @@ static void draw_radar_altitude_scale (void)
 	print_mono_font_string(buffer);
 
 	// draw altitude scale
-				{
+		{
 		const float
 			scale_height = 0.6,
 			low_height = scale_height * 0.75,
@@ -701,15 +701,15 @@ static void draw_radar_altitude_scale (void)
 
 		// draw tick marks
 		for (i = 0; i < 3; i++)
-					{
+		{
 			current_y += low_step;
 			draw_2d_line(x_end, current_y, tick_end, current_y, MFD_COLOUR1);
-					}
+		}
 
 		current_y += high_step;
 		draw_2d_line(x_end, current_y, tick_end, current_y, MFD_COLOUR1);
-				}
-			}
+		}
+}
 
 static void draw_barometric_altitude_scale (void)
 		{
@@ -759,52 +759,52 @@ static void draw_barometric_altitude_scale (void)
 //
 
 {
-		float scale_step_5 = barometric_altitude * 0.2;
-		int int_scale_step_5 = (int) scale_step_5;
-		float mod_scale_step_5 = scale_step_5 - (float) int_scale_step_5;
+	float scale_step_5 = barometric_altitude * 0.2;
+	int int_scale_step_5 = (int) scale_step_5;
+	float mod_scale_step_5 = scale_step_5 - (float) int_scale_step_5;
 
-		int tick_type = (int_scale_step_5 % 2) == 0;
-		float y = -(5.0 + mod_scale_step_5) * scale_step;
-		int loop;
-		float ground_y = -1.0;
+	int tick_type = (int_scale_step_5 % 2) == 0;
+	float y = -(5.0 + mod_scale_step_5) * scale_step;
+	int loop;
+	float ground_y = -1.0;
 
-		int_scale_step_5 -= 5;
+	int_scale_step_5 -= 5;
 
-		set_mono_font_type (MONO_FONT_TYPE_5X7);
-		y_adjust = -2.0;
+	set_mono_font_type (MONO_FONT_TYPE_5X7);
+	y_adjust = -2.0;
 
-		for (loop = 0; loop <= 10; loop++)
-		{
-			if (int_scale_step_5 * 5 > (ground_level + 5))
-			{
-				if (tick_type == 0)
+	for (loop = 0; loop <= 10; loop++)
 	{
-					float x_adjust;
-					char buffer[8];
+		if (int_scale_step_5 * 5 > (ground_level + 5))
+		{
+			if (tick_type == 0)
+			{
+				float x_adjust;
+				char buffer[8];
 
-					draw_2d_line (x1, y, x2, y, MFD_COLOUR1);
-					draw_2d_line (x4, y, x5, y, MFD_COLOUR1);
+				draw_2d_line (x1, y, x2, y, MFD_COLOUR1);
+				draw_2d_line (x4, y, x5, y, MFD_COLOUR1);
 
-					sprintf(buffer, "%02d", (int_scale_step_5 * 5) % 100);
-					x_adjust = get_mono_font_string_width(buffer) / 2;
+				sprintf(buffer, "%02d", (int_scale_step_5 * 5) % 100);
+				x_adjust = get_mono_font_string_width(buffer) / 2;
 
-					set_2d_mono_font_position (x3, y);
-					set_mono_font_rel_position (-x_adjust, y_adjust);
-					print_mono_font_string(buffer);
-				}
-				else
-					draw_2d_line (x3 - 0.02, y, x3 + 0.02, y, MFD_COLOUR1);
+				set_2d_mono_font_position (x3, y);
+				set_mono_font_rel_position (-x_adjust, y_adjust);
+				print_mono_font_string(buffer);
+			}
+			else
+				draw_2d_line (x3 - 0.02, y, x3 + 0.02, y, MFD_COLOUR1);
+		}
+		else
+			ground_y = max(y, ground_y);
+
+		int_scale_step_5++;
+		tick_type = !tick_type;
+		y += scale_step;
 	}
-	else
-				ground_y = max(y, ground_y);
 
-			int_scale_step_5++;
-			tick_type = !tick_type;
-			y += scale_step;
-	}
-
-		if (ground_y != -1.0)
-			draw_2d_hatched_area(x1, -0.5, x5, ground_y, MFD_COLOUR_RED);
+	if (ground_y != -1.0)
+		draw_2d_hatched_area(x1, -0.5, x5, ground_y, MFD_COLOUR_RED);
 }
 
 //
@@ -919,7 +919,7 @@ static void draw_heading_scale (float heading, int draw_command_heading)
 	if (draw_command_heading)
 		{
 		if (!blackhawk_damage.navigation_computer)
-			{
+		{
 			entity
 				*wp;
 
@@ -1701,9 +1701,9 @@ static void draw_3d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 	ASSERT ((day_segment_type >= 0) && (day_segment_type < NUM_DAY_SEGMENT_TYPES));
 
 	switch (system)
-		{
+	{
 		case TARGET_ACQUISITION_SYSTEM_FLIR:
-			{
+		{
 			light_level = flir_light_levels[weather_mode][day_segment_type];
 
 			noise_level = flir_noise_levels[weather_mode][day_segment_type];
@@ -1711,7 +1711,7 @@ static void draw_3d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 			tint = DISPLAY_3D_TINT_FLIR;
 
 			break;
-	}
+		}
 		case TARGET_ACQUISITION_SYSTEM_DTV:
 		{
 			light_level = dtv_light_levels[weather_mode][day_segment_type];
@@ -1723,11 +1723,11 @@ static void draw_3d_eo_display (eo_params_dynamic_move *eo, target_acquisition_s
 			break;
 		}
 		default:
-	{
+		{
 			debug_fatal ("Invalid target acquisition system = %d", system);
 
 			break;
-	}
+		}
 	}
 
 	set_3d_render_target (eo_3d_texture_screen);
@@ -1821,9 +1821,9 @@ static void draw_full_screen_3d_eo_display (eo_params_dynamic_move *eo, target_a
 
 #ifdef OLD_EO
 	switch (eo->field_of_view)
-			{
+	{
 		case EO_FOV_NARROW:
-			{
+		{
 			zoom = 1.0 / 128.0;
 
 			break;
@@ -1841,12 +1841,12 @@ static void draw_full_screen_3d_eo_display (eo_params_dynamic_move *eo, target_a
 			break;
 		}
 		default:
-	{
+		{
 			debug_fatal ("Invalid field of view = %d", eo->field_of_view);
 
 			break;
 		}
-		}
+	}
 #else
 	zoom = convert_linear_view_value (eo);
 #endif
@@ -4920,586 +4920,560 @@ static void draw_system_display_small_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				//
+//
 // ENGINE
-				//
+//
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void draw_engine_bar(float f_x1, float f_y1, float f_x2, float f_y2, float fvalue)
+static void draw_2d_engine_bar(float f_x1, float f_y1, float f_x2, float f_y2, float fvalue, rgb_colour col)
 {
 	int x1, x2, y1, y2;
 
-	draw_2d_box(f_x1, f_y1, f_x2, f_y2, FALSE, FALSE, MFD_COLOUR1);
-
 	get_2d_int_screen_coordinates (f_x1, f_y2 + (fvalue * (f_y1 - f_y2)), &x1, &y1);
 	get_2d_int_screen_coordinates (f_x2, f_y2, &x2, &y2);
-	set_block (x1, y1, x2, y2, MFD_COLOUR1);
-				}
+	set_block (x1, y1, x2, y2, col);
+}
 
-static void draw_engine_display_mfd (void)
-				{
-	char
-		s[80], s2[10];
+static void draw_engine_value(float x, float y, const char* format, float value, float warning_min_limit, float warning_max_limit, float danger_min_limit, float danger_max_limit)
+{
+	float readout_half_width;
+	rgb_colour col;
+	unsigned box = TRUE;
+	char buffer[20];
 
-	int
-		ivalue;
+	if (value < danger_min_limit || value > danger_max_limit)
+		col = MFD_COLOUR_RED;
+	else if (value < warning_min_limit || value > warning_max_limit)
+		col = MFD_COLOUR_YELLOW;
+	else
+	{
+		box = FALSE;
+		col = MFD_COLOUR1;
+	}
 
-	float
-		bottom_edge,
-		x_adjust,
-		fvalue;
+	set_mono_font_colour(col);
+	set_mono_font_type (MONO_FONT_TYPE_7X12);
+
+	sprintf (buffer, format, value);
+	set_2d_mono_font_position (x, y);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(buffer), -12.0);
+	print_mono_font_string (buffer);
+
+	if (box)
+	{
+		readout_half_width = 0.037 * strlen(buffer);
+		draw_2d_box_with_radius(x - readout_half_width, y, x + readout_half_width, y + 0.1, FALSE, TRUE, 0.0, col);
+	}
 
 	set_mono_font_colour (MFD_COLOUR1);
+	set_mono_font_type (MONO_FONT_TYPE_7X12);
+}
 
-	if (draw_large_mfd)
-				{
-		set_mono_font_type (MONO_FONT_TYPE_6X10);
-				}
-				else
-				{
-		set_mono_font_type (MONO_FONT_TYPE_3X6);
-				}
+static void draw_engine_bar(float x, float y, float value, float split_value, float max_value, float warning_min_limit, float warning_max_limit, float danger_min_limit, float danger_max_limit, int print_readout)
+{
+	rgb_colour col;
+	unsigned box = TRUE;
+
+	ASSERT(y);
+	if (value < danger_min_limit || value > danger_max_limit)
+		col = MFD_COLOUR_RED;
+	else if (value < warning_min_limit || value > warning_max_limit)
+		col = MFD_COLOUR_YELLOW;
+	else
+	{
+		box = FALSE;
+		col = MFD_COLOUR1;
+	}
+
+	if (value > split_value)
+	{
+		float from = print_readout ? y + 0.1 : y;
+
+		draw_2d_engine_bar(x - 0.04, y, x + 0.04, -0.1, 1.0, col);
+		draw_2d_engine_bar(x - 0.04, 0.9, x + 0.04, from, (value - split_value) / (max_value - split_value), col);
+	}
+	else
+		draw_2d_engine_bar(x - 0.04, y, x + 0.04, -0.1, value / split_value, col);
+
+	if (print_readout)
+		draw_engine_value(x, y, "%3.0f", value, warning_min_limit, warning_max_limit, danger_min_limit, danger_max_limit);
+}
+
+static void draw_rotor_rpm_bar(float value, float x, float y)
+{
+	rgb_colour col;
+	unsigned box = TRUE;
+	char buffer[20];
+
+	if (value > 110.0 || value < 94.0)
+		col = MFD_COLOUR_RED;
+	else if (value > 104.0)
+		col = MFD_COLOUR_YELLOW;
+	else
+	{
+		box = FALSE;
+		col = MFD_COLOUR1;
+	}
+
+	// draw the downward pointing bar up to 94%
+	{
+		/*  1 _ _ 2   top
+		 *  |  3  |   top_centre
+		 *  |     |
+		 *  4 _ _ 5   bottom
+		 *     6      bottom_centre
+		 */
+
+		float
+			left = x - 0.1,
+			centre = x,
+			right = x + 0.1,
+			top,
+			top_centre,
+			bottom = -0.04,
+			bottom_centre = -0.1,
+			height;
+
+		height = (min(value, 94.0) / 94.0) * 0.45;
+		top = bottom + height;
+		top_centre = bottom_centre + height;
+
+		// have to draw as triangles.  Numbers corresponds to ascii drawing above
+		// 1, 6, 4
+		draw_2d_filled_triangle(left, top, centre, bottom_centre, left, bottom, col);
+		// 1, 3, 6
+		draw_2d_filled_triangle(left, top, centre, top_centre, centre, bottom_centre, col);
+		// 3, 2, 6
+		draw_2d_filled_triangle(centre, top_centre, right, top, centre, bottom_centre, col);
+		// 2, 5, 6
+		draw_2d_filled_triangle(right, top, right, bottom, centre, bottom_centre, col);
+
+		if (value > 94.0)
+		{
+			height = min(value - 94.0, 6.0) / 6.0 * 0.15;
+			draw_2d_box_with_radius(centre - 0.06, top_centre, centre + 0.06, top_centre + height, TRUE, FALSE, 0.0, col);
+		}
+
+		bottom_centre = 0.6;
+		bottom = bottom_centre - 0.06;
+
+		draw_2d_half_thick_line(centre, 0.78, left + 0.01, 0.72, MFD_COLOUR_RED);
+		draw_2d_half_thick_line(centre, 0.78, right, 0.72, MFD_COLOUR_RED);
+
+		if (value > 100.0)
+		{
+			top_centre = 0.6;
+			top = top_centre - 0.04;
+
+			height = min(value - 100.0, 4.0) / 4.0 * 0.12;
+			draw_2d_filled_triangle(centre, top_centre + height,
+									centre + min(0.06, height / 0.6), top_centre + max(height - 0.036, 0.0),
+									centre - min(0.06, height / 0.6), top_centre + max(height - 0.036, 0.0),
+									col);
+
+			if (height > 0.036)
+			draw_2d_box_with_radius(centre - 0.06, top_centre, centre + 0.06, top_centre + height - 0.036, TRUE, FALSE, 0.0, col);
+
+			// draw upward point bar above 104%
+			if (value > 104.0)
+			{
+				/*   _1_    top_centre
+				 *  2   3   top
+				 *  |_4_|   bottom_centre
+				 *  5   6   bottom
+				 */
+
+				bottom_centre = 0.72;
+				bottom = bottom_centre - 0.06;
+				height = (value - 104.0) / 16.0 * 0.18;
+				top = bottom + height;
+				top_centre = bottom_centre + height;
+
+				// 2, 1, 4
+				draw_2d_filled_triangle(left, top, centre, top_centre, centre, bottom_centre, col);
+				// 2, 4, 5
+				draw_2d_filled_triangle(left, top, centre, bottom_centre, left, bottom, col);
+				// 1, 3, 4
+				draw_2d_filled_triangle(centre, top_centre, right, top, centre, bottom_centre, col);
+				// 4, 3, 6
+				draw_2d_filled_triangle(centre, bottom_centre, right, top, right, bottom, col);
+			}
+		}
+	}
+
+
+	if (value > 104.0)
+		draw_2d_box_with_radius(x - 0.11, y, x + 0.11, y + 0.1, FALSE, TRUE, 0.0, col);
+
+	set_mono_font_colour(col);
+	set_mono_font_type (MONO_FONT_TYPE_7X12);
+
+	sprintf (buffer, "%3.0f", value);
+	set_2d_mono_font_position (x, y);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(buffer), -21.0);
+	print_mono_font_string (buffer);
+
+	set_mono_font_colour (MFD_COLOUR1);
+	set_mono_font_type (MONO_FONT_TYPE_7X12);
+}
+
+static void draw_engine_display_mfd (void)
+{
+	int
+		box,
+		i;
+
+	float
+		val,
+		x,
+		y,
+		split,
+		bar_limit,
+		digital_readout;
+
+	rgb_colour
+		col;
+
+	set_mono_font_colour (MFD_COLOUR1);
+	set_mono_font_type (MONO_FONT_TYPE_7X12);
 
 	////////////////////////////////////////
-
-	set_2d_mono_font_position (-0.8, 0.9);
-
-	set_mono_font_rel_position (1.0, 0.0);
-
-	print_mono_font_string ("L ENGINE");
-
-	set_2d_mono_font_position (0.8, 0.9);
-
-	x_adjust = -get_mono_font_string_width ("R ENGINE");
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("R ENGINE");
-
+	//
+	// engine torque
+	//
 	////////////////////////////////////////
 
-	set_2d_mono_font_position (-0.7, -0.6);
+	set_2d_mono_font_position (-0.9, 0.95);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("TORQUE %"), -16.0);
+	print_mono_font_string ("TORQUE %");
 
-	x_adjust = get_mono_font_string_width ("FUEL QTY") * -0.5;
+	if (current_flight_dynamics->main_rotor_rpm.value < 50.0)
+	{
+		split = 30.0;
+		y = 0.08;
+		bar_limit = y + 0.11;
+	}
+	else if (current_flight_dynamics->main_rotor_rpm.value < 90.0)
+	{
+		split = 70.0;
+		y = 0.32;
+		bar_limit = y + 0.11;
+	}
+	else
+	{
+		y = 0.5;
+		split = 100.0;
+		bar_limit = y + 0.25;  // 115%, max dual engine transient
+	}
 
-	set_mono_font_rel_position (x_adjust, 0.0);
+	draw_2d_half_thick_line(-1.15, bar_limit, -0.7, bar_limit, MFD_COLOUR_RED);
+	draw_2d_mono_sprite (large_engine_bar_marker, -0.925, bar_limit, MFD_COLOUR_RED);
 
-	print_mono_font_string ("FUEL QTY");
+	//
+	// engine 1 torque
+	//
 
-	set_2d_mono_font_position (-0.7, -0.7);
+	digital_readout = bound (current_flight_dynamics->left_engine_torque.value, 0.0, 120.0);
+	convert_float_to_int (digital_readout, &i);
 
-	set_2d_mono_font_position (-0.7, -0.7);
+	x = -1.05;
+	draw_engine_bar(x, y, digital_readout, split, 130.0, 0.0, split, 0.0, 100.0, TRUE);
 
-	fvalue = bound (kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 9999.0);
+	set_2d_mono_font_position (x, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	print_mono_font_string("1");
 
-	convert_float_to_int (fvalue, &ivalue);
+	//
+	// engine 2 torque
+	//
 
-	sprintf (s, "%04d lb", ivalue);
+	digital_readout = bound (current_flight_dynamics->right_engine_torque.value, 0.0, 120.0);
+	convert_float_to_int (digital_readout, &i);
 
-	x_adjust = get_mono_font_string_width (s) * -0.5;
+	box = TRUE;
+	if (digital_readout > 100.0)
+		col = MFD_COLOUR_RED;
+	else if (digital_readout > split)
+		col = MFD_COLOUR_YELLOW;
+	else
+	{
+		box = FALSE;
+		col = MFD_COLOUR1;
+	}
 
-	set_mono_font_rel_position (x_adjust, 0.0);
+	x = -0.8;
+	draw_engine_bar(x, y, digital_readout, split, 130.0, 0.0, split, 0.0, 100.0, TRUE);
 
-	print_mono_font_string (s);
+	set_2d_mono_font_position (x, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	print_mono_font_string("2");
 
 	////////////////////////////////////////
+	//
+	// engine temperature
+	//
+	////////////////////////////////////////
 
-	set_2d_mono_font_position (0.0, -0.6);
+	set_2d_mono_font_position (-0.35, 0.95);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("TGT C"), -16.0);
+	print_mono_font_string ("TGT C");
 
-	x_adjust = get_mono_font_string_width ("THROTTLE") * -0.5;
+	y = 0.5;
+	split = 800.0;
 
-	set_mono_font_rel_position (x_adjust, 0.0);
+	draw_2d_half_thick_line(-0.55, y + 0.178, -0.35, y + 0.178, MFD_COLOUR_YELLOW); // 30 min limit
+	draw_2d_half_thick_line(-0.3, y + 0.178, -0.1, y + 0.178, MFD_COLOUR_YELLOW); // 30 min limit
 
-	print_mono_font_string ("THROTTLE");
+	draw_2d_half_thick_line(-0.55, y + 0.213, -0.35, y + 0.213, MFD_COLOUR_YELLOW); // 10 min limit
+	draw_2d_half_thick_line(-0.3, y + 0.213, -0.1, y + 0.213, MFD_COLOUR_YELLOW); // 10 min limit
 
-	fvalue = bound (current_flight_dynamics->left_engine_n1_rpm.max, 0.0, 120.0);
-	convert_float_to_int (fvalue, &ivalue);
+	draw_2d_half_thick_line(-0.55, y + 0.325, -0.1, y + 0.325, MFD_COLOUR_RED);     // 901 deg, 12 sec transient limit
+	draw_2d_mono_sprite (large_engine_bar_marker, -0.325, y + 0.325, MFD_COLOUR_RED);
 
-	if (ivalue < 60)
-		sprintf(s2, "OFF ");
-	else if (ivalue == 60)
-		sprintf(s2, "IDLE");
-	else if (ivalue == 110.0)
-		sprintf(s2, "FLY ");
-				else
-		sprintf(s2, "%03d%%", (ivalue-60) * 2);
+	//
+	// engine 1 temperature
+	//
 
-	set_2d_mono_font_position (0.0, -0.7);
+	digital_readout = bound (current_flight_dynamics->left_engine_temp.value, 0.0, 999.0);
 
-	fvalue = bound (current_flight_dynamics->right_engine_n1_rpm.max, 0.0, 120.0);
-	convert_float_to_int (fvalue, &ivalue);
+	x = -0.45;
+	draw_engine_bar(x, y, digital_readout, split, 1000.0, 0.0, split, 0.0, 867.0, TRUE);
 
-	if (ivalue < 60)
-		sprintf(s, " %s  OFF ", s2);
-	else if (ivalue == 60)
-		sprintf(s, " %s  IDLE", s2);
-	else if (ivalue == 110.0)
-		sprintf(s, " %s  FLY ", s2);
+	set_2d_mono_font_position (x, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	print_mono_font_string("1");
+
+	//
+	// engine 2 temperature
+	//
+
+	digital_readout = bound (current_flight_dynamics->right_engine_temp.value, 0.0, 999.0);
+
+	x = -0.2;
+	draw_engine_bar(x, y, digital_readout, split, 1000.0, 0.0, split, 0.0, 867.0, TRUE);
+
+	set_2d_mono_font_position (x, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	print_mono_font_string("2");
+
+	////////////////////////////////////////
+	//
+	// engine and rotor rpm
+	//
+	////////////////////////////////////////
+
+	set_2d_mono_font_position (0.3, 0.95);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP% NR% NP%"), -16.0);
+	print_mono_font_string ("N % N % N %");
+
+	set_2d_mono_font_position (0.3, 0.95);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP% NR% NP%"), -13.0);
+	print_mono_font_string (" P   R   P ");
+
+
+	set_2d_mono_font_position (0.9, 0.25);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP%"), -16.0);
+	print_mono_font_string ("N %");
+
+	set_2d_mono_font_position (0.9, 0.25);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP%"), -13.0);
+	print_mono_font_string (" P ");
+
+	// labels for numeric reading on right side
+	set_2d_mono_font_position (0.9, -0.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NG%"), -16.0);
+	print_mono_font_string ("N %");
+
+	set_2d_mono_font_position (0.9, -0.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NG%"), -13.0);
+	print_mono_font_string (" G ");
+
+
+	set_2d_mono_font_position (0.9, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("1    2"), 8.0);
+	print_mono_font_string ("1    2");
+
+	y = 0.5;
+	split = 100.0;
+
+	//
+	// engine 1 rpm
+	//
+
+	digital_readout = bound (current_flight_dynamics->left_engine_rpm.value, 0.0, 120.0);
+
+	x = 0.1;
+	draw_engine_bar(x, y, digital_readout, split, 120.0, 98.0, 104.0, 94.0, 110.0, FALSE);
+	draw_engine_value(0.75, 0.15, "%3.0f", digital_readout, 98.0, 104.0, 94.0, 110.0);
+	draw_2d_mono_sprite (large_engine_bar_marker, x + 0.06, 0.75, MFD_COLOUR_RED);
+
+	set_2d_mono_font_position (x, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 8.0);
+	print_mono_font_string("1");
+
+	//
+	// engine 2 rpm
+	//
+
+	digital_readout = bound (current_flight_dynamics->right_engine_rpm.value, 0.0, 120.0);
+
+	x = 0.5;
+	draw_engine_bar(x, y, digital_readout, split, 120.0, 98.0, 104.0, 94.0, 110.0, FALSE);
+	draw_engine_value(1.05, 0.15, "%3.0f", digital_readout, 98.0, 104.0, 94.0, 110.0);
+	draw_2d_mono_sprite (large_engine_bar_marker, x - 0.06, 0.75, MFD_COLOUR_RED);
+
+	set_2d_mono_font_position (x, -0.1);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 8.0);
+	print_mono_font_string("2");
+
+	//
+	// rotor rpm
+	//
+
+	x = 0.3;
+	y = 0.5;
+	split = 100.0;
+
+	digital_readout = bound (current_flight_dynamics->main_rotor_rpm.value, 0.0, 125.0);
+	draw_rotor_rpm_bar(digital_readout, x, y);
+
+	////////////////////////////////////////
+	//
+	// NG RPM left engine
+	//
+	////////////////////////////////////////
+
+	digital_readout = bound (current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0);
+	draw_engine_value(0.75, -0.1, "%3.0f", digital_readout, 0.0, 99.0, 63.0, 102.0);
+
+	////////////////////////////////////////
+	//
+	// NG RPM right engine
+	//
+	////////////////////////////////////////
+
+	digital_readout = bound (current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0);
+	draw_engine_value(1.05, -0.1, "%3.0f", digital_readout, 0.0, 99.0, 63.0, 102.0);
+
+
+	// engine starters
+	if (current_flight_dynamics->left_engine_starter_active || current_flight_dynamics->right_engine_starter_active)
+	{
+		draw_2d_box_with_radius(0.62, 0.1, 1.18, -0.4, FALSE, TRUE, 0.04, MFD_COLOUR1);
+
+		set_mono_font_colour(MFD_COLOUR_YELLOW);
+		set_mono_font_type (MONO_FONT_TYPE_7X12);
+
+		if (current_flight_dynamics->left_engine_starter_active)
+		{
+			set_2d_mono_font_position (0.75, -0.32);
+			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -12.0);
+			print_mono_font_string("ON");
+		}
+
+		if (current_flight_dynamics->right_engine_starter_active)
+		{
+			set_2d_mono_font_position (1.05, -0.32);
+			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -12.0);
+			print_mono_font_string("ON");
+		}
+
+		set_mono_font_colour (MFD_COLOUR1);
+		set_mono_font_type (MONO_FONT_TYPE_7X12);
+
+		set_2d_mono_font_position (0.9, -0.42);
+		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("START"), -14.0);
+		print_mono_font_string ("START");
+	}
+
+	// In startup mode (engines not up to speed) show some extra information in bottom half
+	if (current_flight_dynamics->left_engine_n1_rpm.value < current_flight_dynamics->engine_idle_rpm
+		|| current_flight_dynamics->right_engine_n1_rpm.value < current_flight_dynamics->engine_idle_rpm)
+	{
+		// hydraulic pressure
+
+		draw_2d_box_with_radius(-0.1, -0.35, 0.55, -0.77, FALSE, TRUE, 0.04, MFD_COLOUR1);
+
+		set_2d_mono_font_position (-0.08, -0.45);
+		set_mono_font_rel_position (2.0, -12.0);
+		print_mono_font_string ("HYD PSI");
+
+		set_2d_mono_font_position (-0.05, -0.55);
+		set_mono_font_rel_position (2.0, -12.0);
+		print_mono_font_string ("PRI");
+
+		set_2d_mono_font_position (-0.05, -0.65);
+		set_mono_font_rel_position (2.0, -12.0);
+		print_mono_font_string ("UTIL");
+
+		set_2d_mono_font_position (-0.05, -0.75);
+		set_mono_font_rel_position (2.0, -12.0);
+		print_mono_font_string ("ACC");
+
+		digital_readout = get_hydraulic_pressure() * (300.0 + ((int)(get_gunship_entity()) & 0xff) * 0.1);
+		draw_engine_value(0.38, -0.55, "%3.0f0", digital_readout, 275.0, 325.0, 250.0, 325.0);
+
+		if (current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_SECONDARY_HYDRAULICS)
+			val = 0.0;
+		else
+			val = 304.0;
+
+		draw_engine_value(0.38, -0.65, "%3.0f0", val, 275.0, 325.0, 250.0, 325.0);
+
+		draw_engine_value(0.38, -0.75, "%3.0f0", max(digital_readout, val), 275.0, 325.0, 250.0, 325.0);
+
+		// APU
+		set_2d_mono_font_position (0.9, -0.62);
+		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("APU %"), -14.0);
+		print_mono_font_string ("APU %");
+
+		digital_readout = bound (current_flight_dynamics->apu_rpm.value, 0.0, 100.0);
+		draw_engine_value(0.9, -0.72, "%2.0f", digital_readout, 80.0, 110.0, 50.0, 110.0);
+
+		// engine oil psi
+
+		draw_2d_box_with_radius(-0.7, -0.35, -0.15, -0.77, FALSE, TRUE, 0.04, MFD_COLOUR1);
+
+		set_2d_mono_font_position (-0.68, -0.45);
+		set_mono_font_rel_position (2.0, -12.0);
+		print_mono_font_string ("ENGINE");
+
+		set_2d_mono_font_position (-0.64, -0.52);
+		set_mono_font_rel_position (2.0, -11.0);
+		print_mono_font_string ("OIL PSI");
+
+		set_2d_mono_font_position (-0.425, -0.75);
+		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("1    2"), -12.0);
+		print_mono_font_string ("1    2");
+
+		{
+			float lpres, rpres;
+
+			if ((current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_LEFT_ENGINE) != 0)
+				lpres = 0.0;
+			else if ((current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_LOW_OIL_PRESSURE) != 0)
+				lpres = 15.0;
+			else if ((current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_HIGH_OIL_PRESSURE) != 0)
+				lpres = 115.0;
 			else
-		sprintf(s, " %s  %03d%%", s2, (ivalue-60) * 2);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-	set_mono_font_rel_position (x_adjust, 0.0);
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	set_2d_mono_font_position (0.5, -0.6);
-
-	fvalue = bound (current_flight_dynamics->apu_rpm.value + 0.5, 0.0, 100.0);
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf(s, "SPU %03d%%", ivalue);
-
-	print_mono_font_string (s);
-
-			////////////////////////////////////////
-
-	draw_2d_line (-0.7500 - 0.02, 0.3333, -0.6500 + 0.02, 0.3333, MFD_COLOUR1);
-	draw_2d_line (-0.5500 - 0.02, 0.3333, -0.4500 + 0.02, 0.3333, MFD_COLOUR1);
-	draw_2d_line (-0.3500 - 0.02, 0.3333, -0.2500 + 0.02, 0.3333, MFD_COLOUR1);
-	draw_2d_line (-0.1500 - 0.02, 0.3333, -0.0500 + 0.02, 0.3333, MFD_COLOUR1);
-
-	draw_2d_line ( 0.7500 + 0.00, 0.3333,  0.6500 - 0.02, 0.3333, MFD_COLOUR1);
-	draw_2d_line ( 0.5500 + 0.02, 0.3333,  0.4500 - 0.02, 0.3333, MFD_COLOUR1);
-	draw_2d_line ( 0.3500 + 0.02, 0.3333,  0.2500 - 0.02, 0.3333, MFD_COLOUR1);
-	draw_2d_line ( 0.1500 + 0.02, 0.3333,  0.0500 - 0.02, 0.3333, MFD_COLOUR1);
-
-			////////////////////////////////////////
-
-			//
-	// Nr
-			//
-
-	#define X_ORG	((float) (0.0))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("NR") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("NR");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->main_rotor_rpm.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-			//
-	// Np1
-			//
-
-	#define X_ORG	((float) (-0.2))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float)	(0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("NP") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("NP");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->left_engine_rpm.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-			//
-	// Np2
-			//
-
-	#define X_ORG	((float) (0.2))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("NP") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("NP");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->right_engine_rpm.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-			//
-	// NG1
-			//
-
-	#define X_ORG	((float) (-0.4))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("NG") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("NG");
-
-			////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->left_engine_n1_rpm.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-			//
-	// NG2
-			//
-
-	#define X_ORG	((float) (0.4))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("NG") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("NG");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->right_engine_n1_rpm.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-	//
-	// TQ1
-	//
-
-	#define X_ORG	((float) (-0.6))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("TQ") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("TQ");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->left_engine_torque.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-	//
-	// TQ2
-	//
-
-	#define X_ORG	((float) (0.6))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (1.0))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("TQ") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("TQ");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->right_engine_torque.value, 0.0, 120.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 120.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-			//
-	// TGT1
-			//
-
-	#define X_ORG	((float) (-0.8))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (0.8333))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("TG") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("TG");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->left_engine_temp.value, 0.0, 999.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 1000.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
-
-			//
-	// TGT2
-	//
-
-	#define X_ORG	((float) (0.8))
-	#define Y_ORG	((float) (0.5))
-	#define WIDTH	((float) (0.06))
-	#define HEIGHT	((float) (0.8333))
-
-	// seems to be a compiler bug, have to use a float variable for this value, sending it
-	// as a constant as a function parameter will use a double (even though
-	// definition is available and says const float), which causes later parameters
-	// to be wrong
-	bottom_edge = (Y_ORG - HEIGHT);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.2);
-
-	x_adjust = get_mono_font_string_width ("TG") * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string ("TG");
-
-	////////////////////////////////////////
-
-	fvalue = bound (current_flight_dynamics->right_engine_temp.value, 0.0, 999.0);
-
-	convert_float_to_int (fvalue, &ivalue);
-
-	sprintf (s, "%03d", ivalue);
-
-	set_2d_mono_font_position (X_ORG, Y_ORG + 0.1);
-
-	x_adjust = get_mono_font_string_width (s) * -0.5;
-
-	set_mono_font_rel_position (x_adjust, 0.0);
-
-	print_mono_font_string (s);
-
-	////////////////////////////////////////
-
-	draw_engine_bar(X_ORG - (WIDTH * 0.5), Y_ORG, X_ORG + (WIDTH * 0.5), bottom_edge, fvalue / 1000.0);
-
-	#undef X_ORG
-	#undef Y_ORG
-	#undef WIDTH
-	#undef HEIGHT
+				lpres = 22.0 + max(current_flight_dynamics->left_engine_temp.value, 500) * current_flight_dynamics->left_engine_n1_rpm.value * 0.001;
+
+			draw_engine_value(-0.55, -0.65, "%3.0f", lpres, 28.0, 100.0, 22.0, 120.0);
+
+			if ((current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_RIGHT_ENGINE) != 0)
+				rpres = 0.0;
+			else if ((current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_LOW_OIL_PRESSURE) != 0)
+				rpres = 15.0;
+			else if ((current_flight_dynamics->dynamics_damage & DYNAMICS_DAMAGE_HIGH_OIL_PRESSURE) != 0)
+				rpres = 115.0;
+			else
+				rpres = 22.0 + max(current_flight_dynamics->right_engine_temp.value, 500) * current_flight_dynamics->right_engine_n1_rpm.value * 0.001;
+
+			draw_engine_value(-0.3, -0.65, "%3.0f", rpres, 28.0, 100.0, 22.0, 120.0);
+		}
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6046,7 +6020,7 @@ static void draw_pitch_ladder (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void draw_flight_display_mfd (void)
-		{
+{
 //	set_mono_font_colour (MFD_COLOUR1);
 
 	draw_pitch_ladder ();
@@ -6060,10 +6034,10 @@ static void draw_flight_display_mfd (void)
 
 //	draw_torque_scale();
 //	display_navigation_info();
-			}
+}
 
 static void draw_flight_display_small_mfd (void)
-			{
+{
 //	set_mono_font_colour (MFD_COLOUR1);
 
 	draw_pitch_ladder ();
@@ -6076,7 +6050,7 @@ static void draw_flight_display_small_mfd (void)
 
 //	draw_torque_scale();
 //	display_navigation_info();
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8503,7 +8477,7 @@ void draw_overlaid_blackhawk_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int get_blackhawk_mfd_has_focus (blackhawk_mfd_locations mfd_location)
-			{
+{
 	int
 		result;
 
@@ -8550,7 +8524,7 @@ int get_blackhawk_mfd_has_focus (blackhawk_mfd_locations mfd_location)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static blackhawk_mfd_modes get_mfd_mode_for_eo_sensor (void)
-			{
+{
 	blackhawk_mfd_modes
 		mfd_mode;
 
@@ -8575,7 +8549,7 @@ static blackhawk_mfd_modes get_mfd_mode_for_eo_sensor (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static blackhawk_mfd_modes get_default_mfd_mode (blackhawk_mfd_locations mfd_location)
-			{
+{
 	blackhawk_mfd_modes
 		mfd_mode;
 
@@ -8643,7 +8617,7 @@ static int get_mfd_damage (blackhawk_mfd_locations mfd_location)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static int get_small_mfd_damage (blackhawk_small_mfd_locations mfd_location)
-			{
+{
 	int
 		damage;
 
@@ -8678,7 +8652,7 @@ static int get_small_mfd_damage (blackhawk_small_mfd_locations mfd_location)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_blackhawk_mfd_mode (blackhawk_mfd_modes mfd_mode, blackhawk_mfd_locations mfd_location)
-			{
+{
 	blackhawk_mfd_modes
 		*mfd_mode_ptr1,
 		*mfd_mode_ptr2,
@@ -8729,7 +8703,7 @@ void select_blackhawk_mfd_mode (blackhawk_mfd_modes mfd_mode, blackhawk_mfd_loca
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static blackhawk_mfd_modes get_next_mfd_mode (blackhawk_mfd_modes mfd_mode, blackhawk_mfd_locations mfd_location)
-			{
+{
 	blackhawk_mfd_modes
 		next_mfd_mode;
 
@@ -8837,7 +8811,7 @@ static blackhawk_mfd_modes get_next_mfd_mode (blackhawk_mfd_modes mfd_mode, blac
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static blackhawk_mfd_modes get_previous_mfd_mode (blackhawk_mfd_modes mfd_mode, blackhawk_mfd_locations mfd_location)
-			{
+{
 	blackhawk_mfd_modes
 		previous_mfd_mode;
 
@@ -8867,7 +8841,7 @@ static blackhawk_mfd_modes get_previous_mfd_mode (blackhawk_mfd_modes mfd_mode, 
 		case BLACKHAWK_MFD_MODE_FLIR:
 		case BLACKHAWK_MFD_MODE_DTV:
 		////////////////////////////////////////
-			{
+		{
 			previous_mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
 
 			break;
@@ -8938,7 +8912,7 @@ static blackhawk_mfd_modes get_previous_mfd_mode (blackhawk_mfd_modes mfd_mode, 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_next_blackhawk_mfd (blackhawk_mfd_locations mfd_location)
-			{
+{
 	blackhawk_mfd_modes
 		*mfd_mode_ptr1,
 		*mfd_mode_ptr2,
