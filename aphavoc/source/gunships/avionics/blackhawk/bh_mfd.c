@@ -88,7 +88,7 @@ static char
 		"BLACKHAWK_MFD_MODE_WEAPON",
 		"BLACKHAWK_MFD_MODE_SYSTEM",
 		"BLACKHAWK_MFD_MODE_ENGINE",
-		"BLACKHAWK_MFD_MODE_FLIGHT",
+//		"BLACKHAWK_MFD_MODE_FLIGHT",
 		"BLACKHAWK_MFD_MODE_MISSION",
 	};
 
@@ -98,7 +98,7 @@ static char
 		"BLACKHAWK_SMALL_MFD_MODE_OFF",
 		"BLACKHAWK_SMALL_MFD_MODE_DAMAGED",
 		"BLACKHAWK_SMALL_MFD_MODE_SYSTEM",
-		"BLACKHAWK_SMALL_MFD_MODE_FLIGHT",
+//		"BLACKHAWK_SMALL_MFD_MODE_FLIGHT",
 		"BLACKHAWK_SMALL_MFD_MODE_COMPASS"
 	};
 
@@ -236,7 +236,7 @@ static int
 #define MFD_WINDOW_X_MAX				(1.200)
 #define MFD_WINDOW_Y_MAX				(1.200)
 
-#define LARGE_MFD_VIEWPORT_SIZE		(360) //360 works
+#define LARGE_MFD_VIEWPORT_SIZE		(512) //360 works
 #define SMALL_MFD_VIEWPORT_SIZE		(128)
 
 static env_2d
@@ -4728,7 +4728,7 @@ static void draw_weapon_display_mfd (void)
 				float width, height = 0.7, x1, y1, x2, y2, y_offset = 0.0;
 
 				width = 0.25;
-				
+
 				get_2d_float_screen_coordinates(pylon_x - 0.5 * width, pylon_y - 0.5 * height, &x1, &y1);
 				get_2d_float_screen_coordinates(pylon_x + 0.5 * width, pylon_y + y_offset + 0.5 * height, &x2, &y2);
 
@@ -4954,11 +4954,11 @@ static void draw_engine_value(float x, float y, const char* format, float value,
 	}
 
 	set_mono_font_colour(col);
-	set_mono_font_type (MONO_FONT_TYPE_7X12);
+	set_mono_font_type (MONO_FONT_TYPE_14X21);
 
 	sprintf (buffer, format, value);
 	set_2d_mono_font_position (x, y);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(buffer), -12.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(buffer), -21.0);
 	print_mono_font_string (buffer);
 
 	if (box)
@@ -4968,7 +4968,7 @@ static void draw_engine_value(float x, float y, const char* format, float value,
 	}
 
 	set_mono_font_colour (MFD_COLOUR1);
-	set_mono_font_type (MONO_FONT_TYPE_7X12);
+	set_mono_font_type (MONO_FONT_TYPE_10X16);
 }
 
 static void draw_engine_bar(float x, float y, float value, float split_value, float max_value, float warning_min_limit, float warning_max_limit, float danger_min_limit, float danger_max_limit, int print_readout)
@@ -5108,7 +5108,7 @@ static void draw_rotor_rpm_bar(float value, float x, float y)
 		draw_2d_box_with_radius(x - 0.11, y, x + 0.11, y + 0.1, FALSE, TRUE, 0.0, col);
 
 	set_mono_font_colour(col);
-	set_mono_font_type (MONO_FONT_TYPE_7X12);
+	set_mono_font_type (MONO_FONT_TYPE_14X21);
 
 	sprintf (buffer, "%3.0f", value);
 	set_2d_mono_font_position (x, y);
@@ -5116,7 +5116,7 @@ static void draw_rotor_rpm_bar(float value, float x, float y)
 	print_mono_font_string (buffer);
 
 	set_mono_font_colour (MFD_COLOUR1);
-	set_mono_font_type (MONO_FONT_TYPE_7X12);
+	set_mono_font_type (MONO_FONT_TYPE_10X16);
 }
 
 static void draw_engine_display_mfd (void)
@@ -5137,7 +5137,7 @@ static void draw_engine_display_mfd (void)
 		col;
 
 	set_mono_font_colour (MFD_COLOUR1);
-	set_mono_font_type (MONO_FONT_TYPE_7X12);
+	set_mono_font_type (MONO_FONT_TYPE_10X16);
 
 	////////////////////////////////////////
 	//
@@ -5182,7 +5182,7 @@ static void draw_engine_display_mfd (void)
 	draw_engine_bar(x, y, digital_readout, split, 130.0, 0.0, split, 0.0, 100.0, TRUE);
 
 	set_2d_mono_font_position (x, -0.1);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 8.0);
 	print_mono_font_string("1");
 
 	//
@@ -5207,7 +5207,7 @@ static void draw_engine_display_mfd (void)
 	draw_engine_bar(x, y, digital_readout, split, 130.0, 0.0, split, 0.0, 100.0, TRUE);
 
 	set_2d_mono_font_position (x, -0.1);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 8.0);
 	print_mono_font_string("2");
 
 	////////////////////////////////////////
@@ -5242,7 +5242,7 @@ static void draw_engine_display_mfd (void)
 	draw_engine_bar(x, y, digital_readout, split, 1000.0, 0.0, split, 0.0, 867.0, TRUE);
 
 	set_2d_mono_font_position (x, -0.1);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 8.0);
 	print_mono_font_string("1");
 
 	//
@@ -5364,27 +5364,27 @@ static void draw_engine_display_mfd (void)
 		draw_2d_box_with_radius(0.62, 0.1, 1.18, -0.4, FALSE, TRUE, 0.04, MFD_COLOUR1);
 
 		set_mono_font_colour(MFD_COLOUR_YELLOW);
-		set_mono_font_type (MONO_FONT_TYPE_7X12);
+		set_mono_font_type (MONO_FONT_TYPE_14X21);
 
 		if (current_flight_dynamics->left_engine_starter_active)
 		{
 			set_2d_mono_font_position (0.75, -0.32);
-			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -12.0);
+			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -21.0);
 			print_mono_font_string("ON");
 		}
 
 		if (current_flight_dynamics->right_engine_starter_active)
 		{
 			set_2d_mono_font_position (1.05, -0.32);
-			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -12.0);
+			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -21.0);
 			print_mono_font_string("ON");
 		}
 
 		set_mono_font_colour (MFD_COLOUR1);
-		set_mono_font_type (MONO_FONT_TYPE_7X12);
+		set_mono_font_type (MONO_FONT_TYPE_10X16);
 
 		set_2d_mono_font_position (0.9, -0.42);
-		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("START"), -14.0);
+		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("START"), -21.0);
 		print_mono_font_string ("START");
 	}
 
@@ -5397,19 +5397,19 @@ static void draw_engine_display_mfd (void)
 		draw_2d_box_with_radius(-0.1, -0.35, 0.55, -0.77, FALSE, TRUE, 0.04, MFD_COLOUR1);
 
 		set_2d_mono_font_position (-0.08, -0.45);
-		set_mono_font_rel_position (2.0, -12.0);
+		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("HYD PSI");
 
 		set_2d_mono_font_position (-0.05, -0.55);
-		set_mono_font_rel_position (2.0, -12.0);
+		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("PRI");
 
 		set_2d_mono_font_position (-0.05, -0.65);
-		set_mono_font_rel_position (2.0, -12.0);
+		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("UTIL");
 
 		set_2d_mono_font_position (-0.05, -0.75);
-		set_mono_font_rel_position (2.0, -12.0);
+		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("ACC");
 
 		digital_readout = get_hydraulic_pressure() * (300.0 + ((int)(get_gunship_entity()) & 0xff) * 0.1);
@@ -5430,22 +5430,22 @@ static void draw_engine_display_mfd (void)
 		print_mono_font_string ("APU %");
 
 		digital_readout = bound (current_flight_dynamics->apu_rpm.value, 0.0, 100.0);
-		draw_engine_value(0.9, -0.72, "%2.0f", digital_readout, 80.0, 110.0, 50.0, 110.0);
+		draw_engine_value(0.9, -0.75, "%2.0f", digital_readout, 80.0, 110.0, 50.0, 110.0);
 
 		// engine oil psi
 
 		draw_2d_box_with_radius(-0.7, -0.35, -0.15, -0.77, FALSE, TRUE, 0.04, MFD_COLOUR1);
 
 		set_2d_mono_font_position (-0.68, -0.45);
-		set_mono_font_rel_position (2.0, -12.0);
+		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("ENGINE");
 
 		set_2d_mono_font_position (-0.64, -0.52);
-		set_mono_font_rel_position (2.0, -11.0);
+		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("OIL PSI");
 
 		set_2d_mono_font_position (-0.425, -0.75);
-		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("1    2"), -12.0);
+		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("1    2"), -16.0);
 		print_mono_font_string ("1    2");
 
 		{
@@ -6852,13 +6852,13 @@ static void draw_mfd (screen *mfd_screen, blackhawk_mfd_modes* mode, blackhawk_m
 				break;
 			}
 			////////////////////////////////////////
-			case BLACKHAWK_MFD_MODE_FLIGHT:
-			////////////////////////////////////////
-	{
-				draw_flight_display_mfd ();
-
-				break;
-		}
+//			case BLACKHAWK_MFD_MODE_FLIGHT:
+//			////////////////////////////////////////
+//	{
+//				draw_flight_display_mfd ();
+//
+//				break;
+//		}
 			////////////////////////////////////////
 			case BLACKHAWK_MFD_MODE_MISSION:
 			////////////////////////////////////////
@@ -6928,13 +6928,13 @@ static void draw_small_mfd (screen *mfd_screen, blackhawk_small_mfd_modes mode, 
 				break;
 			}
 			////////////////////////////////////////
-			case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
-			////////////////////////////////////////
-			{
-				draw_flight_display_small_mfd ();
-
-				break;
-				}
+//			case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
+//			////////////////////////////////////////
+//			{
+//				draw_flight_display_small_mfd ();
+//
+//				break;
+//				}
 			////////////////////////////////////////
 			case BLACKHAWK_SMALL_MFD_MODE_COMPASS:
 			////////////////////////////////////////
@@ -7036,7 +7036,7 @@ void initialise_blackhawk_mfd (void)
 	else
 	{
 		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ENGINE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
-		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_FLIGHT, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_COMPASS, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
 		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_SYSTEM, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
 	}
 
@@ -8182,37 +8182,37 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 			break;
 		}
 		////////////////////////////////////////
-		case BLACKHAWK_MFD_MODE_FLIGHT:
-		////////////////////////////////////////
-		{
-			draw_translucent_mfd_background (mfd_screen_x_min, mfd_screen_y_min, mfd_screen_x_max, mfd_screen_y_max);
-
-			set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-
-			set_active_screen (mfd_screen);
-
-			if (lock_screen (mfd_screen))
-			{
-				rgb_colour
-					store_background_colour;
-
-				set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, clear_mfd_colour);
-
-				draw_mfd_layout_grid ();
-
-				store_background_colour = MFD_BACKGROUND_COLOUR;
-
-				set_rgb_colour (MFD_BACKGROUND_COLOUR, 255, 255, 255, 0);
-
-				draw_flight_display_mfd ();
-
-				MFD_BACKGROUND_COLOUR = store_background_colour;
-
-				unlock_screen (mfd_screen);
-				}
-
-			break;
-			}
+//		case BLACKHAWK_MFD_MODE_FLIGHT:
+//		////////////////////////////////////////
+//		{
+//			draw_translucent_mfd_background (mfd_screen_x_min, mfd_screen_y_min, mfd_screen_x_max, mfd_screen_y_max);
+//
+//			set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
+//
+//			set_active_screen (mfd_screen);
+//
+//			if (lock_screen (mfd_screen))
+//			{
+//				rgb_colour
+//					store_background_colour;
+//
+//				set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, clear_mfd_colour);
+//
+//				draw_mfd_layout_grid ();
+//
+//				store_background_colour = MFD_BACKGROUND_COLOUR;
+//
+//				set_rgb_colour (MFD_BACKGROUND_COLOUR, 255, 255, 255, 0);
+//
+//				draw_flight_display_mfd ();
+//
+//				MFD_BACKGROUND_COLOUR = store_background_colour;
+//
+//				unlock_screen (mfd_screen);
+//				}
+//
+//			break;
+//			}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_MISSION:
 		////////////////////////////////////////
@@ -8781,18 +8781,18 @@ static blackhawk_mfd_modes get_next_mfd_mode (blackhawk_mfd_modes mfd_mode, blac
 		case BLACKHAWK_MFD_MODE_ENGINE:
 		////////////////////////////////////////
 			{
-			next_mfd_mode = BLACKHAWK_MFD_MODE_FLIGHT;
+			next_mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
 
 			break;
 			}
 		////////////////////////////////////////
-		case BLACKHAWK_MFD_MODE_FLIGHT:
-		////////////////////////////////////////
-		{
-			next_mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
-
-			break;
-		}
+//		case BLACKHAWK_MFD_MODE_FLIGHT:
+//		////////////////////////////////////////
+//		{
+//			next_mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
+//
+//			break;
+//		}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_MISSION:
 		////////////////////////////////////////
@@ -8887,18 +8887,18 @@ static blackhawk_mfd_modes get_previous_mfd_mode (blackhawk_mfd_modes mfd_mode, 
 			break;
 			}
 		////////////////////////////////////////
-		case BLACKHAWK_MFD_MODE_FLIGHT:
-		////////////////////////////////////////
-		{
-			previous_mfd_mode = BLACKHAWK_MFD_MODE_ENGINE;
-
-			break;
-		}
+//		case BLACKHAWK_MFD_MODE_FLIGHT:
+//		////////////////////////////////////////
+//		{
+//			previous_mfd_mode = BLACKHAWK_MFD_MODE_ENGINE;
+//
+//			break;
+//		}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_MISSION:
 		////////////////////////////////////////
 		{
-			previous_mfd_mode = BLACKHAWK_MFD_MODE_FLIGHT;
+			previous_mfd_mode = BLACKHAWK_MFD_MODE_ENGINE;
 
 			break;
 		}
@@ -9059,7 +9059,7 @@ static blackhawk_small_mfd_modes get_next_small_mfd_mode (blackhawk_small_mfd_mo
 		case BLACKHAWK_SMALL_MFD_MODE_OFF:
 		////////////////////////////////////////
 		{
-			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_FLIGHT;
+			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_SYSTEM;
 
 			break;
 		}
@@ -9075,18 +9075,18 @@ static blackhawk_small_mfd_modes get_next_small_mfd_mode (blackhawk_small_mfd_mo
 		case BLACKHAWK_SMALL_MFD_MODE_SYSTEM:
 		////////////////////////////////////////
 		{
-			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_FLIGHT;
-
-			break;
-		}
-		////////////////////////////////////////
-		case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
-		////////////////////////////////////////
-		{
 			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_COMPASS;
 
 			break;
 		}
+		////////////////////////////////////////
+//		case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
+//		////////////////////////////////////////
+//		{
+//			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_COMPASS;
+//
+//			break;
+//		}
 		////////////////////////////////////////
 		case BLACKHAWK_SMALL_MFD_MODE_COMPASS:
 		////////////////////////////////////////

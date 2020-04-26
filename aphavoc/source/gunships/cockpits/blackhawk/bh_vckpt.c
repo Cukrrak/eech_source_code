@@ -1418,7 +1418,7 @@ void initialise_blackhawk_virtual_cockpit (void)
 
 	// set up cockpit light
 	{
-		cockpit_light_colors colors[] = {COCKPIT_LIGHT_NONE, COCKPIT_LIGHT_YELLOW, COCKPIT_LIGHT_BLUE};
+		cockpit_light_colors colors[] = {COCKPIT_LIGHT_NONE, COCKPIT_LIGHT_GREEN, COCKPIT_LIGHT_BLUE};
 		initialise_cockpit_lights(colors, 3);
 	}
 }
@@ -1754,29 +1754,27 @@ void update_blackhawk_virtual_cockpit (void)
 void pre_render_blackhawk_virtual_cockpit_displays (void)
 			{
 	switch (get_view_mode ())
-				{
+	{
 		case VIEW_MODE_VIRTUAL_COCKPIT_CREW:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
-					{
-						break;
-					}
+		{
+			break;
+		}
 		default:
 		{
 			if (!get_global_draw_cockpit_graphics ())
-					{
+			{
 				return;
 			}
 
-						break;
-					}
+			break;
+		}
 	}
 
 	draw_blackhawk_mfd ();
-
-//	draw_blackhawk_chrono_on_texture ();
 
 	if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_CREW)
 	{
@@ -1789,7 +1787,7 @@ void pre_render_blackhawk_virtual_cockpit_displays (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void draw_blackhawk_virtual_cockpit (void)
-					{
+{
 	int
 		draw_main_rotors;
 
@@ -1896,9 +1894,9 @@ void draw_blackhawk_virtual_cockpit (void)
 
 		if (begin_3d_scene ())
 		{
-			//
+		//
 		// light direction is in world coordinates
-			//
+		//
 
 		light_3d_source
 			*display_backlight,
