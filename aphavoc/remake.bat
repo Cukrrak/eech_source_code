@@ -1,5 +1,5 @@
 @echo off
-SET EECH_ROOTDIR=D:\blackhawk-1-16
+SET EECH_ROOTDIR=D:\blackhawk-1-16-1
 
 	cd %EECH_ROOTDIR%\aphavoc
 

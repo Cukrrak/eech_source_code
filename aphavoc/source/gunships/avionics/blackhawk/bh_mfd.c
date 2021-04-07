@@ -88,7 +88,6 @@ static char
 		"BLACKHAWK_MFD_MODE_WEAPON",
 		"BLACKHAWK_MFD_MODE_SYSTEM",
 		"BLACKHAWK_MFD_MODE_ENGINE",
-//		"BLACKHAWK_MFD_MODE_FLIGHT",
 		"BLACKHAWK_MFD_MODE_MISSION",
 	};
 
@@ -98,7 +97,7 @@ static char
 		"BLACKHAWK_SMALL_MFD_MODE_OFF",
 		"BLACKHAWK_SMALL_MFD_MODE_DAMAGED",
 		"BLACKHAWK_SMALL_MFD_MODE_SYSTEM",
-//		"BLACKHAWK_SMALL_MFD_MODE_FLIGHT",
+		"BLACKHAWK_SMALL_MFD_MODE_FLIGHT",
 		"BLACKHAWK_SMALL_MFD_MODE_COMPASS"
 	};
 
@@ -177,13 +176,6 @@ static blackhawk_small_mfd_modes
 		&pilot_bottom_mfd_mode					// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM
 	};
 
-//static blackhawk_small_mfd_locations
-//	opposite_small_mfd_locations[NUM_BLACKHAWK_SMALL_MFD_LOCATIONS] =
-//	{
-//		BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP,		// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP
-//		BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM		// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP
-//	};
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,9 +183,9 @@ static blackhawk_small_mfd_modes
 static rgb_colour
 	mfd_colours[20];
 
-#define MFD_COLOUR1 		  		(mfd_colours[0])
-#define MFD_COLOUR2 		  		(mfd_colours[1])
-#define MFD_COLOUR3 		  		(mfd_colours[2])
+#define MFD_COLOUR1 		  	(mfd_colours[0])
+#define MFD_COLOUR2 		  	(mfd_colours[1])
+#define MFD_COLOUR3 		  	(mfd_colours[2])
 #define MFD_COLOUR4	  	  		(mfd_colours[3])
 #define MFD_COLOUR5				(mfd_colours[4])
 #define MFD_COLOUR6				(mfd_colours[5])
@@ -213,7 +205,7 @@ static rgb_colour
 #define MFD_COLOUR_DARK_RED		(mfd_colours[18])
 #define MFD_COLOUR_WHITE    	(mfd_colours[19])
 static rgb_colour
-   clear_mfd_colour;
+clear_mfd_colour;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -889,9 +881,9 @@ static void draw_heading_scale (float heading, int draw_command_heading)
 	tick_datum_top		  		= tick_top + 0.020;
 	tick_datum_bottom	  		= tick_bottom - 0.020;
 
-		//
+	//
 	// adjust 2D environment for heading scale clipping
-		//
+	//
 
 	heading_width_ratio		= 0.65;
 	heading_tick_x_spacing = heading_width_ratio / 5;
@@ -912,12 +904,12 @@ static void draw_heading_scale (float heading, int draw_command_heading)
 
 	draw_2d_line (-1.0, 0.8125, 1.0, 0.8125, MFD_COLOUR1);
 
-		//
+	//
 	// draw command heading carat
-		//
+	//
 
 	if (draw_command_heading)
-		{
+	{
 		if (!blackhawk_damage.navigation_computer)
 		{
 			entity
@@ -1008,7 +1000,7 @@ static void draw_heading_scale (float heading, int draw_command_heading)
 
 	set_2d_window (mfd_env, MFD_WINDOW_X_MIN, MFD_WINDOW_Y_MIN, MFD_WINDOW_X_MAX, MFD_WINDOW_Y_MAX);
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-		}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1088,10 +1080,16 @@ static void display_navigation_info(void)
 		left_edge = -0.6,
 		right_edge = 0.6,
 		upper_right = -0.2,
-		upper_left = 0.2,
-		bottom = -0.98,
-		top = -0.78,
-		mid_y = -0.88;
+		bottom = -1.15,
+		top = -0.95,
+		mid_y = -1.05;
+
+//	left_edge = -0.6,
+//	right_edge = 0.6,
+//	upper_right = -0.2,
+//	bottom = -0.98,
+//	top = -0.78,
+//	mid_y = -0.88;
 
 	entity
 		*wp;
@@ -1102,20 +1100,10 @@ static void display_navigation_info(void)
 	char
 		buffer[80];
 
-
 	// draw surrounding box
-	draw_2d_line(left_edge, mid_y, right_edge, mid_y, MFD_COLOUR1);
-	draw_2d_line(left_edge, bottom, right_edge, bottom, MFD_COLOUR1);
-	draw_2d_line(left_edge, mid_y, left_edge, bottom, MFD_COLOUR1);
-	draw_2d_line(right_edge, mid_y, right_edge, bottom, MFD_COLOUR1);
+	draw_2d_box(left_edge, mid_y, right_edge, bottom, FALSE, FALSE, MFD_COLOUR1);
 
-	draw_2d_line(left_edge, top, upper_right, top, MFD_COLOUR1);
-	draw_2d_line(left_edge, top, left_edge, mid_y, MFD_COLOUR1);
-	draw_2d_line(upper_right, top, upper_right, mid_y, MFD_COLOUR1);
-
-	draw_2d_line(right_edge, top, upper_left, top, MFD_COLOUR1);
-	draw_2d_line(right_edge, top, right_edge, mid_y, MFD_COLOUR1);
-	draw_2d_line(upper_left, top, upper_left, mid_y, MFD_COLOUR1);
+	draw_2d_box(left_edge, top, upper_right, mid_y, FALSE, FALSE, MFD_COLOUR1);
 
 	set_mono_font_type (MONO_FONT_TYPE_6X10);
 
@@ -1141,11 +1129,11 @@ static void display_navigation_info(void)
 			if (waypoint_range < 1000.0)
 				sprintf (buffer, "%c:%dm", get_local_entity_char_value (wp, CHAR_TYPE_TAG), (int) waypoint_range);
 			else if (waypoint_range < 100000.0)
-{
-	int
+			{
+				int
 					i;
 
-	float
+				float
 					f;
 
 				//
@@ -1163,7 +1151,7 @@ static void display_navigation_info(void)
 		else
 			sprintf (buffer, "-:--.-");
 
-		set_2d_mono_font_position (left_edge + 0.1, mid_y);
+		set_2d_mono_font_position (left_edge + 0.05, mid_y);
 		set_mono_font_rel_position (1.0, 3.0);
 		print_mono_font_string (buffer);
 
@@ -1172,7 +1160,7 @@ static void display_navigation_info(void)
 		//
 
 		if ((current_flight_dynamics->velocity_z.value > 0.1) && (!blackhawk_damage.navigation_computer))
-	{
+		{
 			float
 				time_to_go,
 				hours,
@@ -1187,13 +1175,13 @@ static void display_navigation_info(void)
 			strcpy (buffer, "--:--:--");
 
 		x_adjust = -get_mono_font_string_width(buffer);
-		set_2d_mono_font_position (right_edge - 0.1, mid_y);
+		set_2d_mono_font_position (right_edge - 0.05, mid_y);
 		set_mono_font_rel_position (x_adjust, 3.0);
 		print_mono_font_string (buffer);
 	}
 
 	// sector:
-		{
+	{
 		int sz, sx;
 		entity* sec = get_local_sector_entity(gunship_position);
 
@@ -1201,24 +1189,12 @@ static void display_navigation_info(void)
 		sz = get_local_entity_int_value(sec, INT_TYPE_Z_SECTOR);
 
 		sprintf(buffer, "%d,%d", sx, sz);
-		set_2d_mono_font_position (left_edge, top);
+		set_2d_mono_font_position (left_edge, top + 0.01);
 		set_mono_font_rel_position (4.0, 3.0);
 		print_mono_font_string (buffer);
 	}
 
-	// fuel
-	{
-		float x_adjust;
-		float fvalue = bound (kilograms_to_pounds (current_flight_dynamics->fuel_weight.value), 0.0, 9999.0);
-
-		sprintf(buffer, "%d lb", (int)fvalue);
-		x_adjust = -get_mono_font_string_width(buffer) - 2.0;
-
-		set_2d_mono_font_position (right_edge, top);
-		set_mono_font_rel_position (x_adjust, 3.0);
-		print_mono_font_string (buffer);
-		}
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5595,7 +5571,6 @@ static void draw_pitch_ladder (void)
 		x_centre,
 		y_centre = 0.1,
 		size,
-		vsize,
 		vp_size,
 		pitch,
 		mod_pitch,
@@ -5608,8 +5583,6 @@ static void draw_pitch_ladder (void)
 		y,
 		left_edge,
 		right_edge,
-		upper_edge,
-		lower_edge,
 		x_scale,
 		y_scale,
 		x_horizon,
@@ -5657,18 +5630,11 @@ static void draw_pitch_ladder (void)
 
 	x_centre = 0.0;
 
-	size = 0.4; //0.4 original
+	size = 0.4;
 	pitch_bar_scale = 0.6;
-
-//	vsize = size * 1.5;
-
-	//
-	//
 
 	get_2d_float_screen_coordinates (PITCH_DATUM_X, PITCH_DATUM_Y, &u, &v);
 	roll = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_ROLL);
-
-//	set_2d_instance_position (mfd_env, PITCH_DATUM_X, PITCH_DATUM_Y - size);
 
 	//
 	// set 2D environment
@@ -5676,16 +5642,11 @@ static void draw_pitch_ladder (void)
 
 	set_2d_window (mfd_env, MFD_WINDOW_X_MIN * size, MFD_WINDOW_Y_MIN * size, MFD_WINDOW_X_MAX * size, MFD_WINDOW_Y_MAX * size);
 
-	vp_size = mfd_viewport_size * size * 1.0; //orig 0.5
+	vp_size = mfd_viewport_size * size * 0.83;
 	set_2d_viewport (mfd_env, u - (vp_size * 1.5), v - vp_size, u + (vp_size * 1.5), v + (2.0 * vp_size));
 
-//	upper_edge = 0.5 * size;
 	left_edge = -(size * 0.75);
 	right_edge = (size * 0.75);
-//	lower_edge = -size;
-
-//	set_2d_viewport (mfd_env, u + left_edge, v + upper_edge, u + right_edge, v + lower_edge);
-
 
 	//
 	// pitch
@@ -5872,8 +5833,6 @@ static void draw_pitch_ladder (void)
 
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
 
-//	draw_2d_mono_sprite (main_horizon_mask, x_centre, 0.41 + PITCH_DATUM_Y, MFD_BACKGROUND_COLOUR);
-
 	// pitch scale
 	{
 		float
@@ -5993,7 +5952,7 @@ static void draw_pitch_ladder (void)
 		draw_2d_line (0.0, -size, 0.0, -size - 0.05, MFD_COLOUR1);
 
 		set_2d_instance_rotation (mfd_env, bound (roll, rad(-60.0), rad(60.0)));
-		draw_2d_filled_triangle(0.0, -size, -0.035, -size + 0.075, 0.035, -size + 0.075, MFD_COLOUR4);
+		draw_2d_filled_triangle(0.0, -size, -0.035, -size + 0.075, 0.035, -size + 0.075, MFD_COLOUR1);
 	}
 
 	//
@@ -6005,59 +5964,38 @@ static void draw_pitch_ladder (void)
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
 
 	// datum
-	draw_2d_line(x_centre, 0.0, x_centre + 0.05, -0.05, MFD_COLOUR6);
-	draw_2d_line(x_centre, 0.0, x_centre - 0.05, -0.05, MFD_COLOUR6);
+	draw_2d_line(x_centre, 0.0, x_centre + 0.05, -0.05, MFD_COLOUR1);
+	draw_2d_line(x_centre, 0.0, x_centre - 0.05, -0.05, MFD_COLOUR1);
 
-	draw_2d_line(x_centre + 0.05, -0.05, x_centre + 0.10, 0.0, MFD_COLOUR6);
-	draw_2d_line(x_centre - 0.05, -0.05, x_centre - 0.10, 0.0, MFD_COLOUR6);
+	draw_2d_line(x_centre + 0.05, -0.05, x_centre + 0.10, 0.0, MFD_COLOUR1);
+	draw_2d_line(x_centre - 0.05, -0.05, x_centre - 0.10, 0.0, MFD_COLOUR1);
 
-	draw_2d_line(x_centre + 0.10, 0.0, x_centre + 0.20, 0.0, MFD_COLOUR6);
-	draw_2d_line(x_centre - 0.10, 0.0, x_centre - 0.20, 0.0, MFD_COLOUR6);
+	draw_2d_line(x_centre + 0.10, 0.0, x_centre + 0.20, 0.0, MFD_COLOUR1);
+	draw_2d_line(x_centre - 0.10, 0.0, x_centre - 0.20, 0.0, MFD_COLOUR1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void draw_flight_display_mfd (void)
-{
-//	set_mono_font_colour (MFD_COLOUR1);
-
-	draw_pitch_ladder ();
-
-
-//	draw_heading_scale (get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_HEADING), TRUE);
-
-//	draw_airspeed_scale();
-//	draw_radar_altitude_scale();
-//	draw_barometric_altitude_scale();
-
-//	draw_torque_scale();
-//	display_navigation_info();
-}
 
 static void draw_flight_display_small_mfd (void)
 {
-//	set_mono_font_colour (MFD_COLOUR1);
+	set_mono_font_colour (MFD_COLOUR1);
 
 	draw_pitch_ladder ();
 
-//	draw_heading_scale (get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_HEADING), TRUE);
+	draw_heading_scale (get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_HEADING), TRUE);
 
-//	draw_airspeed_scale();
-//	draw_radar_altitude_scale();
-//	draw_barometric_altitude_scale();
+	draw_airspeed_scale();
+	draw_radar_altitude_scale();
+	draw_barometric_altitude_scale();
 
-//	draw_torque_scale();
-//	display_navigation_info();
+	draw_torque_scale();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// COMPASS
-	//
 
 static void draw_compass(float centre_y, float scale)
 	{
@@ -6075,6 +6013,7 @@ static void draw_compass(float centre_y, float scale)
 	draw_2d_half_thick_line(-0.1, 0.0, 0.1, 0.0, MFD_COLOUR1);
 	draw_2d_half_thick_line(-0.03, scale * -0.12, 0.03, scale * -0.12, MFD_COLOUR1);
 
+	display_navigation_info();
 
 	// compass rose
 
@@ -6082,7 +6021,7 @@ static void draw_compass(float centre_y, float scale)
 	set_2d_instance_rotation (mfd_env, aircraft_heading);
 
 	for (hdg = 0; hdg < 360; hdg+=5)
-			{
+	{
 		set_2d_instance_rotation (mfd_env, aircraft_heading - rad(hdg));
 		switch (hdg)
 		{
@@ -6126,20 +6065,52 @@ static void draw_compass(float centre_y, float scale)
 				draw_2d_line(0.0, scale * 0.95, 0.0, scale, MFD_COLOUR1);
 			break;
 		}
-			}
+	}
+
+	// draw WP marker
+
+	if (!blackhawk_damage.navigation_computer)
+	{
+		entity
+			*wp;
+
+		wp = get_local_entity_current_waypoint (get_gunship_entity ());
+
+		if (wp)
+		{
+			vec3d
+				*gunship_position,
+				waypoint_position;
+
+			float
+				dx,
+				dz,
+				wp_bearing;
+
+			gunship_position = get_local_entity_vec3d_ptr (get_gunship_entity (), VEC3D_TYPE_POSITION);
+
+			get_waypoint_display_position (get_gunship_entity (), wp, &waypoint_position);
+			dx = waypoint_position.x - gunship_position->x;
+			dz = waypoint_position.z - gunship_position->z;
+
+			wp_bearing = atan2 (dx, dz);
+
+			set_2d_instance_rotation (mfd_env, aircraft_heading - wp_bearing);
+
+			draw_2d_half_thick_line(0.0, scale * 0.7, 0.0, scale * 0.4, MFD_COLOUR1);
+			draw_2d_half_thick_line(0.0, scale * 0.9, 0.06, scale * 0.7, MFD_COLOUR1);
+			draw_2d_half_thick_line(0.0, scale * 0.9, -0.06, scale * 0.7, MFD_COLOUR1);
+			draw_2d_half_thick_line(0.06, scale * 0.7, -0.06, scale * 0.7, MFD_COLOUR1);
+			draw_2d_half_thick_line(0.0, -scale * 0.9, 0.0, -scale * 0.4, MFD_COLOUR1);
+		}
+	}
 
 	reset_2d_instance (mfd_env);
 
 	set_2d_window (mfd_env, MFD_WINDOW_X_MIN, MFD_WINDOW_Y_MIN, MFD_WINDOW_X_MAX, MFD_WINDOW_Y_MAX);
 	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-			}
+}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//
-// MISSION
-			//
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6908,9 +6879,9 @@ static void draw_small_mfd (screen *mfd_screen, blackhawk_small_mfd_modes mode, 
 			////////////////////////////////////////
 			case BLACKHAWK_SMALL_MFD_MODE_OFF:
 			////////////////////////////////////////
-		{
+			{
 				break;
-		}
+			}
 			////////////////////////////////////////
 			case BLACKHAWK_SMALL_MFD_MODE_DAMAGED:
 			////////////////////////////////////////
@@ -6922,31 +6893,31 @@ static void draw_small_mfd (screen *mfd_screen, blackhawk_small_mfd_modes mode, 
 			////////////////////////////////////////
 			case BLACKHAWK_SMALL_MFD_MODE_SYSTEM:
 			////////////////////////////////////////
-		{
+			{
 				draw_system_display_small_mfd ();
 
 				break;
 			}
 			////////////////////////////////////////
-//			case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
-//			////////////////////////////////////////
-//			{
-//				draw_flight_display_small_mfd ();
-//
-//				break;
-//				}
+			case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
+			////////////////////////////////////////
+			{
+				draw_flight_display_small_mfd ();
+
+				break;
+			}
 			////////////////////////////////////////
 			case BLACKHAWK_SMALL_MFD_MODE_COMPASS:
 			////////////////////////////////////////
-				{
-				draw_compass(0.05, 0.75);
+			{
+				draw_compass(0.05, 1.0);
 
 				break;
-				}
+			}
 			////////////////////////////////////////
 			default:
 			////////////////////////////////////////
-				{
+			{
 				debug_fatal ("Invalid small MFD mode = %d", mode);
 
 				break;
@@ -7036,8 +7007,8 @@ void initialise_blackhawk_mfd (void)
 	else
 	{
 		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ENGINE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
-		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_COMPASS, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
-		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_SYSTEM, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_FLIGHT, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_COMPASS, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
 	}
 
 	select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_MISSION, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
@@ -9075,18 +9046,18 @@ static blackhawk_small_mfd_modes get_next_small_mfd_mode (blackhawk_small_mfd_mo
 		case BLACKHAWK_SMALL_MFD_MODE_SYSTEM:
 		////////////////////////////////////////
 		{
-			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_COMPASS;
+			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_FLIGHT;
 
 			break;
 		}
 		////////////////////////////////////////
-//		case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
-//		////////////////////////////////////////
-//		{
-//			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_COMPASS;
-//
-//			break;
-//		}
+		case BLACKHAWK_SMALL_MFD_MODE_FLIGHT:
+		////////////////////////////////////////
+		{
+			next_mfd_mode = BLACKHAWK_SMALL_MFD_MODE_COMPASS;
+
+			break;
+		}
 		////////////////////////////////////////
 		case BLACKHAWK_SMALL_MFD_MODE_COMPASS:
 		////////////////////////////////////////
