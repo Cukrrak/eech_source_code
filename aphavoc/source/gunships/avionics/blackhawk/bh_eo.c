@@ -207,7 +207,7 @@ void get_blackhawk_eo_relative_centred_viewpoint (viewpoint *vp)
 	else
 	{
 		//
-		// can happpen if the object is being destroyed
+		// can happen if the object is being destroyed
 		//
 
 		memcpy (&vp->position, &inst3d->vp.position, sizeof (vec3d));

@@ -236,7 +236,7 @@ static int
 #define MFD_WINDOW_X_MAX				(1.200)
 #define MFD_WINDOW_Y_MAX				(1.200)
 
-#define LARGE_MFD_VIEWPORT_SIZE		(512) //360 works
+#define LARGE_MFD_VIEWPORT_SIZE		(256)
 #define SMALL_MFD_VIEWPORT_SIZE		(128)
 
 static env_2d
@@ -4954,11 +4954,11 @@ static void draw_engine_value(float x, float y, const char* format, float value,
 	}
 
 	set_mono_font_colour(col);
-	set_mono_font_type (MONO_FONT_TYPE_14X21);
+	set_mono_font_type (MONO_FONT_TYPE_6X10);
 
 	sprintf (buffer, format, value);
 	set_2d_mono_font_position (x, y);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(buffer), -21.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(buffer), -8.0);
 	print_mono_font_string (buffer);
 
 	if (box)
@@ -4968,7 +4968,7 @@ static void draw_engine_value(float x, float y, const char* format, float value,
 	}
 
 	set_mono_font_colour (MFD_COLOUR1);
-	set_mono_font_type (MONO_FONT_TYPE_10X16);
+	set_mono_font_type (MONO_FONT_TYPE_6X10);
 }
 
 static void draw_engine_bar(float x, float y, float value, float split_value, float max_value, float warning_min_limit, float warning_max_limit, float danger_min_limit, float danger_max_limit, int print_readout)
@@ -5108,7 +5108,7 @@ static void draw_rotor_rpm_bar(float value, float x, float y)
 		draw_2d_box_with_radius(x - 0.11, y, x + 0.11, y + 0.1, FALSE, TRUE, 0.0, col);
 
 	set_mono_font_colour(col);
-	set_mono_font_type (MONO_FONT_TYPE_14X21);
+	set_mono_font_type (MONO_FONT_TYPE_6X10);
 
 	sprintf (buffer, "%3.0f", value);
 	set_2d_mono_font_position (x, y);
@@ -5116,7 +5116,7 @@ static void draw_rotor_rpm_bar(float value, float x, float y)
 	print_mono_font_string (buffer);
 
 	set_mono_font_colour (MFD_COLOUR1);
-	set_mono_font_type (MONO_FONT_TYPE_10X16);
+	set_mono_font_type (MONO_FONT_TYPE_6X10);
 }
 
 static void draw_engine_display_mfd (void)
@@ -5137,7 +5137,7 @@ static void draw_engine_display_mfd (void)
 		col;
 
 	set_mono_font_colour (MFD_COLOUR1);
-	set_mono_font_type (MONO_FONT_TYPE_10X16);
+	set_mono_font_type (MONO_FONT_TYPE_6X10);//MONO_FONT_TYPE_5X9);
 
 	////////////////////////////////////////
 	//
@@ -5255,7 +5255,7 @@ static void draw_engine_display_mfd (void)
 	draw_engine_bar(x, y, digital_readout, split, 1000.0, 0.0, split, 0.0, 867.0, TRUE);
 
 	set_2d_mono_font_position (x, -0.1);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 5.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width(" "), 8.0);
 	print_mono_font_string("2");
 
 	////////////////////////////////////////
@@ -5274,20 +5274,20 @@ static void draw_engine_display_mfd (void)
 
 
 	set_2d_mono_font_position (0.9, 0.25);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP%"), -16.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP%"), -14.0);
 	print_mono_font_string ("N %");
 
 	set_2d_mono_font_position (0.9, 0.25);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP%"), -13.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NP%"), -11.0);
 	print_mono_font_string (" P ");
 
 	// labels for numeric reading on right side
 	set_2d_mono_font_position (0.9, -0.0);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NG%"), -16.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NG%"), -14.0);
 	print_mono_font_string ("N %");
 
 	set_2d_mono_font_position (0.9, -0.0);
-	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NG%"), -13.0);
+	set_mono_font_rel_position (-0.5 * get_mono_font_string_width("NG%"), -11.0);
 	print_mono_font_string (" G ");
 
 
@@ -5361,30 +5361,30 @@ static void draw_engine_display_mfd (void)
 	// engine starters
 	if (current_flight_dynamics->left_engine_starter_active || current_flight_dynamics->right_engine_starter_active)
 	{
-		draw_2d_box_with_radius(0.62, 0.1, 1.18, -0.4, FALSE, TRUE, 0.04, MFD_COLOUR1);
+		draw_2d_box_with_radius(0.62, 0.5, 1.18, -0.9, FALSE, TRUE, 0.04, MFD_COLOUR1);
 
 		set_mono_font_colour(MFD_COLOUR_YELLOW);
-		set_mono_font_type (MONO_FONT_TYPE_14X21);
+		set_mono_font_type (MONO_FONT_TYPE_6X10);
 
 		if (current_flight_dynamics->left_engine_starter_active)
 		{
 			set_2d_mono_font_position (0.75, -0.32);
-			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -21.0);
+			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -8.0);
 			print_mono_font_string("ON");
 		}
 
 		if (current_flight_dynamics->right_engine_starter_active)
 		{
 			set_2d_mono_font_position (1.05, -0.32);
-			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -21.0);
+			set_mono_font_rel_position (-0.5 * get_mono_font_string_width("ON"), -8.0);
 			print_mono_font_string("ON");
 		}
 
 		set_mono_font_colour (MFD_COLOUR1);
-		set_mono_font_type (MONO_FONT_TYPE_10X16);
+		set_mono_font_type (MONO_FONT_TYPE_6X10);
 
 		set_2d_mono_font_position (0.9, -0.42);
-		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("START"), -21.0);
+		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("START"), -8.0);
 		print_mono_font_string ("START");
 	}
 
@@ -5396,19 +5396,19 @@ static void draw_engine_display_mfd (void)
 
 		draw_2d_box_with_radius(-0.1, -0.35, 0.55, -0.77, FALSE, TRUE, 0.04, MFD_COLOUR1);
 
-		set_2d_mono_font_position (-0.08, -0.45);
+		set_2d_mono_font_position (-0.08, -0.52);
 		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("HYD PSI");
 
-		set_2d_mono_font_position (-0.05, -0.55);
+		set_2d_mono_font_position (-0.05, -0.62);
 		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("PRI");
 
-		set_2d_mono_font_position (-0.05, -0.65);
+		set_2d_mono_font_position (-0.05, -0.72);
 		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("UTIL");
 
-		set_2d_mono_font_position (-0.05, -0.75);
+		set_2d_mono_font_position (-0.05, -0.82);
 		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("ACC");
 
@@ -5436,15 +5436,15 @@ static void draw_engine_display_mfd (void)
 
 		draw_2d_box_with_radius(-0.7, -0.35, -0.15, -0.77, FALSE, TRUE, 0.04, MFD_COLOUR1);
 
-		set_2d_mono_font_position (-0.68, -0.45);
+		set_2d_mono_font_position (-0.68, -0.52);
 		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("ENGINE");
 
-		set_2d_mono_font_position (-0.64, -0.52);
+		set_2d_mono_font_position (-0.64, -0.62);
 		set_mono_font_rel_position (2.0, -16.0);
 		print_mono_font_string ("OIL PSI");
 
-		set_2d_mono_font_position (-0.425, -0.75);
+		set_2d_mono_font_position (-0.425, -0.82);
 		set_mono_font_rel_position (-0.5 * get_mono_font_string_width("1    2"), -16.0);
 		print_mono_font_string ("1    2");
 
