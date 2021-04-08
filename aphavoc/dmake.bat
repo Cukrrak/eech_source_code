@@ -1,5 +1,5 @@
 @echo off
-SET EECH_ROOTDIR=D:\blackhawk-1-16-1
+SET EECH_ROOTDIR=add folder to source code
 
 del project.exe
 
