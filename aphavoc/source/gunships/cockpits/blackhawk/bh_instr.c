@@ -286,7 +286,7 @@ void get_blackhawk_virtual_cockpit_adi_angles (matrix3x3 attitude, float *headin
 		result;
 
 	//
-	// get inverse attitude (attiude * inverse attitude = identity) which aligns the ADI with the world axis
+	// get inverse attitude (attitude * inverse attitude = identity) which aligns the ADI with the world axis
 	//
 
 	inverse_attitude[0][0] = attitude[0][0];
@@ -451,6 +451,42 @@ float get_blackhawk_virtual_cockpit_vsi_needle_value (void)
 		return - roll;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float get_blackhawk_virtual_cockpit_stab_needle_value (void)
+{
+	float stab_needle_value; // = bound((current_flight_dynamics->indicated_airspeed.value / 25 + 1.5), -10, 40);
+
+	float airspeed = bound(knots(current_flight_dynamics->indicated_airspeed.value), 0, 150);
+
+	// Stabilator position
+	//	0deg @ 150kts
+	//	10deg @ 100kts
+	//	20deg @ 80kts
+	//	30deg @ 60kts
+	//	40deg @ 45kts
+
+	//  move 10 deg for every 45kts (40deg mark)
+
+	//	move 10 deg for every 15kts (30deg mark)
+
+	//	move 10 deg for every 20kts (20 - 10deg marks)
+
+	//	move 10 deg for every 50kts (0 deg mark)
+
+	if (airspeed < 45.0)
+		stab_needle_value = rad(airspeed * 10.0/45.0);
+	else if (airspeed < 60.0)
+		stab_needle_value = rad(10.0 + (airspeed - 45.0) * 10.0/15.0);
+	else if (airspeed < 100.0)
+		stab_needle_value = rad(20.0 + (airspeed - 60.0) * 10.0/20.0);
+	else if (airspeed <= 150.00)
+		stab_needle_value = rad(40.0 + (airspeed - 100.0) * 10.0/50.0);
+
+	return (stab_needle_value);
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

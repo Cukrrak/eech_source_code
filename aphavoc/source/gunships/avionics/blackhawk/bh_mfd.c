@@ -88,7 +88,7 @@ static char
 		"BLACKHAWK_MFD_MODE_WEAPON",
 		"BLACKHAWK_MFD_MODE_SYSTEM",
 		"BLACKHAWK_MFD_MODE_ENGINE",
-		"BLACKHAWK_MFD_MODE_MISSION",
+		"BLACKHAWK_MFD_MODE_MISSION"
 	};
 
 static char
@@ -105,7 +105,7 @@ static char
 	*blackhawk_mfd_location_names[NUM_BLACKHAWK_MFD_LOCATIONS] =
 	{
 		"BLACKHAWK_MFD_LOCATION_PILOT_MAIN",
-		"BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN",
+		"BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN"
 	};
 
 
@@ -114,6 +114,8 @@ static char
 	{
 		"BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP",
 		"BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM",
+		"BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP",
+		"BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM"
 	};
 #endif
 
@@ -133,21 +135,21 @@ static blackhawk_mfd_modes
 	*mfd_mode_ptrs[NUM_BLACKHAWK_MFD_LOCATIONS] =
 	{
 		&pilot_main_mfd_mode,     				// BLACKHAWK_MFD_LOCATION_PILOT_RHS
-		&co_pilot_main_mfd_mode,  				// BLACKHAWK_MFD_LOCATION_CO_PILOT_LHS
+		&co_pilot_main_mfd_mode  				// BLACKHAWK_MFD_LOCATION_CO_PILOT_LHS
 	};
 
 static blackhawk_mfd_modes
 	*opposite_mfd_mode_ptrs[NUM_BLACKHAWK_MFD_LOCATIONS] =
 	{
 		&pilot_main_mfd_mode,						// BLACKHAWK_MFD_LOCATION_PILOT_LHS
-		&co_pilot_main_mfd_mode,  				// BLACKHAWK_MFD_LOCATION_CO_PILOT_RHS
+		&co_pilot_main_mfd_mode  				// BLACKHAWK_MFD_LOCATION_CO_PILOT_RHS
 	};
 
 static blackhawk_mfd_locations
 	opposite_mfd_locations[NUM_BLACKHAWK_MFD_LOCATIONS] =
 	{
 		BLACKHAWK_MFD_LOCATION_PILOT_MAIN,		// BLACKHAWK_MFD_LOCATION_PILOT_LHS
-		BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN,	// BLACKHAWK_MFD_LOCATION_CO_PILOT_RHS
+		BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN	// BLACKHAWK_MFD_LOCATION_CO_PILOT_RHS
 	};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,20 +162,17 @@ static blackhawk_mfd_locations
 
 static blackhawk_small_mfd_modes
 	pilot_top_mfd_mode			= BLACKHAWK_SMALL_MFD_MODE_OFF,
-	pilot_bottom_mfd_mode		= BLACKHAWK_SMALL_MFD_MODE_OFF;
+	pilot_bottom_mfd_mode		= BLACKHAWK_SMALL_MFD_MODE_OFF,
+	co_pilot_top_mfd_mode		= BLACKHAWK_SMALL_MFD_MODE_OFF,
+	co_pilot_bottom_mfd_mode	= BLACKHAWK_SMALL_MFD_MODE_OFF;
 
 static blackhawk_small_mfd_modes
 	*small_mfd_mode_ptrs[NUM_BLACKHAWK_SMALL_MFD_LOCATIONS] =
 	{
 		&pilot_top_mfd_mode,					// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP
-		&pilot_bottom_mfd_mode					// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM
-	};
-
-static blackhawk_small_mfd_modes
-	*opposite_small_mfd_mode_ptrs[NUM_BLACKHAWK_SMALL_MFD_LOCATIONS] =
-	{
-		&pilot_top_mfd_mode,						// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP
-		&pilot_bottom_mfd_mode					// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM
+		&pilot_bottom_mfd_mode,					// BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM
+		&co_pilot_top_mfd_mode,					// BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP
+		&co_pilot_bottom_mfd_mode				// BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM
 	};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,13 +210,16 @@ clear_mfd_colour;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PILOT_MAIN_MFD		(1 << 0)
-#define PILOT_TOP_MFD		(1 << 1)
-#define PILOT_BOTTOM_MFD	(1 << 2)
-#define CO_PILOT_MAIN_MFD	(1 << 3)
-
-static int
-	display_mask;
+//#define PILOT_MAIN_MFD		(1 << 0)
+//#define PILOT_TOP_MFD		(1 << 1)
+//#define PILOT_BOTTOM_MFD	(1 << 2)
+//#define CO_PILOT_MAIN_MFD	(1 << 3)
+//#define CO_PILOT_TOP_MFD	(1 << 4)
+//#define CO_PILOT_BOTTOM_MFD	(1 << 5)
+//
+//
+//static int
+//	display_mask;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,14 +264,20 @@ static screen
 	*pilot_top_mfd_texture_screen,
 	*pilot_bottom_mfd_texture_screen,
 	*co_pilot_main_mfd_texture_screen,
+	*co_pilot_top_mfd_texture_screen,
+	*co_pilot_bottom_mfd_texture_screen,
 	*large_pilot_main_mfd_texture_screen,
 	*large_pilot_top_mfd_texture_screen,
 	*large_pilot_bottom_mfd_texture_screen,
 	*large_co_pilot_main_mfd_texture_screen,
+	*large_co_pilot_top_mfd_texture_screen,
+	*large_co_pilot_bottom_mfd_texture_screen,
 	*small_pilot_main_mfd_texture_screen,
 	*small_pilot_top_mfd_texture_screen,
 	*small_pilot_bottom_mfd_texture_screen,
 	*small_co_pilot_main_mfd_texture_screen,
+	*small_co_pilot_top_mfd_texture_screen,
+	*small_co_pilot_bottom_mfd_texture_screen,
 	*eo_3d_texture_screen,
 	*eo_3d_texture_screen_over,
 	*full_mfd_texture_screen;
@@ -2793,8 +2801,8 @@ static void draw_tactical_situation_display_mfd (blackhawk_mfd_locations mfd_loc
 		case BLACKHAWK_MFD_LOCATION_PILOT_MAIN:
 		////////////////////////////////////////
 		{
-			tsd_ase_range						= pilot_tsd_ase_range;
-			tsd_declutter_level				= pilot_tsd_declutter_level;
+			tsd_ase_range				= pilot_tsd_ase_range;
+			tsd_declutter_level			= pilot_tsd_declutter_level;
 			tsd_threat_line_flash_timer	= &pilot_tsd_threat_line_flash_timer;
 			tsd_draw_threat_line_status	= &pilot_tsd_draw_threat_line_status;
 
@@ -2804,8 +2812,8 @@ static void draw_tactical_situation_display_mfd (blackhawk_mfd_locations mfd_loc
 		case BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN:
 		////////////////////////////////////////
 		{
-			tsd_ase_range						= co_pilot_tsd_ase_range;
-			tsd_declutter_level				= co_pilot_tsd_declutter_level;
+			tsd_ase_range				= co_pilot_tsd_ase_range;
+			tsd_declutter_level			= co_pilot_tsd_declutter_level;
 			tsd_threat_line_flash_timer	= &co_pilot_tsd_threat_line_flash_timer;
 			tsd_draw_threat_line_status	= &co_pilot_tsd_draw_threat_line_status;
 
@@ -3720,7 +3728,7 @@ static void draw_aircraft_survivability_equipment_display_mfd (blackhawk_mfd_loc
 		case BLACKHAWK_MFD_LOCATION_PILOT_MAIN:
 		////////////////////////////////////////
 		{
-			tsd_ase_range						= pilot_tsd_ase_range;
+			tsd_ase_range				= pilot_tsd_ase_range;
 			ase_threat_line_flash_timer	= &pilot_ase_threat_line_flash_timer;
 			ase_draw_threat_line_status	= &pilot_ase_draw_threat_line_status;
 
@@ -3730,7 +3738,7 @@ static void draw_aircraft_survivability_equipment_display_mfd (blackhawk_mfd_loc
 		case BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN:
 		////////////////////////////////////////
 		{
-			tsd_ase_range						= co_pilot_tsd_ase_range;
+			tsd_ase_range				= co_pilot_tsd_ase_range;
 			ase_threat_line_flash_timer	= &co_pilot_ase_threat_line_flash_timer;
 			ase_draw_threat_line_status	= &co_pilot_ase_draw_threat_line_status;
 
@@ -4718,15 +4726,15 @@ static void draw_weapon_display_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//
+//
 // SYSTEM
-			//
+//
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static float print_mfd_system_message (char *equipment, char *warning, int fail, float y_adjust)
-			{
+{
 	char
 		*status;
 
@@ -4738,17 +4746,17 @@ static float print_mfd_system_message (char *equipment, char *warning, int fail,
 	ASSERT (warning);
 
 	if (fail)
-				{
+	{
 		set_mono_font_colour (MFD_COLOUR_RED);
 
 		status = warning;
-				}
+	}
 	else
-				{
+	{
 		set_mono_font_colour (MFD_COLOUR_WHITE);
 
 		status = "OK";
-				}
+	}
 
 	set_2d_mono_font_position (-0.9, 0.92125);
 
@@ -4767,29 +4775,29 @@ static float print_mfd_system_message (char *equipment, char *warning, int fail,
 	y_adjust += get_mono_font_char_height ('X');
 
 	return (y_adjust);
-			}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void draw_system_display_mfd (void)
-			{
+{
 	float
 		y_adjust;
 
 	if (draw_large_mfd)
-				{
+	{
 		set_mono_font_type (MONO_FONT_TYPE_7X12);
 
 		y_adjust = 0.0;
-				}
+	}
 				else
-				{
+	{
 		set_mono_font_type (MONO_FONT_TYPE_3X6);
 
 		y_adjust = 0.0;
-				}
+	}
 
 	y_adjust = print_mfd_system_message ("FLIR", "FAIL", blackhawk_damage.flir, y_adjust);
 
@@ -4822,14 +4830,14 @@ static void draw_system_display_mfd (void)
 	y_adjust = print_mfd_system_message ("HYDRAULIC PRESSURE", "LOW", get_dynamics_damage_type (DYNAMICS_DAMAGE_LOW_HYDRAULICS), y_adjust);
 
 	if (get_dynamics_damage_type (DYNAMICS_DAMAGE_LOW_OIL_PRESSURE))
-				{
+	{
 		y_adjust = print_mfd_system_message ("OIL PRESSURE", "LOW", get_dynamics_damage_type (DYNAMICS_DAMAGE_LOW_OIL_PRESSURE), y_adjust);
-				}
+	}
 				else
-				{
+	{
 		y_adjust = print_mfd_system_message ("OIL PRESSURE", "HIGH", get_dynamics_damage_type (DYNAMICS_DAMAGE_HIGH_OIL_PRESSURE), y_adjust);
-				}
-			}
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5504,27 +5512,6 @@ static void draw_engine_display_mfd (void)
 #define PITCH_BAR_Y10	((float) (-0.000) * pitch_bar_scale)
 #define PITCH_BAR_X11	((float) (+0.040) * pitch_bar_scale)
 
-//#define PITCH_BAR_X1		((float) (+0.125) * pitch_bar_scale)
-//#define PITCH_BAR_Y1		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X2		((float) (+0.160) * pitch_bar_scale)
-//#define PITCH_BAR_Y2		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X3		((float) (+0.100) * pitch_bar_scale)
-//#define PITCH_BAR_Y3		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X4		((float) (+0.230) * pitch_bar_scale)
-//#define PITCH_BAR_Y4		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X5		((float) (+0.265) * pitch_bar_scale)
-//#define PITCH_BAR_Y5		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X6		((float) (+0.300) * pitch_bar_scale)
-//#define PITCH_BAR_Y6		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X7		((float) (+0.335) * pitch_bar_scale)
-//#define PITCH_BAR_Y7		((float) (+0.000) * pitch_bar_scale)
-//#define PITCH_BAR_X8		((float) (+0.125) * pitch_bar_scale)
-//#define PITCH_BAR_Y8		((float) (-0.050) * pitch_bar_scale)
-//#define PITCH_BAR_X9		((float) (+0.265) * pitch_bar_scale)
-//#define PITCH_BAR_Y9		((float) (+0.050) * pitch_bar_scale)
-//#define PITCH_BAR_X10	((float) (+0.265) * pitch_bar_scale)
-//#define PITCH_BAR_Y10	((float) (-0.050) * pitch_bar_scale)
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5998,7 +5985,7 @@ static void draw_flight_display_small_mfd (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void draw_compass(float centre_y, float scale)
-	{
+{
 	float aircraft_heading = get_local_entity_float_value (get_gunship_entity (), FLOAT_TYPE_HEADING);
 	int hdg;
 
@@ -6037,27 +6024,27 @@ static void draw_compass(float centre_y, float scale)
 		case 240:
 		case 300:
 		case 330:
-			{
-				char label[16];
+		{
+			char label[16];
 
-				if (hdg == 0)
-					sprintf(label, "N");
-				else if (hdg == 90)
-					sprintf(label, "E");
-				else if (hdg == 180)
-					sprintf(label, "S");
-				else if (hdg == 270)
-					sprintf(label, "W");
-				else
-					sprintf(label, "%d", hdg / 10);
+			if (hdg == 0)
+				sprintf(label, "N");
+			else if (hdg == 90)
+				sprintf(label, "E");
+			else if (hdg == 180)
+				sprintf(label, "S");
+			else if (hdg == 270)
+				sprintf(label, "W");
+			else
+				sprintf(label, "%d", hdg / 10);
 
-				set_2d_mono_font_position(0.0, scale * 0.8);
-				set_mono_font_rel_position(-0.5 * get_mono_font_string_width(label), -5);
-				print_mono_font_string(label);
+			set_2d_mono_font_position(0.0, scale * 0.8);
+			set_mono_font_rel_position(-0.5 * get_mono_font_string_width(label), -5);
+			print_mono_font_string(label);
 
-				draw_2d_half_thick_line(0.0, scale * 0.9, 0.0, scale, MFD_COLOUR1);
-				break;
-			}
+			draw_2d_half_thick_line(0.0, scale * 0.9, 0.0, scale, MFD_COLOUR1);
+			break;
+		}
 		default:
 			if (hdg % 10 == 0)
 				draw_2d_line(0.0, scale * 0.9, 0.0, scale, MFD_COLOUR1);
@@ -6116,7 +6103,7 @@ static void draw_compass(float centre_y, float scale)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void print_mono_font_max_length_string (char *s)
-			{
+{
 	char
 		buffer[200];
 
@@ -6125,7 +6112,7 @@ static void print_mono_font_max_length_string (char *s)
 	sprintf (buffer, "%.31s", s);
 
 	print_mono_font_string (buffer);
-			}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6639,7 +6626,7 @@ static void draw_mission_display_mfd (void)
 	}
 
 	//
-		// count (kills and losses)
+	// count (kills and losses)
 	//
 
 		sprintf
@@ -6662,8 +6649,8 @@ static void draw_mission_display_mfd (void)
 	}
 
 	//
-		// time
-		//
+	// time
+	//
 
 		mission_time = get_local_entity_float_value (task, FLOAT_TYPE_ELAPSED_MISSION_TIME);
 
@@ -6738,14 +6725,14 @@ static void draw_mfd (screen *mfd_screen, blackhawk_mfd_modes* mode, blackhawk_m
 	ASSERT (blackhawk_mfd_location_valid (location));
 
 	if (get_undamaged_eo_display_mode (*mode))
-		{
+	{
 		return;
-		}
+	}
 
 	set_active_screen (mfd_screen);
 
 	if (lock_screen (mfd_screen))
-		{
+	{
 		set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, MFD_BACKGROUND_COLOUR);
 
 		draw_mfd_layout_grid ();
@@ -6823,17 +6810,9 @@ static void draw_mfd (screen *mfd_screen, blackhawk_mfd_modes* mode, blackhawk_m
 				break;
 			}
 			////////////////////////////////////////
-//			case BLACKHAWK_MFD_MODE_FLIGHT:
-//			////////////////////////////////////////
-//	{
-//				draw_flight_display_mfd ();
-//
-//				break;
-//		}
-			////////////////////////////////////////
 			case BLACKHAWK_MFD_MODE_MISSION:
 			////////////////////////////////////////
-		{
+			{
 				draw_mission_display_mfd ();
 
 				break;
@@ -6966,14 +6945,14 @@ static void initalize_horizon_mask(int width, char** mask)
 			}
 
 			if (i < semi_begin)
-	{
+			{
 				if (j < side_border_width || j >= (width - side_border_width))
 					row[j] = 1;
 				else
 					row[j] = 0;
-	}
-	else
-	{
+			}
+			else
+			{
 				float height_val = ((float)i - semi_begin);
 				float x_limit = side_border_width + semi_radius - sqrt((semi_radius * semi_radius) - (height_val * height_val));
 
@@ -6982,7 +6961,7 @@ static void initalize_horizon_mask(int width, char** mask)
 				else
 					row[j] = 0;
 			}
-	}
+		}
 	}
 }
 
@@ -7003,27 +6982,31 @@ void initialise_blackhawk_mfd (void)
 		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_OFF, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_OFF, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
 		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_OFF, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
+		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_OFF, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_OFF, BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_OFF, BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM);
 	}
 	else
 	{
 		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ENGINE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_FLIGHT, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
 		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_COMPASS, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
+		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ENGINE, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_FLIGHT, BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
+		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_COMPASS, BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM);
 	}
-
-	select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_MISSION, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 
 	////////////////////////////////////////
 
-	pilot_tsd_ase_range							= TSD_ASE_RANGE_5000;
-	pilot_tsd_declutter_level					= TSD_DECLUTTER_LEVEL_NAVIGATION;
+	pilot_tsd_ase_range						= TSD_ASE_RANGE_5000;
+	pilot_tsd_declutter_level				= TSD_DECLUTTER_LEVEL_NAVIGATION;
 	pilot_tsd_threat_line_flash_timer		= TSD_THREAT_LINE_FLASH_RATE;
 	pilot_tsd_draw_threat_line_status		= 0;
 	pilot_ase_threat_line_flash_timer		= ASE_THREAT_LINE_FLASH_RATE;
 	pilot_ase_draw_threat_line_status		= 0;
 
-	co_pilot_tsd_ase_range						= TSD_ASE_RANGE_5000;
-	co_pilot_tsd_declutter_level				= TSD_DECLUTTER_LEVEL_TARGET;
+	co_pilot_tsd_ase_range					= TSD_ASE_RANGE_5000;
+	co_pilot_tsd_declutter_level			= TSD_DECLUTTER_LEVEL_TARGET;
 	co_pilot_tsd_threat_line_flash_timer	= TSD_THREAT_LINE_FLASH_RATE;
 	co_pilot_tsd_draw_threat_line_status	= 0;
 	co_pilot_ase_threat_line_flash_timer	= ASE_THREAT_LINE_FLASH_RATE;
@@ -7045,7 +7028,12 @@ void initialise_blackhawk_mfd (void)
 	small_pilot_bottom_mfd_texture_screen = create_user_texture_screen (SMALL_MFD_VIEWPORT_SIZE, SMALL_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
 
 	large_co_pilot_main_mfd_texture_screen = create_user_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
+	large_co_pilot_top_mfd_texture_screen = create_user_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
+	large_co_pilot_bottom_mfd_texture_screen = create_user_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
+
 	small_co_pilot_main_mfd_texture_screen = create_user_texture_screen (SMALL_MFD_VIEWPORT_SIZE, SMALL_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
+	small_co_pilot_top_mfd_texture_screen = create_user_texture_screen (SMALL_MFD_VIEWPORT_SIZE, SMALL_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
+	small_co_pilot_bottom_mfd_texture_screen = create_user_texture_screen (SMALL_MFD_VIEWPORT_SIZE, SMALL_MFD_VIEWPORT_SIZE, TEXTURE_TYPE_SINGLEALPHA, 1);
 
 	full_mfd_texture_screen = create_system_texture_screen (LARGE_MFD_VIEWPORT_SIZE, LARGE_MFD_VIEWPORT_SIZE, TEXTURE_INDEX_AVCKPT_DISPLAY_RHS_MFD, TEXTURE_TYPE_SINGLEALPHA);
 
@@ -7115,21 +7103,26 @@ void deinitialise_blackhawk_mfd (void)
 	destroy_screen (small_pilot_bottom_mfd_texture_screen);
 
 	destroy_screen (large_co_pilot_main_mfd_texture_screen);
+	destroy_screen (large_co_pilot_top_mfd_texture_screen);
+	destroy_screen (large_co_pilot_bottom_mfd_texture_screen);
+
 	destroy_screen (small_co_pilot_main_mfd_texture_screen);
+	destroy_screen (small_co_pilot_top_mfd_texture_screen);
+	destroy_screen (small_co_pilot_bottom_mfd_texture_screen);
 
 	destroy_screen (full_mfd_texture_screen);
 
 	////////////////////////////////////////
 
 	destroy_2d_environment (mfd_env);
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void draw_blackhawk_mfd (void)
-	{
+{
 	screen *export_left, *export_right;
 
 	////////////////////////////////////////
@@ -7146,14 +7139,14 @@ void draw_blackhawk_mfd (void)
 	if (!command_line_high_res_mfd)
 	{
 		switch (get_view_mode ())
-	{
+		{
 			////////////////////////////////////////
 			case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
 			case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
 			case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
 			case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
 			////////////////////////////////////////
-	{
+			{
 
 				large_mfd = 1;
 
@@ -7184,6 +7177,8 @@ void draw_blackhawk_mfd (void)
 		pilot_bottom_mfd_texture_screen = large_pilot_bottom_mfd_texture_screen;
 
 		co_pilot_main_mfd_texture_screen = large_co_pilot_main_mfd_texture_screen;
+		co_pilot_top_mfd_texture_screen = large_co_pilot_top_mfd_texture_screen;
+		co_pilot_bottom_mfd_texture_screen = large_co_pilot_bottom_mfd_texture_screen;
 
 		eo_3d_texture_screen = large_eo_3d_texture_screen;
 		eo_3d_texture_screen_over = large_eo_3d_texture_screen_over;
@@ -7197,6 +7192,8 @@ void draw_blackhawk_mfd (void)
 		pilot_bottom_mfd_texture_screen = small_pilot_bottom_mfd_texture_screen;
 
 		co_pilot_main_mfd_texture_screen = small_co_pilot_main_mfd_texture_screen;
+		co_pilot_top_mfd_texture_screen = small_co_pilot_top_mfd_texture_screen;
+		co_pilot_bottom_mfd_texture_screen = small_co_pilot_bottom_mfd_texture_screen;
 
 		eo_3d_texture_screen = small_eo_3d_texture_screen;
 		eo_3d_texture_screen_over = small_eo_3d_texture_screen_over;
@@ -7216,89 +7213,8 @@ void draw_blackhawk_mfd (void)
 	set_system_texture_screen (pilot_bottom_mfd_texture_screen, TEXTURE_INDEX_COMANCHE_MFD8);
 
 	set_system_texture_screen (co_pilot_main_mfd_texture_screen, TEXTURE_INDEX_COMANCHE_MFD2);
-
-	////////////////////////////////////////
-	//
-	// SELECT VISIBLE DISPLAYS
-	//
-	////////////////////////////////////////
-
-	switch (get_view_mode ())
-	{
-		////////////////////////////////////////
-		case VIEW_MODE_VIRTUAL_COCKPIT:
-		case VIEW_MODE_VIRTUAL_COCKPIT_PADLOCK:
-		case VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET:
-		////////////////////////////////////////
-		{
-			if (get_crew_role () == CREW_ROLE_PILOT)
-	{
-				display_mask =
-					PILOT_MAIN_MFD |
-					PILOT_TOP_MFD |
-					PILOT_BOTTOM_MFD;
-	}
-	else
-	{
-				display_mask =
-					CO_PILOT_MAIN_MFD;
-	}
-
-			break;
-		}
-		////////////////////////////////////////
-		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
-		////////////////////////////////////////
-		{
-			display_mask =
-				PILOT_MAIN_MFD |
-				PILOT_TOP_MFD |
-				PILOT_BOTTOM_MFD;
-
-			break;
-		}
-		////////////////////////////////////////
-		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
-		////////////////////////////////////////
-		{
-			display_mask =
-				PILOT_MAIN_MFD |
-				PILOT_TOP_MFD |
-				PILOT_BOTTOM_MFD;
-
-			break;
-	}
-		////////////////////////////////////////
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
-		////////////////////////////////////////
-	{
-			display_mask =
-				CO_PILOT_MAIN_MFD;
-
-			break;
-	}
-		////////////////////////////////////////
-		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
-		////////////////////////////////////////
-	{
-			display_mask =
-				CO_PILOT_MAIN_MFD;
-
-			break;
-	}
-		////////////////////////////////////////
-		default:
-		////////////////////////////////////////
-	{
-			display_mask =
-				PILOT_MAIN_MFD |
-				PILOT_TOP_MFD |
-				PILOT_BOTTOM_MFD |
-				CO_PILOT_MAIN_MFD;
-
-			break;
-		}
-	}
+	set_system_texture_screen (co_pilot_top_mfd_texture_screen, TEXTURE_INDEX_COMANCHE_MFD5);
+	set_system_texture_screen (co_pilot_bottom_mfd_texture_screen, TEXTURE_INDEX_COMANCHE_MFD6);
 
 	////////////////////////////////////////
 	//
@@ -7372,21 +7288,21 @@ void draw_blackhawk_mfd (void)
 
 			draw_eo_display = FALSE;
 
-			if (get_undamaged_eo_display_mode (pilot_main_mfd_mode) && (display_mask & PILOT_MAIN_MFD))
+			if (get_undamaged_eo_display_mode (pilot_main_mfd_mode))
 			{
 				set_system_texture_screen (eo_3d_texture_screen, TEXTURE_INDEX_COMANCHE_MFD3);
 				export_right=eo_3d_texture_screen;
 
 				draw_eo_display = TRUE;
-	}
+			}
 
-			if (get_undamaged_eo_display_mode (co_pilot_main_mfd_mode) && (display_mask & CO_PILOT_MAIN_MFD))
-	{
-				set_system_texture_screen (eo_3d_texture_screen, TEXTURE_INDEX_COMANCHE_MFD6);
+			if (get_undamaged_eo_display_mode (co_pilot_main_mfd_mode))
+			{
+				set_system_texture_screen (eo_3d_texture_screen, TEXTURE_INDEX_COMANCHE_MFD2);
 				export_left=eo_3d_texture_screen;
 
 				draw_eo_display = TRUE;
-	}
+			}
 
 			if (draw_eo_display)
 			{
@@ -7403,8 +7319,8 @@ void draw_blackhawk_mfd (void)
 						draw_3d_dtv_mfd (FALSE);
 
 						break;
-	}
-	}
+					}
+				}
 
 				set_active_screen (eo_3d_texture_screen_over);
 
@@ -7421,12 +7337,12 @@ void draw_blackhawk_mfd (void)
 							break;
 						}
 						case BLACKHAWK_MFD_MODE_DTV:
-	{
+						{
 							draw_2d_dtv_mfd (TRUE);
 
 							break;
 						}
-	}
+					}
 
 					unlock_screen (eo_3d_texture_screen_over);
 
@@ -7444,29 +7360,21 @@ void draw_blackhawk_mfd (void)
 	//
 	////////////////////////////////////////
 
-	if (display_mask & PILOT_MAIN_MFD)
-	{
-		draw_mfd (pilot_main_mfd_texture_screen, &pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
-	}
+	draw_mfd (pilot_main_mfd_texture_screen, &pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
-	if (display_mask & PILOT_TOP_MFD)
-	{
-		draw_small_mfd (pilot_top_mfd_texture_screen, pilot_top_mfd_mode, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
-	}
+	draw_small_mfd (pilot_top_mfd_texture_screen, pilot_top_mfd_mode, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
 
-	if (display_mask & PILOT_BOTTOM_MFD)
-	{
-		draw_small_mfd (pilot_bottom_mfd_texture_screen, pilot_bottom_mfd_mode, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
-	}
+	draw_small_mfd (pilot_bottom_mfd_texture_screen, pilot_bottom_mfd_mode, BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
 
-	if (display_mask & CO_PILOT_MAIN_MFD)
-	{
-		draw_mfd (co_pilot_main_mfd_texture_screen, &co_pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
-	}
+	draw_mfd (co_pilot_main_mfd_texture_screen, &co_pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
+
+	draw_small_mfd (co_pilot_top_mfd_texture_screen, co_pilot_top_mfd_mode, BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
+
+	draw_small_mfd (co_pilot_bottom_mfd_texture_screen, co_pilot_bottom_mfd_mode, BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM);
 
 	if(command_line_export_mfd)
 		copy_export_mfd(export_left,export_right);
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7766,77 +7674,77 @@ void draw_blackhawk_full_screen_display (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
+//
 // OVERLAID MFD
-	//
+//
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void draw_translucent_mfd_background (float x_min, float y_min, float x_max, float y_max)
-			{
-				vertex
-					quad[4];
+{
+	vertex
+		quad[4];
 
-				real_colour
-					colour,
-					specular;
+	real_colour
+		colour,
+		specular;
 
 	set_3d_active_environment (main_3d_env);
 
-				if (begin_3d_scene ())
-				{
-					colour.red = 0;
-					colour.green = 0;
-					colour.blue = 0;
-					colour.alpha = 64;
+	if (begin_3d_scene ())
+	{
+		colour.red = 0;
+		colour.green = 0;
+		colour.blue = 0;
+		colour.alpha = 64;
 
-					specular.red = 0;
-					specular.green = 0;
-					specular.blue = 0;
-					specular.alpha = 255;
+		specular.red = 0;
+		specular.green = 0;
+		specular.blue = 0;
+		specular.alpha = 255;
 
-					set_d3d_transparency_on ();
+		set_d3d_transparency_on ();
 
-					set_d3d_zbuffer_comparison (FALSE);
+		set_d3d_zbuffer_comparison (FALSE);
 
-					set_d3d_plain_renderstate ();
+		set_d3d_plain_renderstate ();
 
-					set_d3d_culling (FALSE);
+		set_d3d_culling (FALSE);
 
-					quad[0].i = x_min;
-					quad[0].j = y_min;
-					quad[0].z = 0.5;
-					quad[0].q = 0.5;
-					quad[0].next_vertex = &quad[1];
+		quad[0].i = x_min;
+		quad[0].j = y_min;
+		quad[0].z = 0.5;
+		quad[0].q = 0.5;
+		quad[0].next_vertex = &quad[1];
 
-					quad[1].i = x_max;
-					quad[1].j = y_min;
-					quad[1].z = 0.5;
-					quad[1].q = 0.5;
-					quad[1].next_vertex = &quad[2];
+		quad[1].i = x_max;
+		quad[1].j = y_min;
+		quad[1].z = 0.5;
+		quad[1].q = 0.5;
+		quad[1].next_vertex = &quad[2];
 
-					quad[2].i = x_max;
-					quad[2].j = y_max;
-					quad[2].z = 0.5;
-					quad[2].q = 0.5;
-					quad[2].next_vertex = &quad[3];
+		quad[2].i = x_max;
+		quad[2].j = y_max;
+		quad[2].z = 0.5;
+		quad[2].q = 0.5;
+		quad[2].next_vertex = &quad[3];
 
-					quad[3].i = x_min;
-					quad[3].j = y_max;
-					quad[3].z = 0.5;
-					quad[3].q = 0.5;
-					quad[3].next_vertex = NULL;
+		quad[3].i = x_min;
+		quad[3].j = y_max;
+		quad[3].z = 0.5;
+		quad[3].q = 0.5;
+		quad[3].next_vertex = NULL;
 
-					draw_wbuffered_plain_polygon (quad, colour, specular);
+		draw_wbuffered_plain_polygon (quad, colour, specular);
 
-					set_d3d_transparency_off ();
+		set_d3d_transparency_off ();
 
-					set_d3d_zbuffer_comparison (TRUE);
+		set_d3d_zbuffer_comparison (TRUE);
 
-					end_3d_scene ();
-				}
-			}
+		end_3d_scene ();
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7896,8 +7804,8 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 			mfd_screen_y_min = full_screen_height - border_size - mfd_screen_height;
 
 			break;
-			}
 		}
+	}
 
 	mfd_screen_x_max = mfd_screen_x_min + mfd_screen_width - 0.0001;
 	mfd_screen_y_max = mfd_screen_y_min + mfd_screen_height - 0.0001;
@@ -7905,14 +7813,14 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 	mfd_screen_x_scale = mfd_viewport_size / mfd_screen_width;
 	mfd_screen_y_scale = mfd_viewport_size / mfd_screen_height;
 
-		////////////////////////////////////////
+	////////////////////////////////////////
 	//
 	// draw MFD display
 	//
-		////////////////////////////////////////
+	////////////////////////////////////////
 
 	switch (mode)
-			{
+	{
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_OFF:
 		////////////////////////////////////////
@@ -8055,10 +7963,10 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 				MFD_ROAD_COLOUR		= store_road_colour;
 
 				unlock_screen (mfd_screen);
-	}
+			}
 
 			break;
-	}
+		}
 
 	////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_ASE:
@@ -8066,12 +7974,12 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 		{
 			draw_translucent_mfd_background (mfd_screen_x_min, mfd_screen_y_min, mfd_screen_x_max, mfd_screen_y_max);
 
-	set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
+			set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
 
 			set_active_screen (mfd_screen);
 
 			if (lock_screen (mfd_screen))
-	{
+			{
 				set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, clear_mfd_colour);
 
 				draw_mfd_layout_grid ();
@@ -8153,38 +8061,6 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 			break;
 		}
 		////////////////////////////////////////
-//		case BLACKHAWK_MFD_MODE_FLIGHT:
-//		////////////////////////////////////////
-//		{
-//			draw_translucent_mfd_background (mfd_screen_x_min, mfd_screen_y_min, mfd_screen_x_max, mfd_screen_y_max);
-//
-//			set_2d_viewport (mfd_env, mfd_viewport_x_min, mfd_viewport_y_min, mfd_viewport_x_max, mfd_viewport_y_max);
-//
-//			set_active_screen (mfd_screen);
-//
-//			if (lock_screen (mfd_screen))
-//			{
-//				rgb_colour
-//					store_background_colour;
-//
-//				set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, clear_mfd_colour);
-//
-//				draw_mfd_layout_grid ();
-//
-//				store_background_colour = MFD_BACKGROUND_COLOUR;
-//
-//				set_rgb_colour (MFD_BACKGROUND_COLOUR, 255, 255, 255, 0);
-//
-//				draw_flight_display_mfd ();
-//
-//				MFD_BACKGROUND_COLOUR = store_background_colour;
-//
-//				unlock_screen (mfd_screen);
-//				}
-//
-//			break;
-//			}
-		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_MISSION:
 		////////////////////////////////////////
 			{
@@ -8198,7 +8074,7 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 				{
 				set_block (0, 0, int_mfd_viewport_size - 1, int_mfd_viewport_size - 1, clear_mfd_colour);
 
-					draw_mfd_layout_grid ();
+				draw_mfd_layout_grid ();
 
 				draw_mission_display_mfd ();
 
@@ -8214,8 +8090,8 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 			debug_fatal ("Invalid main MFD mode = %d", mode);
 
 			break;
-				}
-				}
+		}
+	}
 
 	set_active_screen (video_screen);
 
@@ -8224,7 +8100,7 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 	// render MFD to screen
 	//
 	////////////////////////////////////////
-				{
+	{
 		vertex
 			quad[4];
 
@@ -8235,7 +8111,7 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 		set_3d_active_environment (main_3d_env);
 
 		if (begin_3d_scene ())
-			{
+		{
 			set_d3d_transparency_on ();
 
 			set_d3d_zbuffer_comparison (FALSE);
@@ -8244,11 +8120,11 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 
 			set_d3d_texture_wrapping (0, FALSE);
 
-		{
+			{
 				int
 					width;
 
-   			if (application_video_width >= 1280)
+				if (application_video_width >= 1280)
 				{
 					width = 1280;
 				}
@@ -8262,77 +8138,75 @@ static void draw_overlaid_mfd (screen *mfd_screen, blackhawk_mfd_modes mode, bla
 					set_d3d_texture_mag_filtering (FALSE);
 					set_d3d_texture_min_filtering (FALSE);
 					set_d3d_texture_mip_filtering (FALSE);
-			}
-			else
-			{
+				}
+				else
+				{
 					set_d3d_texture_mag_filtering (TRUE);
 					set_d3d_texture_min_filtering (TRUE);
 					set_d3d_texture_mip_filtering (FALSE);
+				}
 			}
-		}
 
 			set_d3d_flat_shaded_textured_renderstate (mfd_screen);
 
-		////////////////////////////////////////
-//
+			////////////////////////////////////////
 
-			colour.red				= MFD_COLOUR1.r;
-			colour.green			= MFD_COLOUR1.g;
-			colour.blue				= MFD_COLOUR1.b;
-			colour.alpha			= MFD_COLOUR1.a;
+			colour.red			= MFD_COLOUR1.r;
+			colour.green		= MFD_COLOUR1.g;
+			colour.blue			= MFD_COLOUR1.b;
+			colour.alpha		= MFD_COLOUR1.a;
 
-		specular.red = 0;
-		specular.green = 0;
-		specular.blue = 0;
-		specular.alpha = 255;
+			specular.red 		= 0;
+			specular.green 		= 0;
+			specular.blue 		= 0;
+			specular.alpha 		= 255;
 
-			quad[0].i				= mfd_screen_x_min;
-			quad[0].j	  			= mfd_screen_y_min;
-		quad[0].z = 0.5;
-		quad[0].q = 0.5;
-			quad[0].u	  			= 0.0;
-			quad[0].v	  			= 0.0;
+			quad[0].i			= mfd_screen_x_min;
+			quad[0].j	  		= mfd_screen_y_min;
+			quad[0].z 			= 0.5;
+			quad[0].q 			= 0.5;
+			quad[0].u	  		= 0.0;
+			quad[0].v	  		= 0.0;
 
-			quad[1].i				= mfd_screen_x_max;
-			quad[1].j  				= mfd_screen_y_min;
-		quad[1].z = 0.5;
-		quad[1].q = 0.5;
-			quad[1].u  				= 1.0;
-			quad[1].v  				= 0.0;
+			quad[1].i			= mfd_screen_x_max;
+			quad[1].j  			= mfd_screen_y_min;
+			quad[1].z 			= 0.5;
+			quad[1].q 			= 0.5;
+			quad[1].u  			= 1.0;
+			quad[1].v  			= 0.0;
 
-			quad[2].i				= mfd_screen_x_max;
-			quad[2].j 				= mfd_screen_y_max;
-		quad[2].z = 0.5;
-		quad[2].q = 0.5;
-			quad[2].u  				= 1.0;
-			quad[2].v  				= 1.0;
+			quad[2].i			= mfd_screen_x_max;
+			quad[2].j 			= mfd_screen_y_max;
+			quad[2].z 			= 0.5;
+			quad[2].q 			= 0.5;
+			quad[2].u  			= 1.0;
+			quad[2].v  			= 1.0;
 
-			quad[3].i				= mfd_screen_x_min;
-			quad[3].j				= mfd_screen_y_max;
-		quad[3].z = 0.5;
-		quad[3].q = 0.5;
-			quad[3].u				= 0.0;
-			quad[3].v				= 1.0;
+			quad[3].i			= mfd_screen_x_min;
+			quad[3].j			= mfd_screen_y_max;
+			quad[3].z 			= 0.5;
+			quad[3].q 			= 0.5;
+			quad[3].u			= 0.0;
+			quad[3].v			= 1.0;
 
 			quad[0].next_vertex	= &quad[1];
 			quad[1].next_vertex	= &quad[2];
 			quad[2].next_vertex	= &quad[3];
-		quad[3].next_vertex = NULL;
+			quad[3].next_vertex = NULL;
 
-      	//
-      	////////////////////////////////////////
+			////////////////////////////////////////
 
 			draw_wbuffered_flat_shaded_textured_polygon (quad, colour, specular);
 
-		set_d3d_transparency_off ();
+			set_d3d_transparency_off ();
 
-		set_d3d_zbuffer_comparison (TRUE);
+			set_d3d_zbuffer_comparison (TRUE);
 
 			set_d3d_culling (TRUE);
 
-		end_3d_scene ();
+			end_3d_scene ();
+		}
 	}
-}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8360,21 +8234,6 @@ void draw_overlaid_blackhawk_mfd (void)
 	set_system_texture_screen (pilot_main_mfd_texture_screen, TEXTURE_INDEX_COMANCHE_MFD3);
 
 	set_system_texture_screen (co_pilot_main_mfd_texture_screen, TEXTURE_INDEX_COMANCHE_MFD2);
-
-	////////////////////////////////////////
-	//
-	// SELECT VISIBLE DISPLAYS
-	//
-	////////////////////////////////////////
-
-   if (get_crew_role () == CREW_ROLE_PILOT)
-		{
-      display_mask = PILOT_MAIN_MFD;
-		}
-		else
-		{
-      display_mask = CO_PILOT_MAIN_MFD;
-	}
 
 	////////////////////////////////////////
 	//
@@ -8425,16 +8284,9 @@ void draw_overlaid_blackhawk_mfd (void)
 	//
 	////////////////////////////////////////
 
-	if (display_mask & PILOT_MAIN_MFD)
-	{
-      draw_overlaid_mfd (pilot_main_mfd_texture_screen, pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
-	}
+	draw_overlaid_mfd (pilot_main_mfd_texture_screen, pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
-	if (display_mask & CO_PILOT_MAIN_MFD)
-		{
-      draw_overlaid_mfd (co_pilot_main_mfd_texture_screen, co_pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
-	}
-
+    draw_overlaid_mfd (co_pilot_main_mfd_texture_screen, co_pilot_main_mfd_mode, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8468,7 +8320,7 @@ int get_blackhawk_mfd_has_focus (blackhawk_mfd_locations mfd_location)
 			result = (mfd_mode == BLACKHAWK_MFD_MODE_FLIR);
 
 			break;
-			}
+		}
 		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_DTV:
 		////////////////////////////////////////
@@ -8502,13 +8354,13 @@ static blackhawk_mfd_modes get_mfd_mode_for_eo_sensor (void)
 	if (eo_sensor == TARGET_ACQUISITION_SYSTEM_FLIR)
 	{
 		mfd_mode = BLACKHAWK_MFD_MODE_FLIR;
-			}
+	}
 	else if (eo_sensor == TARGET_ACQUISITION_SYSTEM_DTV)
 	{
 		mfd_mode = BLACKHAWK_MFD_MODE_DTV;
-		}
+	}
 	else
-		{
+	{
 		debug_fatal ("Invalid EO sensor = %d", eo_sensor);
 	}
 
@@ -8532,7 +8384,7 @@ static blackhawk_mfd_modes get_default_mfd_mode (blackhawk_mfd_locations mfd_loc
 		case BLACKHAWK_MFD_LOCATION_PILOT_MAIN:
 		////////////////////////////////////////
 		{
-			mfd_mode = BLACKHAWK_MFD_MODE_TSD;
+			mfd_mode = BLACKHAWK_MFD_MODE_ENGINE;
 
 			break;
 		}
@@ -8540,7 +8392,7 @@ static blackhawk_mfd_modes get_default_mfd_mode (blackhawk_mfd_locations mfd_loc
 		case BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN:
 		////////////////////////////////////////
 		{
-			mfd_mode = BLACKHAWK_MFD_MODE_ENGINE;
+			mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
 
 			break;
 		}
@@ -8554,7 +8406,7 @@ static blackhawk_mfd_modes get_default_mfd_mode (blackhawk_mfd_locations mfd_loc
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static int get_mfd_damage (blackhawk_mfd_locations mfd_location)
-			{
+{
 	int
 		damage;
 
@@ -8577,8 +8429,8 @@ static int get_mfd_damage (blackhawk_mfd_locations mfd_location)
 			damage = blackhawk_damage.co_pilot_main_mfd;
 
 			break;
-			}
-			}
+		}
+	}
 
 	return (damage);
 }
@@ -8608,12 +8460,27 @@ static int get_small_mfd_damage (blackhawk_small_mfd_locations mfd_location)
 		case BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM:
 		////////////////////////////////////////
 		{
-			// TODO add to damage
 			damage = blackhawk_damage.pilot_bottom_mfd;
 
 			break;
-			}
-			}
+		}
+		////////////////////////////////////////
+		case BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP:
+		////////////////////////////////////////
+		{
+			damage = blackhawk_damage.co_pilot_top_mfd;
+
+			break;
+		}
+		////////////////////////////////////////
+		case BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM:
+		////////////////////////////////////////
+		{
+			damage = blackhawk_damage.co_pilot_bottom_mfd;
+
+			break;
+		}
+	}
 
 	return (damage);
 }
@@ -8642,29 +8509,29 @@ void select_blackhawk_mfd_mode (blackhawk_mfd_modes mfd_mode, blackhawk_mfd_loca
 	if ((mfd_mode == BLACKHAWK_MFD_MODE_DAMAGED) && (*mfd_mode_ptr1 == BLACKHAWK_MFD_MODE_OFF))
 	{
 		mfd_mode = BLACKHAWK_MFD_MODE_OFF;
-		}
+	}
 
 	if (get_mfd_damage (mfd_location))
-		{
+	{
 		if (mfd_mode != BLACKHAWK_MFD_MODE_OFF)
-			{
+		{
 			mfd_mode = BLACKHAWK_MFD_MODE_DAMAGED;
 		}
-			}
+	}
 
 	if ((mfd_mode != BLACKHAWK_MFD_MODE_OFF) && (mfd_mode != BLACKHAWK_MFD_MODE_DAMAGED) && (mfd_mode == *mfd_mode_ptr2))
 	{
 		default_mfd_mode = get_default_mfd_mode (opposite_mfd_locations[mfd_location]);
 
 		if (default_mfd_mode == mfd_mode)
-			{
+		{
 			default_mfd_mode = get_default_mfd_mode (mfd_location);
 
 			ASSERT (default_mfd_mode != mfd_mode);
 		}
 
 		*mfd_mode_ptr2 = default_mfd_mode;
-			}
+	}
 
 	*mfd_mode_ptr1 = mfd_mode;
 }
@@ -8691,7 +8558,7 @@ static blackhawk_mfd_modes get_next_mfd_mode (blackhawk_mfd_modes mfd_mode, blac
 			next_mfd_mode = get_default_mfd_mode (mfd_location);
 
 			break;
-			}
+		}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_DAMAGED:
 		////////////////////////////////////////
@@ -8727,11 +8594,11 @@ static blackhawk_mfd_modes get_next_mfd_mode (blackhawk_mfd_modes mfd_mode, blac
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_ASE:
 		////////////////////////////////////////
-			{
+		{
 			next_mfd_mode = BLACKHAWK_MFD_MODE_WEAPON;
 
 			break;
-			}
+		}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_WEAPON:
 		////////////////////////////////////////
@@ -8751,19 +8618,11 @@ static blackhawk_mfd_modes get_next_mfd_mode (blackhawk_mfd_modes mfd_mode, blac
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_ENGINE:
 		////////////////////////////////////////
-			{
+		{
 			next_mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
 
 			break;
-			}
-		////////////////////////////////////////
-//		case BLACKHAWK_MFD_MODE_FLIGHT:
-//		////////////////////////////////////////
-//		{
-//			next_mfd_mode = BLACKHAWK_MFD_MODE_MISSION;
-//
-//			break;
-//		}
+		}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_MISSION:
 		////////////////////////////////////////
@@ -8856,15 +8715,7 @@ static blackhawk_mfd_modes get_previous_mfd_mode (blackhawk_mfd_modes mfd_mode, 
 			previous_mfd_mode = BLACKHAWK_MFD_MODE_SYSTEM;
 
 			break;
-			}
-		////////////////////////////////////////
-//		case BLACKHAWK_MFD_MODE_FLIGHT:
-//		////////////////////////////////////////
-//		{
-//			previous_mfd_mode = BLACKHAWK_MFD_MODE_ENGINE;
-//
-//			break;
-//		}
+		}
 		////////////////////////////////////////
 		case BLACKHAWK_MFD_MODE_MISSION:
 		////////////////////////////////////////
@@ -8902,13 +8753,13 @@ void select_next_blackhawk_mfd (blackhawk_mfd_locations mfd_location)
 		if (next_mfd_mode == *mfd_mode_ptr2)
 		{
 			next_mfd_mode = get_next_mfd_mode (next_mfd_mode, mfd_location);
-			}
-
-		ASSERT (next_mfd_mode != *mfd_mode_ptr2);
 		}
 
-	select_blackhawk_mfd_mode (next_mfd_mode, mfd_location);
+		ASSERT (next_mfd_mode != *mfd_mode_ptr2);
 	}
+
+	select_blackhawk_mfd_mode (next_mfd_mode, mfd_location);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8930,14 +8781,14 @@ void select_previous_blackhawk_mfd (blackhawk_mfd_locations mfd_location)
 	previous_mfd_mode = get_previous_mfd_mode (*mfd_mode_ptr1, mfd_location);
 
 	if (previous_mfd_mode != BLACKHAWK_MFD_MODE_DAMAGED)
-		{
+	{
 		if (previous_mfd_mode == *mfd_mode_ptr2)
-			{
+		{
 			previous_mfd_mode = get_previous_mfd_mode (previous_mfd_mode, mfd_location);
-			}
+		}
 
 		ASSERT (previous_mfd_mode != *mfd_mode_ptr2);
-			}
+	}
 
 	select_blackhawk_mfd_mode (previous_mfd_mode, mfd_location);
 }
@@ -8967,10 +8818,6 @@ blackhawk_mfd_modes get_blackhawk_mfd_mode (blackhawk_mfd_locations mfd_location
 	return *mfd_mode_ptrs[mfd_location];
 }
 
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8978,8 +8825,7 @@ blackhawk_mfd_modes get_blackhawk_mfd_mode (blackhawk_mfd_locations mfd_location
 void select_blackhawk_small_mfd_mode (blackhawk_small_mfd_modes mfd_mode, blackhawk_small_mfd_locations mfd_location)
 {
 	blackhawk_small_mfd_modes
-		*mfd_mode_ptr1,
-		*mfd_mode_ptr2;
+		*mfd_mode_ptr1;
 
 	ASSERT (blackhawk_small_mfd_mode_valid (mfd_mode));
 
@@ -8989,25 +8835,18 @@ void select_blackhawk_small_mfd_mode (blackhawk_small_mfd_modes mfd_mode, blackh
 
 	mfd_mode_ptr1 = small_mfd_mode_ptrs[mfd_location];
 
-	mfd_mode_ptr2 = opposite_small_mfd_mode_ptrs[mfd_location];
-
 	if ((mfd_mode == BLACKHAWK_SMALL_MFD_MODE_DAMAGED) && (*mfd_mode_ptr1 == BLACKHAWK_SMALL_MFD_MODE_OFF))
-		{
+	{
 		mfd_mode = BLACKHAWK_SMALL_MFD_MODE_OFF;
-		}
+	}
 
 	if (get_small_mfd_damage (mfd_location))
-		{
+	{
 		if (mfd_mode != BLACKHAWK_SMALL_MFD_MODE_OFF)
 		{
 			mfd_mode = BLACKHAWK_SMALL_MFD_MODE_DAMAGED;
 		}
-		}
-
-	if ((mfd_mode != BLACKHAWK_SMALL_MFD_MODE_OFF) && (mfd_mode != BLACKHAWK_SMALL_MFD_MODE_DAMAGED) && (mfd_mode == *mfd_mode_ptr2))
-		{
-		*mfd_mode_ptr2 = BLACKHAWK_SMALL_MFD_MODE_OFF;
-		}
+	}
 
 	*mfd_mode_ptr1 = mfd_mode;
 }
@@ -9066,7 +8905,7 @@ static blackhawk_small_mfd_modes get_next_small_mfd_mode (blackhawk_small_mfd_mo
 
 			break;
 		}
-		}
+	}
 
 	return (next_mfd_mode);
 }
@@ -9079,21 +8918,16 @@ void select_next_blackhawk_small_mfd (blackhawk_small_mfd_locations mfd_location
 {
 	blackhawk_small_mfd_modes
 		*mfd_mode_ptr1,
-		*mfd_mode_ptr2,
 		next_mfd_mode;
 
 	ASSERT (blackhawk_small_mfd_location_valid (mfd_location));
 
 	mfd_mode_ptr1 = small_mfd_mode_ptrs[mfd_location];
-	mfd_mode_ptr2 = opposite_small_mfd_mode_ptrs[mfd_location];
 	next_mfd_mode = get_next_small_mfd_mode (*mfd_mode_ptr1, mfd_location);
 
 	if (next_mfd_mode != BLACKHAWK_SMALL_MFD_MODE_DAMAGED && next_mfd_mode != BLACKHAWK_SMALL_MFD_MODE_OFF)
 	{
-		if (next_mfd_mode == *mfd_mode_ptr2)
-			next_mfd_mode = get_next_small_mfd_mode (next_mfd_mode, mfd_location);
-
-		ASSERT (next_mfd_mode != *mfd_mode_ptr2);
+		next_mfd_mode = get_next_small_mfd_mode (next_mfd_mode, mfd_location);
 	}
 
 	select_blackhawk_small_mfd_mode (next_mfd_mode, mfd_location);
@@ -9112,10 +8946,10 @@ void toggle_blackhawk_small_mfd_on_off (blackhawk_small_mfd_locations mfd_locati
 		select_blackhawk_small_mfd_mode (BLACKHAWK_SMALL_MFD_MODE_OFF, mfd_location);
 	}
 	else
-		{
+	{
 		select_next_blackhawk_small_mfd (mfd_location);
 	}
-		}
+}
 
 blackhawk_small_mfd_modes get_blackhawk_small_mfd_mode (blackhawk_small_mfd_locations mfd_location)
 {
@@ -9135,9 +8969,9 @@ void select_next_blackhawk_pilot_tsd_ase_range (void)
 		pilot_tsd_ase_range = TSD_ASE_RANGE_5000;
 	}
 	else if (pilot_tsd_ase_range == TSD_ASE_RANGE_5000)
-		{
+	{
 		pilot_tsd_ase_range = TSD_ASE_RANGE_10000;
-		}
+	}
 	else if (pilot_tsd_ase_range == TSD_ASE_RANGE_10000)
 	{
 		pilot_tsd_ase_range = TSD_ASE_RANGE_25000;
@@ -9155,9 +8989,9 @@ void select_next_blackhawk_co_pilot_tsd_ase_range (void)
 		co_pilot_tsd_ase_range = TSD_ASE_RANGE_5000;
 	}
 	else if (co_pilot_tsd_ase_range == TSD_ASE_RANGE_5000)
-		{
+	{
 		co_pilot_tsd_ase_range = TSD_ASE_RANGE_10000;
-		}
+	}
 	else if (co_pilot_tsd_ase_range == TSD_ASE_RANGE_10000)
 	{
 		co_pilot_tsd_ase_range = TSD_ASE_RANGE_25000;
@@ -9173,23 +9007,23 @@ void select_previous_blackhawk_pilot_tsd_ase_range (void)
 	if (pilot_tsd_ase_range == TSD_ASE_RANGE_25000)
 	{
 		pilot_tsd_ase_range = TSD_ASE_RANGE_10000;
-		}
+	}
 	else if (pilot_tsd_ase_range == TSD_ASE_RANGE_10000)
 	{
 		pilot_tsd_ase_range = TSD_ASE_RANGE_5000;
-		}
+	}
 	else if (pilot_tsd_ase_range == TSD_ASE_RANGE_5000)
 	{
 		pilot_tsd_ase_range = TSD_ASE_RANGE_2000;
 	}
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_previous_blackhawk_co_pilot_tsd_ase_range (void)
-	{
+{
 	if (co_pilot_tsd_ase_range == TSD_ASE_RANGE_25000)
 	{
 		co_pilot_tsd_ase_range = TSD_ASE_RANGE_10000;
@@ -9209,27 +9043,27 @@ void select_previous_blackhawk_co_pilot_tsd_ase_range (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_next_blackhawk_pilot_tsd_declutter_level (void)
-	{
+{
 	if (pilot_tsd_declutter_level == TSD_DECLUTTER_LEVEL_ALL)
-		{
+	{
 		pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_TARGET;
 	}
 	else if (pilot_tsd_declutter_level == TSD_DECLUTTER_LEVEL_TARGET)
 	{
 		pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_NAVIGATION;
-		}
+	}
 	else
 	{
 		pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_ALL;
 	}
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_next_blackhawk_co_pilot_tsd_declutter_level (void)
-	{
+{
 	if (co_pilot_tsd_declutter_level == TSD_DECLUTTER_LEVEL_ALL)
 	{
 		co_pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_TARGET;
@@ -9255,21 +9089,21 @@ void select_previous_blackhawk_pilot_tsd_declutter_level (void)
 		pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_TARGET;
 	}
 	else if (pilot_tsd_declutter_level == TSD_DECLUTTER_LEVEL_TARGET)
-		{
+	{
 		pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_ALL;
-		}
+	}
 	else
 	{
 		pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_NAVIGATION;
-		}
 	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_previous_blackhawk_co_pilot_tsd_declutter_level (void)
-	{
+{
 	if (co_pilot_tsd_declutter_level == TSD_DECLUTTER_LEVEL_NAVIGATION)
 	{
 		co_pilot_tsd_declutter_level = TSD_DECLUTTER_LEVEL_TARGET;
@@ -9308,7 +9142,7 @@ void auto_page_blackhawk_ase_mfd (void)
 	{
 	////////////////////////////////////////
 	//
-		// PILOT
+	// PILOT
 	//
 	////////////////////////////////////////
 
@@ -9325,66 +9159,66 @@ void auto_page_blackhawk_ase_mfd (void)
 		}
 
 		if ((pilot_main_mfd_mode == BLACKHAWK_MFD_MODE_OFF) && (!blackhawk_damage.pilot_main_mfd))
-	{
-			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
+		{
+				select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
-		return;
-	}
+			return;
+		}
 
 		if ((!get_blackhawk_mfd_has_focus (BLACKHAWK_MFD_LOCATION_PILOT_MAIN)) && (!blackhawk_damage.pilot_main_mfd))
-	{
-			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
+		{
+				select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
-		return;
-	}
+			return;
+		}
 
 		if (!blackhawk_damage.pilot_main_mfd)
-	{
-			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
+		{
+				select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
-		return;
-	}
+			return;
+		}
 	}
 	else
 	{
 	////////////////////////////////////////
 	//
-		// CO-PILOT
+	// CO-PILOT
 	//
 	////////////////////////////////////////
 
 		if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY) && (!blackhawk_damage.co_pilot_main_mfd))
-	{
+		{
 			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 
-		return;
-	}
+			return;
+		}
 
 		if (co_pilot_main_mfd_mode == BLACKHAWK_MFD_MODE_ASE)
-	{
-		return;
-	}
+		{
+			return;
+		}
 
 		if ((co_pilot_main_mfd_mode == BLACKHAWK_MFD_MODE_OFF) && (!blackhawk_damage.co_pilot_main_mfd))
-	{
+		{
 			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 
-		return;
-	}
+			return;
+		}
 
 		if ((!get_blackhawk_mfd_has_focus (BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN)) && (!blackhawk_damage.co_pilot_main_mfd))
-	{
+		{
 			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 
-		return;
-	}
+			return;
+		}
 
 		if (!blackhawk_damage.co_pilot_main_mfd)
 		{
 			select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_ASE, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 
 			return;
-	}
+		}
 	}
 }
 
@@ -9403,32 +9237,32 @@ void select_blackhawk_tads_mfd (void)
 		////////////////////////////////////////
 
 		if ((get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY) && (!blackhawk_damage.pilot_main_mfd))
-	{
+		{
 			select_blackhawk_mfd_mode (get_mfd_mode_for_eo_sensor (), BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
 			return;
-	}
+		}
 
 		if
 		(
 			(pilot_main_mfd_mode == BLACKHAWK_MFD_MODE_FLIR) ||
 			(pilot_main_mfd_mode == BLACKHAWK_MFD_MODE_DTV)
 		)
-	{
+		{
 			select_blackhawk_mfd_mode (get_mfd_mode_for_eo_sensor (), BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
 			return;
-}
+		}
 
 		if ((pilot_main_mfd_mode == BLACKHAWK_MFD_MODE_OFF) && (!blackhawk_damage.pilot_main_mfd))
-{
+		{
 			select_blackhawk_mfd_mode (get_mfd_mode_for_eo_sensor (), BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
 			return;
 		}
 
 		if (!blackhawk_damage.pilot_main_mfd)
-	{
+		{
 			select_blackhawk_mfd_mode (get_mfd_mode_for_eo_sensor (), BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
 
 			return;
@@ -9472,8 +9306,8 @@ void select_blackhawk_tads_mfd (void)
 			select_blackhawk_mfd_mode (get_mfd_mode_for_eo_sensor (), BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
 
 			return;
+		}
 	}
-}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

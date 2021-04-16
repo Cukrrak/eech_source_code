@@ -394,10 +394,10 @@ static void select_next_top_mfd_event (event *ev)
 {
 		select_next_blackhawk_small_mfd (BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
 	}
-//	else
-//	{
-//		select_next_blackhawk_mfd (BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
-//	}
+	else
+	{
+		select_next_blackhawk_small_mfd (BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,10 +410,10 @@ static void select_next_bottom_mfd_event (event *ev)
 {
 		select_next_blackhawk_small_mfd (BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
 	}
-//	else
-//	{
-//		select_next_blackhawk_mfd (BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
-//	}
+	else
+	{
+		select_next_blackhawk_small_mfd (BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -546,22 +546,6 @@ static void select_main_engine_mfd_event (event *ev)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void select_main_flight_mfd_event (event *ev)
-{
-	if (get_crew_role () == CREW_ROLE_PILOT)
-{
-		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_FLIGHT, BLACKHAWK_MFD_LOCATION_PILOT_MAIN);
-}
-	else
-{
-		select_blackhawk_mfd_mode (BLACKHAWK_MFD_MODE_FLIGHT, BLACKHAWK_MFD_LOCATION_CO_PILOT_MAIN);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 static void select_main_mission_mfd_event (event *ev)
 {
 	if (get_crew_role () == CREW_ROLE_PILOT)
@@ -600,10 +584,10 @@ static void toggle_top_mfd_on_off_event (event *ev)
 	{
 		toggle_blackhawk_small_mfd_on_off (BLACKHAWK_SMALL_MFD_LOCATION_PILOT_TOP);
 	}
-//	else
-//	{
-//		toggle_blackhawk_small_mfd_on_off (BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
-//	}
+	else
+	{
+		toggle_blackhawk_small_mfd_on_off (BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,10 +600,10 @@ static void toggle_bottom_mfd_on_off_event (event *ev)
 	{
 		toggle_blackhawk_small_mfd_on_off (BLACKHAWK_SMALL_MFD_LOCATION_PILOT_BOTTOM);
 	}
-//	else
-//	{
-//		toggle_blackhawk_small_mfd_on_off (BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_TOP);
-//	}
+	else
+	{
+		toggle_blackhawk_small_mfd_on_off (BLACKHAWK_SMALL_MFD_LOCATION_CO_PILOT_BOTTOM);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -799,28 +783,18 @@ void set_blackhawk_avionics_events (void)
 	set_event (DIK_RBRACKET, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, toggle_bottom_mfd_on_off_event);
 
 	set_event (DIK_3, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_tads_mfd_event);
-//	set_event (DIK_3, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_tads_mfd_event);
 
 	set_event (DIK_4, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_tsd_mfd_event);
-//	set_event (DIK_4, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_tsd_mfd_event);
 
 	set_event (DIK_5, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_ase_mfd_event);
-//	set_event (DIK_5, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_ase_mfd_event);
 
 	set_event (DIK_6, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_weapon_mfd_event);
-//	set_event (DIK_6, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_weapon_mfd_event);
 
 	set_event (DIK_7, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_system_mfd_event);
-//	set_event (DIK_7, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_system_mfd_event);
 
 	set_event (DIK_8, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_engine_mfd_event);
-//	set_event (DIK_8, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_engine_mfd_event);
-
-	set_event (DIK_9, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_flight_mfd_event);
-//	set_event (DIK_9, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_flight_mfd_event);
 
 	set_event (DIK_0, MODIFIER_LEFT_CONTROL, KEY_STATE_DOWN, select_main_mission_mfd_event);
-//	set_event (DIK_0, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, select_rhs_mission_mfd_event);
 
 	set_event (DIK_C, MODIFIER_LEFT_ALT, KEY_STATE_DOWN, toggle_blackhawk_canopy_doors);
 }

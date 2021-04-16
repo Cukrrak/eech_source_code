@@ -181,7 +181,6 @@ void initialise_cockpits (void)
 			break;
 		}
 		////////////////////////////////////////
-		////Moje 030518 Start
 		case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
 		{
@@ -193,18 +192,12 @@ void initialise_cockpits (void)
 			// order is critical
 			//
 
-//VJ 050101 3d cockpit mod
-//			if (command_line_3d_cockpit)
-//				initialise_blackhawk_virtual_cockpit_3d ();
-//			else
-				initialise_blackhawk_virtual_cockpit ();
+			initialise_blackhawk_virtual_cockpit ();
 
 			initialise_common_virtual_cockpit ();
 
 			break;
 		}
-		////Moje 030518 End
-		////Moje 030612 Start
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
@@ -223,9 +216,7 @@ void initialise_cockpits (void)
 
 			break;
 		}
-		////Moje 030612 End
 		////////////////////////////////////////
-		////Moje 030816 Start
 		case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
 		{
@@ -261,7 +252,6 @@ void initialise_cockpits (void)
 
 			break;
 		}
-		////Moje 030816 End
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////

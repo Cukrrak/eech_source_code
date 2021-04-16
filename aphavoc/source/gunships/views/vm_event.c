@@ -262,23 +262,6 @@ static void set_special1_view_mode (void)
 
 			break;
 		}
-		////Moje 030518 Start
-		case GUNSHIP_TYPE_BLACKHAWK:
-		////////////////////////////////////////
-		{
-			if (view_mode != VIEW_MODE_COCKPIT_PANEL_SPECIAL_APACHE_LHS_MFD)
-			{
-				set_view_mode (VIEW_MODE_COCKPIT_PANEL_SPECIAL_APACHE_LHS_MFD);
-			}
-			else
-			{
-				set_view_mode (VIEW_MODE_COCKPIT_PANEL_DOWN20_AHEAD);
-			}
-
-			break;
-		}
-		////Moje 030518 End
-		////Moje 030612 start
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////
@@ -294,8 +277,7 @@ static void set_special1_view_mode (void)
 
 			break;
 		}
-		////Moje 030612 end
-		////Moje 030816 Start
+		////////////////////////////////////////
 		case GUNSHIP_TYPE_AH64A:
 		////////////////////////////////////////
 		{
@@ -330,6 +312,8 @@ static void set_special1_view_mode (void)
 		case GUNSHIP_TYPE_VIPER:
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_KIOWA:
+		////////////////////////////////////////
+		case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
 		{
 			if (get_crew_role () == CREW_ROLE_PILOT)
@@ -462,23 +446,35 @@ static void set_special2_view_mode (void)
 
 			break;
 		}
-		////Moje 030518 Start
+		////////////////////////////////////////
 		case GUNSHIP_TYPE_BLACKHAWK:
 		////////////////////////////////////////
 		{
-			if (view_mode != VIEW_MODE_COCKPIT_PANEL_SPECIAL_APACHE_RHS_MFD)
+			if (get_crew_role () == CREW_ROLE_PILOT)
 			{
-				set_view_mode (VIEW_MODE_COCKPIT_PANEL_SPECIAL_APACHE_RHS_MFD);
+				if (view_mode != VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY)
+				{
+					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY);
+				}
+				else
+				{
+					set_view_mode (VIEW_MODE_COCKPIT_PANEL_DOWN20_AHEAD);
+				}
 			}
 			else
 			{
-				set_view_mode (VIEW_MODE_COCKPIT_PANEL_DOWN20_AHEAD);
+				if (view_mode != VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY)
+				{
+					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY);
+				}
+				else
+				{
+					set_view_mode (VIEW_MODE_COCKPIT_PANEL_DOWN20_AHEAD);
+				}
 			}
 
 			break;
 		}
-		////Moje 030518 End
-		////Moje 036012 start
 		////////////////////////////////////////
 		case GUNSHIP_TYPE_HIND:
 		////////////////////////////////////////

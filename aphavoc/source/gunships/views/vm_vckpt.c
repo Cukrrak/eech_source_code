@@ -68,7 +68,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define DEBUG_MODULE						0
+#define DEBUG_MODULE				0
 
 #define DEBUG_MODULE_SEAT_SWITCHING	0
 
@@ -2771,8 +2771,7 @@ void draw_virtual_cockpit_3d_view(void) {
 
 		ASSERT(get_gunship_entity ());
 
-		ASSERT(
-				get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
+		ASSERT(get_comanche_hokum_gunship () && get_global_gunship_type () != GUNSHIP_TYPE_KA50);
 
 		if (get_time_acceleration() == 0) {
 			return;
@@ -2782,15 +2781,15 @@ void draw_virtual_cockpit_3d_view(void) {
 
 		ASSERT(en);
 
-		if (get_local_entity_int_value(en, INT_TYPE_CREW_ROLE)
-				== CREW_ROLE_PILOT) {
+		if (get_local_entity_int_value(en, INT_TYPE_CREW_ROLE) == CREW_ROLE_PILOT)
+		{
 			////////////////////////////////////////
 			//
 			// PILOT ---> CO-PILOT
 			//
 			////////////////////////////////////////
 
-		set_local_entity_int_value(en, INT_TYPE_CREW_ROLE, CREW_ROLE_CO_PILOT);
+			set_local_entity_int_value(en, INT_TYPE_CREW_ROLE, CREW_ROLE_CO_PILOT);
 
 			store_pilot_seat_values();
 
@@ -2819,9 +2818,9 @@ void draw_virtual_cockpit_3d_view(void) {
 				}
 			}
 			// end periscope check by GCsDriver  08-12-2007
-
-	} else // if (get_global_gunship_type () != GUNSHIP_TYPE_HIND)
-	{
+		}
+		else // if (get_global_gunship_type () != GUNSHIP_TYPE_HIND)
+		{
 			////////////////////////////////////////
 			//
 			// CO-PILOT ---> PILOT
@@ -2834,20 +2833,21 @@ void draw_virtual_cockpit_3d_view(void) {
 
 			restore_pilot_seat_values();
 
-			switch (wide_cockpit_nr) {
-			case WIDEVIEW_COMANCHE_COPILOT:
-			case WIDEVIEW_HOKUM_COPILOT:
-			case WIDEVIEW_APACHE_COPILOT:
-			case WIDEVIEW_HIND_COPILOT:
-			case WIDEVIEW_VIPER_COPILOT:
-			case WIDEVIEW_KIOWA_COPILOT:
-				wide_cockpit_nr--;  // swtiches to pilot
-				break;
-			default:
-				break;
+				switch (wide_cockpit_nr) {
+				case WIDEVIEW_COMANCHE_COPILOT:
+				case WIDEVIEW_HOKUM_COPILOT:
+				case WIDEVIEW_APACHE_COPILOT:
+				case WIDEVIEW_BLACKHAWK_COPILOT:
+				case WIDEVIEW_HIND_COPILOT:
+				case WIDEVIEW_VIPER_COPILOT:
+				case WIDEVIEW_KIOWA_COPILOT:
+					wide_cockpit_nr--;  // switches to pilot
+					break;
+				default:
+					break;
 			}
 		}
-	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

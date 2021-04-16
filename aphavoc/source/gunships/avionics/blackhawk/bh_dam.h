@@ -72,27 +72,28 @@ union BLACKHAWK_DAMAGE_FLAGS
 	struct
 	{
 		unsigned int
-			flir							:1,	// 1
+			flir						:1,	// 1
 			dtv							:1,	// 2
 			laser_designator			:1,	// 3
 			infra_red_jammer	  		:1,	// 4
 			navigation_computer 		:1,	// 5
 			communications		  		:1,	// 6
 			radar_warning_system		:1,	// 7
-			pilot_top_mfd						:1,	// 8
-			pilot_bottom_mfd					:1, // 9
-			pilot_main_mfd						:1,	// 10
-			co_pilot_main_mfd						:1,	// 11
-//			co_pilot_rh_mfd						:1,	// 12
-			pnvs							:1,	// 13
-			lh_outer_pylon				:1,	// 14
-			lh_inner_pylon				:1,	// 15
-			rh_outer_pylon				:1,	// 16
-			rh_inner_pylon				:1,	// 17
-			lh_chaff_dispenser			:1,	// 18
-			rh_chaff_dispenser			:1,	// 19
-			lh_flare_dispenser			:1,	// 20
-			rh_flare_dispenser			:1;	// 21
+			pilot_top_mfd				:1,	// 8
+			pilot_bottom_mfd			:1, // 9
+			pilot_main_mfd				:1,	// 10
+			co_pilot_top_mfd			:1,	// 11
+			co_pilot_bottom_mfd			:1, // 12
+			co_pilot_main_mfd			:1,	// 13
+			pnvs						:1,	// 14
+			lh_outer_pylon				:1,	// 15
+			lh_inner_pylon				:1,	// 16
+			rh_outer_pylon				:1,	// 17
+			rh_inner_pylon				:1,	// 18
+			lh_chaff_dispenser			:1,	// 19
+			rh_chaff_dispenser			:1,	// 20
+			lh_flare_dispenser			:1,	// 21
+			rh_flare_dispenser			:1;	// 22
 	};
 };
 

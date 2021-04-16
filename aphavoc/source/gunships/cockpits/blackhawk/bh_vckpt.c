@@ -722,8 +722,6 @@ static object_3d_sub_instance
 	*rtgt_tmp_red3,
 	*rtgt_tmp_red4;
 
-static void animate_mh60l_virtual_cockpit (void);
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1468,10 +1466,6 @@ void deinitialise_blackhawk_virtual_cockpit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-static void animate_mh60l_virtual_cockpit (void)
-{
-
-}
 
 void update_blackhawk_virtual_cockpit (void)
 {
@@ -1487,9 +1481,9 @@ void update_blackhawk_virtual_cockpit (void)
 		search;
 
 		////////////////////////////////////////
-	//
-	// sort out what to draw
-	//
+		//
+		// sort out what to draw
+		//
 		////////////////////////////////////////
 
 	switch (get_view_mode ())
@@ -1548,11 +1542,11 @@ void update_blackhawk_virtual_cockpit (void)
 
 			virtual_cockpit_inst3d = virtual_cockpit_inst3d_detail_level_glass_inst3d;
 		}
-}
+	}
 	else
 	{
 		if (virtual_cockpit_inst3d != virtual_cockpit_inst3d_detail_level_normal_inst3d)
-{
+		{
 			virtual_cockpit_inst3d_detail_level_normal_inst3d->vp = virtual_cockpit_inst3d->vp;
 
 			virtual_cockpit_inst3d = virtual_cockpit_inst3d_detail_level_normal_inst3d;
@@ -1581,24 +1575,24 @@ void update_blackhawk_virtual_cockpit (void)
 		}
 
 		depth++;
-}
+	}
 
 	depth = 0;
 
 	for (;;)
-{
+	{
 		search.search_depth = depth;
 		search.search_object = virtual_cockpit_inst3d;
 		search.sub_object_index = OBJECT_3D_SUB_OBJECT_VISIBLE_TO_WSO;
 
 		if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
+		{
 			search.result_sub_object->visible_object = draw_co_pilot_cockpit;
-	}
+		}
 		else
-	{
+		{
 			break;
-	}
+		}
 
 		depth++;
 	}
@@ -1651,14 +1645,14 @@ void update_blackhawk_virtual_cockpit (void)
 	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 	{
 		search.result_sub_object->visible_object = draw_controls;
-}
+	}
 
 	search.search_depth = 0;
 	search.search_object = virtual_cockpit_inst3d;
 	search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_JOYSTICK;
 
 	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-{
+	{
 		search.result_sub_object->visible_object = draw_controls;
 	}
 
@@ -1681,55 +1675,13 @@ void update_blackhawk_virtual_cockpit (void)
 	// crew animation
 	//
 
-//	update_blackhawk_crew_animation ();
+	update_blackhawk_crew_animation ();
 
 	//
 	// canopy doors
 	//
 
 	animate_blackhawk_virtual_cockpit_canopy_doors ();
-
-	////////////////////////////////////////
-	//
-	// sort static hands
-	//
-	////////////////////////////////////////
-
-	if (!draw_crew)
-	{
-		search.search_depth = 0;
-		search.search_object = virtual_cockpit_inst3d;
-		search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_PILOT_HAND_STATIC;
-
-		if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
-			search.result_sub_object->visible_object = FALSE;
-	}
-
-		search.search_depth = 0;
-		search.search_object = virtual_cockpit_inst3d;
-		search.sub_object_index = OBJECT_3D_SUB_OBJECT_COCKPIT_WSO_HAND_STATIC;
-
-		if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-	{
-			search.result_sub_object->visible_object = FALSE;
-		}
-	}
-
-	if (target_acquisition_system <= TARGET_ACQUISITION_SYSTEM_AIR_RADAR && view_mode != VIEW_MODE_EXTERNAL)
-	{
-		viewpoint pilot_head_attitude,
-					pilot_head_pos;
-		
-//		get_3d_sub_object_viewpoint (find_sub_object(virtual_cockpit_inst3d, !get_local_entity_int_value (get_pilot_entity (), INT_TYPE_CREW_ROLE) ? OBJECT_3D_SUB_OBJECT_PILOT_HEAD : OBJECT_3D_SUB_OBJECT_WSO_HEAD),
-//			&pilot_head_attitude, FALSE);
-//		get_3d_sub_object_viewpoint (find_sub_object(virtual_cockpit_inst3d, !get_local_entity_int_value (get_pilot_entity (), INT_TYPE_CREW_ROLE) ? OBJECT_3D_SUB_OBJECT_PILOT_VIEWPOINT : OBJECT_3D_SUB_OBJECT_WSO_VIEWPOINT),
-//			&pilot_head_pos, FALSE);
-
-		get_pilot_local_viewpoint(&pilot_head_pos.position, &pilot_head_attitude.attitude, TRUE);
-	}
-
-	animate_mh60l_virtual_cockpit();
 
 	// Engine Displays
 	update_rtr_rpm_display();
@@ -1752,7 +1704,7 @@ void update_blackhawk_virtual_cockpit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void pre_render_blackhawk_virtual_cockpit_displays (void)
-			{
+{
 	switch (get_view_mode ())
 	{
 		case VIEW_MODE_VIRTUAL_COCKPIT_CREW:
@@ -1805,18 +1757,18 @@ void draw_blackhawk_virtual_cockpit (void)
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
 		{
-						break;
-					}
+			break;
+		}
 		default:
 		{
 			if (!get_global_draw_cockpit_graphics ())
-					{
+			{
 				return;
 			}
 
-						break;
-					}
-				}
+			break;
+		}
+	}
 
 	//
 	// lamps
@@ -1825,10 +1777,9 @@ void draw_blackhawk_virtual_cockpit (void)
 	draw_blackhawk_virtual_cockpit_lamps ();
 
 	//
-	// upfront
+	// digital readouts
 	//
 
-//	draw_blackhawk_upfront_display_on_texture();
 	draw_blackhawk_digital_display_on_texture ();
 
 	//
@@ -1890,10 +1841,10 @@ void draw_blackhawk_virtual_cockpit (void)
 
 	recalculate_3d_environment_settings (main_3d_env);
 
-		clear_zbuffer_screen ();
+	clear_zbuffer_screen ();
 
-		if (begin_3d_scene ())
-		{
+	if (begin_3d_scene ())
+	{
 		//
 		// light direction is in world coordinates
 		//
@@ -1948,9 +1899,27 @@ void draw_blackhawk_virtual_cockpit (void)
 				// airspeed
 				//
 
+				// Pilot
 				search.search_depth = 0;
 				search.search_object = virtual_cockpit_inst3d;
 				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_IAS_NEEDLE;
+
+				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+				{
+					float
+					airspeed_needle_value;
+
+					airspeed_needle_value = bound(knots (current_flight_dynamics->indicated_airspeed.value), 0.0, 250.0);
+
+					airspeed_needle_value *= rad (180.0) / 160.0;
+
+					search.result_sub_object->relative_roll = -airspeed_needle_value;
+				}
+
+				// Co-Pilot
+				search.search_depth = 0;
+				search.search_object = virtual_cockpit_inst3d;
+				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_CP_IAS_NEEDLE;
 
 				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 				{
@@ -1968,9 +1937,20 @@ void draw_blackhawk_virtual_cockpit (void)
 				// radar altimeter
 				//
 
+				// Pilot
 				search.search_depth = 0;
 				search.search_object = virtual_cockpit_inst3d;
 				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_RDR_ALT_NEEDLE;
+
+				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+				{
+					search.result_sub_object->relative_roll = get_blackhawk_virtual_cockpit_radar_altimeter_needle_value ();
+				}
+
+				// Co-Pilot
+				search.search_depth = 0;
+				search.search_object = virtual_cockpit_inst3d;
+				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_CP_RDR_ALT_NEEDLE;
 
 				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 				{
@@ -1981,9 +1961,20 @@ void draw_blackhawk_virtual_cockpit (void)
 				// barometric altimeter
 				//
 
+				// Pilot
 				search.search_depth = 0;
 				search.search_object = virtual_cockpit_inst3d;
 				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_BAR_ALT_NEEDLE;
+
+				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+				{
+					search.result_sub_object->relative_roll = get_blackhawk_virtual_cockpit_barometric_altimeter_needle_value ();
+				}
+
+				// Co-Pilot
+				search.search_depth = 0;
+				search.search_object = virtual_cockpit_inst3d;
+				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_CP_BAR_ALT_NEEDLE;
 
 				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 				{
@@ -1994,9 +1985,20 @@ void draw_blackhawk_virtual_cockpit (void)
 				// vertical speed
 				//
 
+				// Pilot
 				search.search_depth = 0;
 				search.search_object = virtual_cockpit_inst3d;
 				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_VSI_NEEDLE;
+
+				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
+				{
+					search.result_sub_object->relative_roll = get_blackhawk_virtual_cockpit_vsi_needle_value ();
+				}
+
+				// Co-Pilot
+				search.search_depth = 0;
+				search.search_object = virtual_cockpit_inst3d;
+				search.sub_object_index = OBJECT_3D_SUB_OBJECT_BH_CP_VSI_NEEDLE;
 
 				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 				{
@@ -2013,21 +2015,7 @@ void draw_blackhawk_virtual_cockpit (void)
 
 				if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
 				{
-					float
-					stab_needle_value;
-
-					stab_needle_value = bound((current_flight_dynamics->indicated_airspeed.value / 25 + 1.5), -10, 40);
-
-					stab_needle_value *= rad (180.0) / 160.0;
-
-					search.result_sub_object->relative_roll = -stab_needle_value;
-
-					// TODO
-//					if velocity < 40
-//						stabilator needle at angle x
-//					if velocity > 40 < 80
-//						stabilator needle at angle y
-//						etc etc
+					search.result_sub_object->relative_roll = get_blackhawk_virtual_cockpit_stab_needle_value ();
 				}
 
 				//
@@ -2179,7 +2167,7 @@ void draw_blackhawk_virtual_cockpit (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void get_blackhawk_crew_viewpoint (void)
-		{
+{
 	object_3d_sub_object_search_data
 		search_head,
 		search_viewpoint;
@@ -2190,9 +2178,9 @@ void get_blackhawk_crew_viewpoint (void)
 	float
 		head_pitch_datum;
 
-			//
+	//
 	// select head
-			//
+	//
 
 	if (get_local_entity_int_value (get_pilot_entity (), INT_TYPE_CREW_ROLE) == CREW_ROLE_PILOT)
 	{
@@ -2211,15 +2199,15 @@ void get_blackhawk_crew_viewpoint (void)
 		head_pitch_datum = co_pilot_head_pitch_datum;
 	}
 
-				//
+	//
 	// rotate head
-				//
+	//
 
 	search_head.search_depth = 0;
 	search_head.search_object = virtual_cockpit_inst3d;
 
 	if (find_object_3d_sub_object (&search_head) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-				{
+	{
 		search_head.result_sub_object->relative_heading = -pilot_head_heading;
 		search_head.result_sub_object->relative_pitch = head_pitch_datum - pilot_head_pitch;
 
@@ -2227,21 +2215,21 @@ void get_blackhawk_crew_viewpoint (void)
 			search_head.result_sub_object->relative_roll = TIR_GetRoll() / 16383. * PI / 2.;	// Retro 6Feb2005
 		else
 			search_head.result_sub_object->relative_roll = 0.0;
-				}
+	}
 	else
-				{
+	{
 		debug_fatal ("Failed to locate crew's head in virtual cockpit");
-				}
+	}
 
-				//
+	//
 	// get viewpoint (avoid jitter)
-				//
+	//
 
 	search_viewpoint.search_object = virtual_cockpit_inst3d;
 	search_viewpoint.search_depth = 0;
 
 	if (find_object_3d_sub_object (&search_viewpoint) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-				{
+	{
 		virtual_cockpit_inst3d->vp.x = 0.0;
 		virtual_cockpit_inst3d->vp.y = 0.0;
 		virtual_cockpit_inst3d->vp.z = 0.0;
@@ -2257,7 +2245,7 @@ void get_blackhawk_crew_viewpoint (void)
 		pilot_head_vp.z += vp.z;
 
 		if ((command_line_TIR_6DOF == TRUE)&&(query_TIR_active() == TRUE))	// Retro 6Feb2005 (whole block)
-				{
+		{
 			matrix3x3 invAttitude;
 			vec3d
 				shiftVP, shiftWorld;
@@ -2293,21 +2281,21 @@ void get_blackhawk_crew_viewpoint (void)
 			virtual_cockpit_inst3d->vp.x += current_custom_cockpit_viewpoint.x;
 			virtual_cockpit_inst3d->vp.y += current_custom_cockpit_viewpoint.y;
 			virtual_cockpit_inst3d->vp.z += current_custom_cockpit_viewpoint.z;
-				}
+		}
 
-			}
+	}
 	else
 	{
 		debug_fatal ("Failed to locate crew's viewpoint in virtual cockpit");
-		}
 	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void get_blackhawk_display_viewpoint (view_modes mode)
-	{
+{
 	object_3d_sub_object_index_numbers
 		index;
 
@@ -2322,39 +2310,39 @@ void get_blackhawk_display_viewpoint (view_modes mode)
 	ASSERT (virtual_cockpit_inst3d);
 
 	switch (mode)
-			{
-				////////////////////////////////////////
+		{
+		////////////////////////////////////////
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_LHS_DISPLAY:
-				////////////////////////////////////////
-				{
-			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_MFD_FL;
+		////////////////////////////////////////
+		{
+			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_PL_INSTR;
 
-					break;
-				}
-				////////////////////////////////////////
+			break;
+		}
+		////////////////////////////////////////
 		case VIEW_MODE_VIRTUAL_COCKPIT_PILOT_RHS_DISPLAY:
-				////////////////////////////////////////
-				{
-			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_MFD_FR;
+		////////////////////////////////////////
+		{
+			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_PL_MFD;
 
-					break;
-				}
-				////////////////////////////////////////
+			break;
+		}
+		////////////////////////////////////////
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_LHS_DISPLAY:
-				////////////////////////////////////////
-				{
-			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_MFD_RL;
+		////////////////////////////////////////
+		{
+			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_CP_INSTR;
 
-					break;
-				}
-				////////////////////////////////////////
+			break;
+		}
+		////////////////////////////////////////
 		case VIEW_MODE_VIRTUAL_COCKPIT_CO_PILOT_RHS_DISPLAY:
-				////////////////////////////////////////
-				{
-			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_MFD_RR;
+		////////////////////////////////////////
+		{
+			index = OBJECT_3D_SUB_OBJECT_COCKPIT_VIEW_CP_MFD;
 
-					break;
-				}
+			break;
+		}
 		////////////////////////////////////////
 		default:
 		////////////////////////////////////////
@@ -2390,13 +2378,13 @@ void get_blackhawk_display_viewpoint (view_modes mode)
 	search.sub_object_index = index;
 
 	if (find_object_3d_sub_object (&search) == SUB_OBJECT_SEARCH_RESULT_OBJECT_FOUND)
-			{
+	{
 		get_3d_sub_object_world_viewpoint (&search, &main_vp);
-			}
-			else
-			{
+	}
+	else
+	{
 		debug_fatal ("Failed to locate display viewpoint in virtual cockpit");
-			}
+	}
 
 	position.x = -main_vp.x;
 	position.y = -main_vp.y;
@@ -2416,14 +2404,14 @@ void get_blackhawk_display_viewpoint (view_modes mode)
 			dz;
 
 		if (check_key (DIK_Q))
-				{
+		{
 			z_offset -= 0.0001;
-			}
+		}
 
 		if (check_key (DIK_A))
-				{
+		{
 			z_offset += 0.0001;
-				}
+		}
 
 		dx = main_vp.zv.x * z_offset;
 		dy = main_vp.zv.y * z_offset;

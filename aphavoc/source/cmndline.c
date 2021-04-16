@@ -176,6 +176,7 @@ int
 	command_line_max_fov5											= 80,		// Casm 25JAN12
 	command_line_max_fov6											= 80,		// Casm 14JUL10
 	command_line_max_fov7											= 80,		// Casm 30MAY12
+	command_line_max_fov8											= 80,
 	command_line_eo_pan_joystick_index						= -1,		// loke 030319
 	command_line_eo_pan_vertical_joystick_axis			= 6,		// loke 030319
 	command_line_eo_pan_horizontal_joystick_axis			= 8,		// loke 030319

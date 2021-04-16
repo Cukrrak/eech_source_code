@@ -90,7 +90,7 @@ int get_max_fov ( void )
 			max_fov = command_line_max_fov3;
 			break;
 		case GUNSHIP_TYPE_BLACKHAWK:
-			max_fov = command_line_max_fov0;
+			max_fov = command_line_max_fov8;
 			break;
 		case GUNSHIP_TYPE_HIND:
 			max_fov = command_line_max_fov4;
@@ -907,6 +907,7 @@ static void enter_view_mode (view_modes mode)
 					case GUNSHIP_TYPE_HOKUM:
 					case GUNSHIP_TYPE_VIPER:
 					case GUNSHIP_TYPE_KIOWA:
+					case GUNSHIP_TYPE_BLACKHAWK:
 					{
 						break;
 					}
@@ -934,9 +935,6 @@ static void enter_view_mode (view_modes mode)
 				// JB 030313 Fly any aircraft
 				default:
 				case GUNSHIP_TYPE_APACHE:
-				////Moje 030518 Start
-				case GUNSHIP_TYPE_BLACKHAWK:
-				////Moje 030518 End
 				////Moje 030612 Start
 				case GUNSHIP_TYPE_HIND:
 				////Moje 030612 End
@@ -988,6 +986,16 @@ static void enter_view_mode (view_modes mode)
 					pilot_head_heading = VIPER_INSTRUMENT_VIEW_HEADING;
 
 					pilot_head_pitch = VIPER_INSTRUMENT_VIEW_PITCH;
+
+					mode = VIEW_MODE_VIRTUAL_COCKPIT;
+
+					break;
+				}
+				case GUNSHIP_TYPE_BLACKHAWK:
+				{
+					pilot_head_heading = BLACKHAWK_INSTRUMENT_VIEW_HEADING;
+
+					pilot_head_pitch = BLACKHAWK_INSTRUMENT_VIEW_PITCH;
 
 					mode = VIEW_MODE_VIRTUAL_COCKPIT;
 
