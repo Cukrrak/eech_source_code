@@ -84,13 +84,15 @@ c_object_files		+=	$+ &
 							$(currentdir)\bh_dam.obj &
 							$(currentdir)\bh_eo.obj &
 							$(currentdir)\bh_front.obj &
+							$(currentdir)\bh_digits.obj &
+							$(currentdir)\bh_chrono.obj &
 							$(currentdir)\bh_hms.obj &
 							$(currentdir)\bh_hud.obj &
 							$(currentdir)\bh_mfd.obj &
 							$(currentdir)\bh_radar.obj &
 							$(currentdir)\bh_tgt.obj &
 							$(currentdir)\bh_thrt.obj &
-							$(currentdir)\bh_wpn.obj &
+							$(currentdir)\bh_cowpn.obj &
 							$-
 
 asm_object_files	+=	$+ &

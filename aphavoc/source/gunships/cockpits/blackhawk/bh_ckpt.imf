@@ -80,8 +80,12 @@ currentdir = $(projectdir)\source\gunships\cockpits\blackhawk
 
 c_object_files		+=	$+ &
 							$(currentdir)\bh_ckpt.obj &
+							$(currentdir)\bh_cpg.obj &
+							$(currentdir)\bh_crew.obj &
+							$(currentdir)\bh_doors.obj &
 							$(currentdir)\bh_instr.obj &
 							$(currentdir)\bh_lamps.obj &
+							$(currentdir)\bh_pilot.obj &
 							$(currentdir)\bh_vckpt.obj &
 							$(currentdir)\bh_wiper.obj &
 							$-

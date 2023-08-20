@@ -761,3 +761,38 @@ void deinitialise_cockpit_lights() {
 	safe_free(cockpit_light_color_array);
 	cockpit_light_color_array = NULL;
 }
+
+void get_pilot_local_viewpoint(vec3d *pilot_head_pos, matrix3x3 *pilot_head_attitude, int tir_available)
+{
+	vec3d
+		vp_offset;
+
+	if (get_global_wide_cockpit ())
+	{
+		vp_offset.x = wide_cockpit_position[wide_cockpit_nr].c.x;
+		vp_offset.y = wide_cockpit_position[wide_cockpit_nr].c.y;
+		vp_offset.z = wide_cockpit_position[wide_cockpit_nr].c.z;
+
+		multiply_matrix3x3_vec3d(&vp_offset, *pilot_head_attitude, &vp_offset);
+
+		pilot_head_pos->x -= vp_offset.x;
+		pilot_head_pos->y -= vp_offset.y;
+		pilot_head_pos->z -= vp_offset.z;
+
+	}
+
+	if (tir_available)
+	{
+		vp_offset.x = vp_offset.y = vp_offset.z = 0.0;
+
+		vp_offset.x += getViewpointOffsetX(vp_offset.x);
+		vp_offset.y += getViewpointOffsetY(vp_offset.y);
+		vp_offset.z += getViewpointOffsetZ(vp_offset.z);
+
+		multiply_matrix3x3_vec3d(&vp_offset, *pilot_head_attitude, &vp_offset);
+
+		pilot_head_pos->x -= vp_offset.x;
+		pilot_head_pos->y -= vp_offset.y;
+		pilot_head_pos->z -= vp_offset.z;
+	}
+}

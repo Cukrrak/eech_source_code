@@ -338,7 +338,6 @@ void activate_blackhawk_threat_warning_system (entity *threat)
 void update_blackhawk_threat_warning_system (void)
 {
 	int
-		radar_jammer_on,
 		infra_red_jammer_on;
 
 	entity
@@ -346,8 +345,6 @@ void update_blackhawk_threat_warning_system (void)
 		*threat;
 
 	source = get_gunship_entity ();
-
-	radar_jammer_on = FALSE;
 
 	infra_red_jammer_on = FALSE;
 
@@ -367,8 +364,6 @@ void update_blackhawk_threat_warning_system (void)
 			case THREAT_TYPE_RF_MISSILE:
 			////////////////////////////////////////
 			{
-				radar_jammer_on = TRUE;
-
 				break;
 			}
 			////////////////////////////////////////
@@ -392,8 +387,6 @@ void update_blackhawk_threat_warning_system (void)
 			case THREAT_TYPE_EARLY_WARNING_RADAR:
 			////////////////////////////////////////
 			{
-				radar_jammer_on = TRUE;
-
 				break;
 			}
 		}
@@ -404,13 +397,6 @@ void update_blackhawk_threat_warning_system (void)
 	//
 	// jammers
 	//
-
-	if (blackhawk_damage.radar_warning_system)
-	{
-		radar_jammer_on = FALSE;
-	}
-
-	set_blackhawk_radar_jammer_auto (radar_jammer_on);
 
 	set_blackhawk_infra_red_jammer_auto (infra_red_jammer_on);
 

@@ -64,18 +64,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void initialise_blackhawk_instrument_colours (void);
-
-extern void set_blackhawk_instrument_colours (void);
-
-extern void draw_blackhawk_fixed_cockpit_airspeed_indicator_needle (cockpit_panels panel);
-
-extern void draw_blackhawk_fixed_cockpit_barometric_altimeter_needle (cockpit_panels panel);
-
-extern void draw_blackhawk_fixed_cockpit_barometric_altimeter_digits (cockpit_panels panel);
-
-extern void draw_blackhawk_fixed_cockpit_clock_hands (cockpit_panels panel);
-
 extern void get_blackhawk_virtual_cockpit_adi_angles (matrix3x3 attitude, float *heading, float *pitch, float *roll);
 
 extern float get_blackhawk_virtual_cockpit_adi_slip_indicator_needle_value (void);
@@ -84,7 +72,13 @@ extern float get_blackhawk_virtual_cockpit_airspeed_indicator_needle_value (void
 
 extern float get_blackhawk_virtual_cockpit_barometric_altimeter_needle_value (void);
 
+extern float get_blackhawk_virtual_cockpit_radar_altimeter_needle_value (void);
+
+extern float get_blackhawk_virtual_cockpit_vsi_needle_value (void);
+
 extern void get_blackhawk_virtual_cockpit_clock_hand_values (float *hours, float *minutes, float *seconds);
+
+extern float get_blackhawk_virtual_cockpit_stab_needle_value (void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

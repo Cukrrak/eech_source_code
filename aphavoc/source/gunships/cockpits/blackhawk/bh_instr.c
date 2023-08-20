@@ -75,131 +75,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct SCALE_DATA
-{
-	short int
-		x,
-		y;
-
-	float
-		value;
-};
-
-typedef struct SCALE_DATA scale_data;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static rgb_colour
-	white_needle_colour,
-	red_needle_colour,
-	white_digit_colour;
-
-static rgb_colour
-	white_needle_colour_level1,
-	red_needle_colour_level1,
-	white_digit_colour_level1,
-	white_needle_colour_level2,
-	red_needle_colour_level2,
-	white_digit_colour_level2,
-	white_needle_colour_level3,
-	red_needle_colour_level3,
-	white_digit_colour_level3;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#if 0
-static char
-	*instrument_error = "Cannot draw instrument on panel";
-#endif
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#if 0
-#include "bh_aspd.h"
-
-#include "bh_balt.h"
-
-#include "bh_clock.h"
-#endif
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void initialise_blackhawk_instrument_colours (void)
-{
-	set_rgb_colour (white_needle_colour_level1, 200, 200, 200, 0);
-	set_rgb_colour (red_needle_colour_level1,   188,  58,  26, 0);
-	set_rgb_colour (white_digit_colour_level1,  200, 200, 200, 0);
-	set_rgb_colour (white_needle_colour_level2, 192,   0,   0, 0);
-	set_rgb_colour (red_needle_colour_level2,   192,   0,   0, 0);
-	set_rgb_colour (white_digit_colour_level2,  192,   0,   0, 0);
-	set_rgb_colour (white_needle_colour_level3, 192,   0,   0, 0);
-	set_rgb_colour (red_needle_colour_level3,   192,   0,   0, 0);
-	set_rgb_colour (white_digit_colour_level3,  192,   0,   0, 0);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void set_blackhawk_instrument_colours (void)
-{
-	switch (get_local_entity_int_value (get_session_entity (), INT_TYPE_DAY_SEGMENT_TYPE))
-	{
-		case DAY_SEGMENT_TYPE_DAWN:
-		{
-			white_needle_colour	= white_needle_colour_level2;
-			red_needle_colour		= red_needle_colour_level2;
-			white_digit_colour	= white_digit_colour_level2;
-
-			break;
-		}
-		case DAY_SEGMENT_TYPE_DAY:
-		{
-			white_needle_colour	= white_needle_colour_level1;
-			red_needle_colour		= red_needle_colour_level1;
-			white_digit_colour	= white_digit_colour_level1;
-
-			break;
-		}
-		case DAY_SEGMENT_TYPE_DUSK:
-		{
-			white_needle_colour	= white_needle_colour_level2;
-			red_needle_colour		= red_needle_colour_level2;
-			white_digit_colour	= white_digit_colour_level2;
-
-			break;
-		}
-		case DAY_SEGMENT_TYPE_NIGHT:
-		{
-			white_needle_colour	= white_needle_colour_level3;
-			red_needle_colour		= red_needle_colour_level3;
-			white_digit_colour	= white_digit_colour_level3;
-
-			break;
-		}
-	}
-
-	#if DEMO_VERSION
-
-	white_needle_colour	= white_needle_colour_level1;
-	red_needle_colour		= red_needle_colour_level1;
-	white_digit_colour	= white_digit_colour_level1;
-
-	#endif
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // INSTRUMENT VALUES
 //
@@ -273,6 +148,39 @@ static float get_airspeed_indicator_needle_value (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+float get_radar_altimeter_needle_value(void)
+{
+	float
+		altimeter_needle_value;
+
+	if (test_cockpit_instruments)
+	{
+		static float
+			value = 0.0;
+
+		value += 10.0;
+
+		if (value > 1000.0)
+		{
+			value = 0.0;
+		}
+
+		altimeter_needle_value = value;
+	}
+	else
+	{
+		altimeter_needle_value = feet (current_flight_dynamics->radar_altitude.value);
+	}
+
+	altimeter_needle_value = bound(altimeter_needle_value, 0.0, 1500.0);
+
+	return (altimeter_needle_value);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 static float get_barometric_altimeter_needle_value (void)
 {
 	float
@@ -299,39 +207,6 @@ static float get_barometric_altimeter_needle_value (void)
 
 	return (altimeter_needle_value);
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#if 0
-static float get_barometric_altimeter_digital_value (void)
-{
-	float
-		altimeter_digital_value;
-
-	if (test_cockpit_instruments)
-	{
-		static float
-			value = 0.0;
-
-		value += 10.0;
-
-		if (value > 100000.0)
-		{
-			value = 0.0;
-		}
-
-		altimeter_digital_value = value;
-	}
-	else
-	{
-		altimeter_digital_value = feet (current_flight_dynamics->barometric_altitude.value);
-	}
-
-	return (altimeter_digital_value);
-}
-#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -397,469 +272,6 @@ static void get_clock_hand_values (float *hours, float *minutes, float *seconds)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// FIXED COCKPIT
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#if 0
-static scale_data *find_scale_value (scale_data *scale, float value)
-{
-	while (value >= (scale+1)->value)
-	{
-		scale++;
-	}
-
-	return (scale);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void test_scale (scale_data *scale, float first, float last, float step)
-{
-	float
-		value;
-
-	for (value = first; value <= last; value += step)
-	{
-		scale = find_scale_value (scale, value);
-
-		set_pixel (ix_640_480 + scale->x, iy_640_480 + scale->y, sys_col_red);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_blackhawk_fixed_cockpit_airspeed_indicator_needle (cockpit_panels panel)
-{
-	float
-		airspeed_needle_value,
-		x_centre,
-		y_centre;
-
-	scale_data
-		*airspeed_needle_scale,
-		*p;
-
-	if (draw_virtual_cockpit_needles_on_fixed_cockpits)
-	{
-		return;
-	}
-
-	airspeed_needle_value = get_airspeed_indicator_needle_value ();
-
-	switch (panel)
-	{
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_AHEAD:
-		////////////////////////////////////////
-		{
-			x_centre = 533.0;
-
-			y_centre = 440.0;
-
-			airspeed_needle_scale = airspeed_indicator_needle_scale_down_20_ahead;
-
-			break;
-		}
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_RIGHT30:
-		////////////////////////////////////////
-		{
-			x_centre = 281.0;
-
-			y_centre = 411.0;
-
-			airspeed_needle_scale = airspeed_indicator_needle_scale_down_20_right_30;
-
-			break;
-		}
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_RIGHT60:
-		////////////////////////////////////////
-		{
-			x_centre = 12.0;
-
-			y_centre = 471.0;
-
-			airspeed_needle_scale = airspeed_indicator_needle_scale_down_20_right_60;
-
-			break;
-		}
-		////////////////////////////////////////
-		default:
-		////////////////////////////////////////
-		{
-			debug_fatal (instrument_error);
-
-			break;
-		}
-	}
-
-	p = find_scale_value (airspeed_needle_scale, airspeed_needle_value);
-
-	draw_line (fx_640_480 + x_centre, fy_640_480 + y_centre, fx_640_480 + p->x, fy_640_480 + p->y, white_needle_colour);
-
-	if (test_cockpit_instruments && DEBUG_MODULE)
-	{
-		test_scale (airspeed_needle_scale, 0.0, 250.0, 50.0);
-
-		set_pixel (ix_640_480 + x_centre, iy_640_480 + y_centre, sys_col_red);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_blackhawk_fixed_cockpit_barometric_altimeter_needle (cockpit_panels panel)
-{
-	float
-		altimeter_needle_value,
-		x_centre,
-		y_centre;
-
-	scale_data
-		*altimeter_needle_scale,
-		*p;
-
-	if (draw_virtual_cockpit_needles_on_fixed_cockpits)
-	{
-		return;
-	}
-
-	altimeter_needle_value = get_barometric_altimeter_needle_value ();
-
-	switch (panel)
-	{
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_AHEAD:
-		////////////////////////////////////////
-		{
-			x_centre = 599.0;
-
-			y_centre = 440.0;
-
-			altimeter_needle_scale = barometric_altimeter_needle_scale_down_20_ahead;
-
-			break;
-		}
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_RIGHT30:
-		////////////////////////////////////////
-		{
-			x_centre = 333.0;
-
-			y_centre = 393.0;
-
-			altimeter_needle_scale = barometric_altimeter_needle_scale_down_20_right_30;
-
-			break;
-		}
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_RIGHT60:
-		////////////////////////////////////////
-		{
-			x_centre = 73.0;
-
-			y_centre = 430.0;
-
-			altimeter_needle_scale = barometric_altimeter_needle_scale_down_20_right_60;
-
-			break;
-		}
-		////////////////////////////////////////
-		default:
-		////////////////////////////////////////
-		{
-			debug_fatal (instrument_error);
-
-			break;
-		}
-	}
-
-	p = find_scale_value (altimeter_needle_scale, altimeter_needle_value);
-
-	draw_line (fx_640_480 + x_centre, fy_640_480 + y_centre, fx_640_480 + p->x, fy_640_480 + p->y, white_needle_colour);
-
-	if (test_cockpit_instruments && DEBUG_MODULE)
-	{
-		test_scale (altimeter_needle_scale, 0.0, 900.0, 100.0);
-
-		set_pixel (ix_640_480 + x_centre, iy_640_480 + y_centre, sys_col_red);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_blackhawk_fixed_cockpit_barometric_altimeter_digits (cockpit_panels panel)
-{
-	float
-		altimeter_digital_value,
-		x,
-		y,
-		whole_digit,
-		fractional_digit;
-
-	altimeter_digital_value = get_barometric_altimeter_digital_value ();
-
-	switch (panel)
-	{
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_AHEAD:
-		////////////////////////////////////////
-		{
-			set_mono_font_type (MONO_FONT_TYPE_3X6);
-
-			set_mono_font_colour (white_digit_colour);
-
-			set_viewport (fx_640_480 + 579.0, fy_640_480 + 438.0, fx_640_480 + 587.999, fy_640_480 + 442.999);
-
-			////////////////////////////////////////
-			//
-			// 1,000's digit
-			//
-			////////////////////////////////////////
-
-			#define ONE_REV		  				(10000.0f)
-			#define ONE_TENTH_REV				((ONE_REV) / 10.0f)
-			#define ONE_OVER_ONE_TENTH_REV	(1.0f / (ONE_TENTH_REV))
-			#define DIGIT_CHANGE_THRESHOLD	(20.0f)
-
-			x = fx_640_480 + 583.0;
-			y = fy_640_480 + 438.0 + 6.0;
-
-			whole_digit = fmod (altimeter_digital_value, ONE_REV);
-
-			fractional_digit = fmod (altimeter_digital_value, ONE_TENTH_REV);
-
-			y += (float) ((int) (whole_digit * ONE_OVER_ONE_TENTH_REV)) * 6.0;
-
-			//
-			// rotate digits near change-over point (except at bottom zero)
-			//
-
-			if (altimeter_digital_value >= DIGIT_CHANGE_THRESHOLD)
-			{
-				if (fractional_digit <= DIGIT_CHANGE_THRESHOLD)
-				{
-					y += (fractional_digit - DIGIT_CHANGE_THRESHOLD) * (3.0 / DIGIT_CHANGE_THRESHOLD);
-				}
-				else if (fractional_digit >= (ONE_TENTH_REV - DIGIT_CHANGE_THRESHOLD))
-				{
-					y += (fractional_digit - (ONE_TENTH_REV - DIGIT_CHANGE_THRESHOLD)) * (3.0 / DIGIT_CHANGE_THRESHOLD);
-				}
-			}
-
-			set_mono_font_position (x, y); print_mono_font_char ('9'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('0'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('1'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('2'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('3'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('4'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('5'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('6'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('7'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('8'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('9'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('0');
-
-			#undef ONE_REV
-			#undef ONE_TENTH_REV
-			#undef ONE_OVER_ONE_TENTH_REV
-			#undef DIGIT_CHANGE_THRESHOLD
-
-			////////////////////////////////////////
-			//
-			// 10,000's digit
-			//
-			////////////////////////////////////////
-
-			#define ONE_REV		  				(100000.0f)
-			#define ONE_TENTH_REV				((ONE_REV) / 10.0f)
-			#define ONE_OVER_ONE_TENTH_REV	(1.0f / (ONE_TENTH_REV))
-			#define DIGIT_CHANGE_THRESHOLD	(20.0f)
-
-			x = fx_640_480 + 579.0;
-			y = fy_640_480 + 438.0 + 6.0;
-
-			whole_digit = fmod (altimeter_digital_value, ONE_REV);
-
-			fractional_digit = fmod (altimeter_digital_value, ONE_TENTH_REV);
-
-			y += (float) ((int) (whole_digit * ONE_OVER_ONE_TENTH_REV)) * 6.0;
-
-			//
-			// rotate digits near change-over point (except at bottom zero)
-			//
-
-			if (altimeter_digital_value >= DIGIT_CHANGE_THRESHOLD)
-			{
-				if (fractional_digit <= DIGIT_CHANGE_THRESHOLD)
-				{
-					y += (fractional_digit - DIGIT_CHANGE_THRESHOLD) * (3.0 / DIGIT_CHANGE_THRESHOLD);
-				}
-				else if (fractional_digit >= (ONE_TENTH_REV - DIGIT_CHANGE_THRESHOLD))
-				{
-					y += (fractional_digit - (ONE_TENTH_REV - DIGIT_CHANGE_THRESHOLD)) * (3.0 / DIGIT_CHANGE_THRESHOLD);
-				}
-			}
-
-			set_mono_font_position (x, y); print_mono_font_char ('9'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('0'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('1'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('2'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('3'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('4'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('5'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('6'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('7'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('8'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('9'); y -= 6.0;
-			set_mono_font_position (x, y); print_mono_font_char ('0');
-
-			#undef ONE_REV
-			#undef ONE_TENTH_REV
-			#undef ONE_OVER_ONE_TENTH_REV
-			#undef DIGIT_CHANGE_THRESHOLD
-
-			break;
-		}
-		////////////////////////////////////////
-		default:
-		////////////////////////////////////////
-		{
-			debug_fatal (instrument_error);
-
-			break;
-		}
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void draw_blackhawk_fixed_cockpit_clock_hands (cockpit_panels panel)
-{
-	float
-		hour_hand_value,
-		minute_hand_value,
-		second_hand_value,
-		x_centre,
-		y_centre;
-
-	scale_data
-		*hour_hand_scale,
-		*minute_hand_scale,
-		*second_hand_scale,
-		*p;
-
-	if (draw_virtual_cockpit_needles_on_fixed_cockpits)
-	{
-		return;
-	}
-
-	get_clock_hand_values (&hour_hand_value, &minute_hand_value, &second_hand_value);
-
-	switch (panel)
-	{
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_AHEAD:
-		////////////////////////////////////////
-		{
-			x_centre = 45.0;
-
-			y_centre = 388.0;
-
-			hour_hand_scale = clock_small_hand_scale_down_20_ahead;
-
-			minute_hand_scale = clock_large_hand_scale_down_20_ahead;
-
-			second_hand_scale = clock_large_hand_scale_down_20_ahead;
-
-			break;
-		}
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_LEFT30:
-		////////////////////////////////////////
-		{
-			x_centre = 317.0;
-
-			y_centre = 349.0;
-
-			hour_hand_scale = clock_small_hand_scale_down_20_left_30;
-
-			minute_hand_scale = clock_large_hand_scale_down_20_left_30;
-
-			second_hand_scale = clock_large_hand_scale_down_20_left_30;
-
-			break;
-		}
-		////////////////////////////////////////
-		case COCKPIT_PANEL_DOWN20_LEFT60:
-		////////////////////////////////////////
-		{
-			x_centre = 589.0;
-
-			y_centre = 386.0;
-
-			hour_hand_scale = clock_small_hand_scale_down_20_left_60;
-
-			minute_hand_scale = clock_large_hand_scale_down_20_left_60;
-
-			second_hand_scale = clock_large_hand_scale_down_20_left_60;
-
-			break;
-		}
-		////////////////////////////////////////
-		default:
-		////////////////////////////////////////
-		{
-			debug_fatal (instrument_error);
-
-			break;
-		}
-	}
-
-	//
-	// draw second hand over minute hand over hour hand
-	//
-
-	p = find_scale_value (hour_hand_scale, hour_hand_value);
-
-	draw_line (fx_640_480 + x_centre, fy_640_480 + y_centre, fx_640_480 + p->x, fy_640_480 + p->y, white_needle_colour);
-
-	p = find_scale_value (minute_hand_scale, minute_hand_value);
-
-	draw_line (fx_640_480 + x_centre, fy_640_480 + y_centre, fx_640_480 + p->x, fy_640_480 + p->y, white_needle_colour);
-
-	p = find_scale_value (second_hand_scale, second_hand_value);
-
-	draw_line (fx_640_480 + x_centre, fy_640_480 + y_centre, fx_640_480 + p->x, fy_640_480 + p->y, red_needle_colour);
-
-	if (test_cockpit_instruments && DEBUG_MODULE)
-	{
-		test_scale (minute_hand_scale, 0.0, 55.0, 5.0);
-
-		test_scale (hour_hand_scale, 0.0, 11.0, 1.0);
-
-		set_pixel (ix_640_480 + x_centre, iy_640_480 + y_centre, sys_col_red);
-	}
-}
-#endif
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 // VIRTUAL COCKPIT
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -874,7 +286,7 @@ void get_blackhawk_virtual_cockpit_adi_angles (matrix3x3 attitude, float *headin
 		result;
 
 	//
-	// get inverse attitude (attiude * inverse attitude = identity) which aligns the ADI with the world axis
+	// get inverse attitude (attitude * inverse attitude = identity) which aligns the ADI with the world axis
 	//
 
 	inverse_attitude[0][0] = attitude[0][0];
@@ -973,6 +385,32 @@ float get_blackhawk_virtual_cockpit_airspeed_indicator_needle_value (void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+float get_blackhawk_virtual_cockpit_radar_altimeter_needle_value(void)
+{
+	float
+		altimeter_needle_value,
+		roll;
+
+	altimeter_needle_value = get_radar_altimeter_needle_value ();
+
+	//
+	// non-linear scale
+	//
+
+	if (altimeter_needle_value < 200.0)
+		roll = altimeter_needle_value / 200.0 * rad(180.0);
+	else if (altimeter_needle_value < 500)
+		roll = rad(180) + (altimeter_needle_value - 200) / 300 * rad(20);
+	else if (altimeter_needle_value > 500)
+		roll = rad(200) + rad(80);
+
+	return (-roll);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 float get_blackhawk_virtual_cockpit_barometric_altimeter_needle_value (void)
 {
 	float
@@ -985,6 +423,70 @@ float get_blackhawk_virtual_cockpit_barometric_altimeter_needle_value (void)
 	return (altimeter_needle_value);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float get_blackhawk_virtual_cockpit_vsi_needle_value (void)
+{
+
+	float vvi = bound(current_flight_dynamics->world_velocity_y.value, -30.0, 30.0);
+	int negative = vvi < 0.0;
+	float roll;
+
+	vvi = fabs(vvi);
+
+	if (vvi < 5.0)
+		roll = vvi / 5.0 * rad(30.0);
+	else if (vvi < 10.0)
+		roll = rad(30.0) + (vvi - 5.0) / 5.0 * rad(38.5);
+	else if (vvi < 20.0)
+		roll = rad(80.5) + (vvi - 10.0) / 10.0 * rad(60.0);
+	else
+		roll = rad(140.5) + (vvi - 20.0) / 10.0 * rad(39.5);
+
+	if (negative)
+		return roll;
+	else
+		return - roll;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float get_blackhawk_virtual_cockpit_stab_needle_value (void)
+{
+	float stab_needle_value; // = bound((current_flight_dynamics->indicated_airspeed.value / 25 + 1.5), -10, 40);
+
+	float airspeed = bound(knots(current_flight_dynamics->indicated_airspeed.value), 0, 150);
+
+	// Stabilator position
+	//	0deg @ 150kts
+	//	10deg @ 100kts
+	//	20deg @ 80kts
+	//	30deg @ 60kts
+	//	40deg @ 45kts
+
+	//  move 10 deg for every 45kts (40deg mark)
+
+	//	move 10 deg for every 15kts (30deg mark)
+
+	//	move 10 deg for every 20kts (20 - 10deg marks)
+
+	//	move 10 deg for every 50kts (0 deg mark)
+
+	if (airspeed < 45.0)
+		stab_needle_value = rad(airspeed * 10.0/45.0);
+	else if (airspeed < 60.0)
+		stab_needle_value = rad(10.0 + (airspeed - 45.0) * 10.0/15.0);
+	else if (airspeed < 100.0)
+		stab_needle_value = rad(20.0 + (airspeed - 60.0) * 10.0/20.0);
+	else if (airspeed <= 150.00)
+		stab_needle_value = rad(40.0 + (airspeed - 100.0) * 10.0/50.0);
+
+	return (stab_needle_value);
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

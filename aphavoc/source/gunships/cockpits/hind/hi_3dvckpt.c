@@ -1141,7 +1141,7 @@ static void get_crew_viewpoint (viewpoint *crew_viewpoint)
 		break;
 
 	default:
-		// adjust pitch according to user preferance
+		// adjust pitch according to user preference
 		if (edit_wide_cockpit)
 			pilot_head_pitch = rad ( wide_cockpit_position[wide_cockpit_nr].c.p );
 
@@ -1149,7 +1149,7 @@ static void get_crew_viewpoint (viewpoint *crew_viewpoint)
 		head_object->relative_heading = -pilot_head_heading;
 		head_object->relative_pitch = -pilot_head_pitch;
 
-		// adjust position according to user preferance
+		// adjust position according to user preference
 		head_object->relative_position.x = wide_cockpit_position[wide_cockpit_nr].c.x;
 		head_object->relative_position.y = wide_cockpit_position[wide_cockpit_nr].c.y;
 		head_object->relative_position.z = wide_cockpit_position[wide_cockpit_nr].c.z;
@@ -1164,7 +1164,7 @@ static void get_crew_viewpoint (viewpoint *crew_viewpoint)
 
 		get_forces_acting_on_pilot(&head_object->relative_position.x, &head_object->relative_position.y, &head_object->relative_position.z, TRUE, TRUE);
 
-		// keep head inside reasonable limimts
+		// keep head inside reasonable limits
 		head_object->relative_position.x = bound(head_object->relative_position.x, head_limits[is_copilot][0].x, head_limits[is_copilot][1].x);
 		head_object->relative_position.y = bound(head_object->relative_position.y, head_limits[is_copilot][0].y, head_limits[is_copilot][1].y);
 		head_object->relative_position.z = bound(head_object->relative_position.z, head_limits[is_copilot][0].z, head_limits[is_copilot][1].z);

@@ -158,8 +158,9 @@ void animate_helicopter_main_rotors (entity *en, int ignore_drawn_once)
 
 	ASSERT (en);
 	ASSERT (get_local_entity_type (en) == ENTITY_TYPE_HELICOPTER);
-
-	if (!ignore_drawn_once && get_local_entity_int_value (en, INT_TYPE_OBJECT_DRAWN_ONCE_THIS_FRAME) || !get_local_entity_int_value (en, INT_TYPE_ALIVE))
+	if (!get_local_entity_int_value (en, INT_TYPE_ALIVE))
+		return;
+	if (!ignore_drawn_once && get_local_entity_int_value (en, INT_TYPE_OBJECT_DRAWN_ONCE_THIS_FRAME))
 		return;
 
 	raw = (helicopter *) get_local_entity_data (en);
@@ -830,7 +831,7 @@ void animate_helicopter_wipers (entity *en)
 		////Moje 030602 Start
 		case OBJECT_3D_UH60_BLACKHAWK:
 		{
-			animate_blackhawk_external_wipers (raw->ac.inst3d);
+			animate_blackhawk_wipers (raw->ac.inst3d);
 			break;
 		}
 		////Moje 030602 End
@@ -853,11 +854,6 @@ void animate_helicopter_wipers (entity *en)
 			break;
 		}
 		////Moje 030619 End
-		default:
-		{
-			animate_default_external_wipers(raw->ac.inst3d);
-			break;
-		}
 		}
 	}
 }

@@ -285,7 +285,7 @@ void initialise_avionics (void)
 
 			initialise_blackhawk_weapon_systems ();
 
-			initialise_blackhawk_upfront_display ();
+			initialise_blackhawk_digital_displays ();
 
 			initialise_blackhawk_target_acquisition_systems ();
 
@@ -785,7 +785,7 @@ void deinitialise_avionics (void)
 
 			deinitialise_blackhawk_mfd ();
 
-			deinitialise_blackhawk_upfront_display ();
+			deinitialise_blackhawk_digital_displays ();
 
 			deinitialise_blackhawk_target_acquisition_systems ();
 
@@ -1181,7 +1181,7 @@ void update_avionics (void)
 
 			update_blackhawk_threat_warning_system ();
 
-			update_blackhawk_upfront_display ();
+			update_blackhawk_digital_displays ();
 
 			if (command_line_shared_mem_export != 0)
 				update_blackhawk_avionics_shared_mem ();	// Retro 8Mar2005

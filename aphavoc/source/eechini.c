@@ -841,6 +841,10 @@ static const struct config_option options[] =
 		SPEC2(WIDEVIEW_APACHE_PILOT, set_position, get_position) },
 	{ "apache_copilot", "", "wideview co-pilot position",
 		SPEC2(WIDEVIEW_APACHE_COPILOT, set_position, get_position) },
+	{ "blackhawk_pilot", "", "wideview pilot position",
+		SPEC2(WIDEVIEW_BLACKHAWK_PILOT, set_position, get_position) },
+	{ "blackhawk_copilot", "", "wideview co-pilot position",
+		SPEC2(WIDEVIEW_BLACKHAWK_COPILOT, set_position, get_position) },
 	{ "havoc_pilot", "", "wideview pilot position",
 		SPEC2(WIDEVIEW_HAVOC_PILOT, set_position, get_position) },
 	{ "hind_pilot", "", "wideview pilot position",
@@ -1280,6 +1284,18 @@ static void wide_cockpit_initialize(void)
 		wide_cockpit_position[WIDEVIEW_APACHE_COPILOT].d.y = 0.0;
 		wide_cockpit_position[WIDEVIEW_APACHE_COPILOT].d.z = 0.0;
 		wide_cockpit_position[WIDEVIEW_APACHE_COPILOT].d.p = -10.0;
+
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_PILOT].cockpit = "Blackhawk";
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_PILOT].d.x = 0.0;
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_PILOT].d.y = 0.0;
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_PILOT].d.z = 0.0;
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_PILOT].d.p = -5.0;
+
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_COPILOT].cockpit = "Blackhawk";
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_COPILOT].d.x = 0.0;
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_COPILOT].d.y = 0.0;
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_COPILOT].d.z = 0.0;
+		wide_cockpit_position[WIDEVIEW_BLACKHAWK_COPILOT].d.p = -5.0;
 
 		wide_cockpit_position[WIDEVIEW_HAVOC_PILOT].cockpit = "Havoc";
 		wide_cockpit_position[WIDEVIEW_HAVOC_PILOT].d.x = BASE_X_HAVOC;

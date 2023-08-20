@@ -78,8 +78,6 @@
 
 void initialise_blackhawk_target_acquisition_systems (void)
 {
-	initialise_blackhawk_radar ();
-
 	initialise_blackhawk_eo ();
 
 	initialise_blackhawk_hms ();
@@ -91,8 +89,6 @@ void initialise_blackhawk_target_acquisition_systems (void)
 
 void deinitialise_blackhawk_target_acquisition_systems (void)
 {
-	deinitialise_blackhawk_radar ();
-
 	deinitialise_blackhawk_eo ();
 
 	deinitialise_blackhawk_hms ();
@@ -110,21 +106,9 @@ static void deselect_blackhawk_target_acquisition_system (target_acquisition_sys
 		case TARGET_ACQUISITION_SYSTEM_OFF:
 		////////////////////////////////////////
 		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			deactivate_common_ground_radar ();
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			deactivate_common_air_radar ();
+			// laser is on in all modes but OFF in automatic mode
+			if (!command_line_manual_laser_radar)
+				set_laser_is_active(TRUE);
 
 			break;
 		}
@@ -134,6 +118,8 @@ static void deselect_blackhawk_target_acquisition_system (target_acquisition_sys
 		{
 			deactivate_common_eo ();
 
+			copy_eo_zoom(&blackhawk_flir, &blackhawk_dtv);
+
 			break;
 		}
 		////////////////////////////////////////
@@ -142,21 +128,7 @@ static void deselect_blackhawk_target_acquisition_system (target_acquisition_sys
 		{
 			deactivate_common_eo ();
 
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			deactivate_common_eo ();
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			deactivate_common_hms ();
+			copy_eo_zoom(&blackhawk_dtv, &blackhawk_flir);
 
 			break;
 		}
@@ -206,27 +178,14 @@ void select_blackhawk_target_acquisition_system (target_acquisition_systems syst
 
 			set_gunship_target (NULL);
 
+			if (!command_line_manual_laser_radar)
+				set_laser_is_active(FALSE);
+
 			#if 0
 
-			hud_mode = HUD_MODE_NAVIGATION;
+			hud_mode = previous_hud_mode;
 
 			#endif
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			damaged = blackhawk_damage.radar;
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			damaged = blackhawk_damage.radar;
 
 			break;
 		}
@@ -240,6 +199,11 @@ void select_blackhawk_target_acquisition_system (target_acquisition_systems syst
 
 				activate_common_eo ();
 
+				if (command_line_targeting_system_auto_page)
+					select_blackhawk_tads_mfd ();
+
+				if (hud_mode != HUD_MODE_WEAPON)
+					previous_hud_mode = hud_mode;
 				hud_mode = HUD_MODE_WEAPON;
 			}
 
@@ -257,44 +221,15 @@ void select_blackhawk_target_acquisition_system (target_acquisition_systems syst
 
 				activate_common_eo ();
 
+				if (command_line_targeting_system_auto_page)
+					select_blackhawk_tads_mfd ();
+
+				if (hud_mode != HUD_MODE_WEAPON)
+					previous_hud_mode = hud_mode;
 				hud_mode = HUD_MODE_WEAPON;
 			}
 
 			damaged = blackhawk_damage.dtv;
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			if (!blackhawk_damage.dvo)
-			{
-				target_acquisition_system = system;
-
-				activate_common_eo ();
-
-				hud_mode = HUD_MODE_WEAPON;
-			}
-
-			damaged = blackhawk_damage.dvo;
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			if (!blackhawk_damage.ihadss)
-			{
-				target_acquisition_system = system;
-
-				activate_common_hms ();
-
-				hud_mode = HUD_MODE_WEAPON;
-			}
-
-			damaged = blackhawk_damage.ihadss;
 
 			break;
 		}
@@ -334,18 +269,6 @@ void update_blackhawk_target_acquisition_system (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_FLIR:
 		////////////////////////////////////////
 		{
@@ -370,33 +293,6 @@ void update_blackhawk_target_acquisition_system (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			update_blackhawk_eo (&blackhawk_dvo);
-
-			update_common_eo ();
-
-			update_weapon_lock_type (TARGET_ACQUISITION_SYSTEM_DVO);
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			update_blackhawk_hms ();
-
-			update_common_hms ();
-
-			update_weapon_lock_type (TARGET_ACQUISITION_SYSTEM_IHADSS);
-
-			slave_common_eo_to_current_target ();
-
-			slave_blackhawk_eo_to_current_target ();
-
-			break;
-		}
 	}
 
 	////////////////////////////////////////
@@ -411,7 +307,6 @@ void update_blackhawk_target_acquisition_system (void)
 			*target;
 
 		int
-			radar_on,
 			laser_on,
 			los_to_target;
 
@@ -420,44 +315,10 @@ void update_blackhawk_target_acquisition_system (void)
 		target = get_local_entity_parent (source, LIST_TYPE_TARGET);
 
 		//
-		// radar on/off
-		//
-
-		radar_on = FALSE;
-
-		if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_GROUND_RADAR)
-		{
-			if (ground_radar.sweep_mode != RADAR_SWEEP_MODE_SINGLE_INACTIVE)
-			{
-				radar_on = TRUE;
-			}
-		}
-		else if (target_acquisition_system == TARGET_ACQUISITION_SYSTEM_AIR_RADAR)
-		{
-			if (air_radar.sweep_mode != RADAR_SWEEP_MODE_SINGLE_INACTIVE)
-			{
-				radar_on = TRUE;
-			}
-		}
-
-		if (radar_on != get_local_entity_int_value (source, INT_TYPE_RADAR_ON))
-		{
-			set_client_server_entity_int_value (source, INT_TYPE_RADAR_ON, radar_on);
-		}
-
-		//
 		// laser on/off
 		//
 
-		laser_on = FALSE;
-
-		if (target_acquisition_system != TARGET_ACQUISITION_SYSTEM_OFF)
-		{
-			if (!blackhawk_damage.laser_designator)
-			{
-				laser_on = TRUE;
-			}
-		}
+		laser_on = laser_is_active() && !blackhawk_damage.laser_designator;
 
 		if (laser_on != get_local_entity_int_value (source, INT_TYPE_LASER_ON))
 		{
@@ -478,22 +339,8 @@ void update_blackhawk_target_acquisition_system (void)
 
 					break;
 				}
-				case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-				case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-				{
-					los_to_target = get_local_entity_int_value (target, INT_TYPE_GUNSHIP_RADAR_LOS_CLEAR);
-
-					break;
-				}
 				case TARGET_ACQUISITION_SYSTEM_FLIR:
 				case TARGET_ACQUISITION_SYSTEM_DTV:
-				case TARGET_ACQUISITION_SYSTEM_DVO:
-				{
-					los_to_target = TRUE;
-
-					break;
-				}
-				case TARGET_ACQUISITION_SYSTEM_IHADSS:
 				{
 					los_to_target = TRUE;
 
@@ -528,22 +375,6 @@ void centre_blackhawk_target_acquisition_system (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			centre_blackhawk_ground_radar ();
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			centre_blackhawk_air_radar ();
-
-			break;
-		}
-		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_FLIR:
 		////////////////////////////////////////
 		{
@@ -560,19 +391,6 @@ void centre_blackhawk_target_acquisition_system (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			centre_blackhawk_eo ();
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			break;
-		}
 	}
 }
 
@@ -591,20 +409,6 @@ void toggle_blackhawk_show_allied_targets (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			air_radar.show_allied_targets ^= 1;
-
-			break;
-		}
-		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_FLIR:
 		////////////////////////////////////////
 		{
@@ -617,17 +421,6 @@ void toggle_blackhawk_show_allied_targets (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			break;
-		}
 	}
 }
 
@@ -646,22 +439,6 @@ void toggle_blackhawk_auto_target (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			ground_radar.auto_target ^= 1;
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			air_radar.auto_target ^= 1;
-
-			break;
-		}
-		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_FLIR:
 		////////////////////////////////////////
 		{
@@ -674,17 +451,6 @@ void toggle_blackhawk_auto_target (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			break;
-		}
 	}
 }
 
@@ -703,28 +469,15 @@ void toggle_blackhawk_lock_target (void)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
+		case TARGET_ACQUISITION_SYSTEM_FLIR:
+		case TARGET_ACQUISITION_SYSTEM_DTV:
 		////////////////////////////////////////
 		{
-			hms_target_locked ^= 1;
-
-			if (hms_target_locked && !query_TIR_active())
-			{
-				if (in_cockpit)
-				{
-					set_view_mode (VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET);
-				}
-			}
-			else
-			{
-				if (get_view_mode () == VIEW_MODE_VIRTUAL_COCKPIT_TRACK_TARGET)
-				{
-					select_padlock_view_event (PADLOCK_MODE_NONE);
-				}
-			}
+			toggle_eo_lock();
 
 			break;
 		}
+		////////////////////////////////////////
 	}
 }
 
@@ -743,147 +496,15 @@ void set_blackhawk_lock_target (int lock)
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			hms_target_locked = lock;
-
-			break;
-		}
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void blackhawk_target_acquisition_system_misc_function1 (void)
-{
-	switch (target_acquisition_system)
-	{
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_OFF:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			if (ground_radar.sweep_mode == RADAR_SWEEP_MODE_CONTINUOUS)
-			{
-				ground_radar.sweep_mode = RADAR_SWEEP_MODE_SINGLE_ACTIVE;
-			}
-			else
-			{
-				ground_radar.sweep_mode = RADAR_SWEEP_MODE_CONTINUOUS;
-			}
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			if (air_radar.sweep_mode == RADAR_SWEEP_MODE_CONTINUOUS)
-			{
-				air_radar.sweep_mode = RADAR_SWEEP_MODE_SINGLE_ACTIVE;
-			}
-			else
-			{
-				air_radar.sweep_mode = RADAR_SWEEP_MODE_CONTINUOUS;
-			}
-
-			break;
-		}
-		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_FLIR:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
 		case TARGET_ACQUISITION_SYSTEM_DTV:
 		////////////////////////////////////////
 		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			break;
-		}
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void blackhawk_target_acquisition_system_misc_function2 (void)
-{
-	switch (target_acquisition_system)
-	{
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_OFF:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_GROUND_RADAR:
-		////////////////////////////////////////
-		{
-			if (ground_radar.sweep_mode == RADAR_SWEEP_MODE_SINGLE_INACTIVE)
-			{
-				ground_radar.sweep_mode = RADAR_SWEEP_MODE_SINGLE_ACTIVE;
-			}
+			set_eo_lock(lock);
 
 			break;
 		}
 		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_AIR_RADAR:
-		////////////////////////////////////////
-		{
-			if (air_radar.sweep_mode == RADAR_SWEEP_MODE_SINGLE_INACTIVE)
-			{
-				air_radar.sweep_mode = RADAR_SWEEP_MODE_SINGLE_ACTIVE;
-			}
-
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_FLIR:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DTV:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_DVO:
-		////////////////////////////////////////
-		{
-			break;
-		}
-		////////////////////////////////////////
-		case TARGET_ACQUISITION_SYSTEM_IHADSS:
-		////////////////////////////////////////
-		{
-			break;
-		}
 	}
 }
 

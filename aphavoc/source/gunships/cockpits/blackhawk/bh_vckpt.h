@@ -65,7 +65,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define BLACKHAWK_INSTRUMENT_VIEW_HEADING	((float) (rad (0.0)))
-#define BLACKHAWK_INSTRUMENT_VIEW_PITCH	((float) (rad (-20.0)))
+#define BLACKHAWK_INSTRUMENT_VIEW_PITCH		((float) (rad (-28.0)))
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,35 @@ extern void update_blackhawk_virtual_cockpit (void);
 
 extern void draw_blackhawk_internal_virtual_cockpit (unsigned int flags);
 
-extern void draw_blackhawk_external_virtual_cockpit (unsigned int flags, unsigned char *wiper_rle_graphic);
+extern void pre_render_blackhawk_virtual_cockpit_displays (void);
+
+extern void draw_blackhawk_virtual_cockpit (void);
+
+extern void get_blackhawk_crew_viewpoint (void);
+
+extern void get_blackhawk_display_viewpoint (view_modes mode);
+
+extern void update_rtr_rpm_display (void);
+
+extern void update_leng_rpm_display (void);
+
+extern void update_reng_rpm_display (void);
+
+extern void update_leng_trq_display (void);
+
+extern void update_reng_trq_display (void);
+
+extern void update_fuel_display (void);
+
+extern void update_lng_speed_display (void);
+
+extern void update_rng_speed_display (void);
+
+extern void update_ltgt_temp_display (void);
+
+extern void update_rtgt_temp_display (void);
+
+extern void update_master_warning_lamps (void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

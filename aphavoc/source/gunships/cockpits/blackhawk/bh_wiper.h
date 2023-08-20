@@ -68,11 +68,7 @@ extern void initialise_blackhawk_virtual_cockpit_wiper_and_rain_effect (void);
 
 extern void deinitialise_blackhawk_virtual_cockpit_wiper_and_rain_effect (void);
 
-extern void draw_blackhawk_virtual_cockpit_wiper (viewpoint *vp);
-
-extern void draw_blackhawk_virtual_cockpit_rain_effect (viewpoint *vp);
-
-extern void animate_blackhawk_external_wipers (object_3d_instance *inst3d);
+extern void animate_blackhawk_wipers (object_3d_instance *inst3d);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
